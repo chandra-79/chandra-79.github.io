@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180" fill="none">
+  <title>A bright idea, with a little ziggle</title>
+  <ellipse cx="151" cy="153" rx="75" ry="8" fill="#a99ade" opacity=".22"/>
+  <path d="M37 111C11 87 45 39 113 25M216 149C263 132 288 91 263 66" stroke="#a99ade" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 7"/>
+  <g transform="translate(84 17) rotate(-9 64 64)">
+    <rect x="0" y="4" width="128" height="128" rx="36" fill="#a99ade"/>
+    <rect width="128" height="128" rx="36" fill="#28223d"/>
+    <path d="M63 29C52 19 37 25 35 38C22 38 17 52 25 62C17 75 26 88 39 88C40 102 56 106 64 95C74 106 90 100 91 87C106 86 112 71 103 61C111 49 103 36 91 37C90 23 74 20 63 29Z" fill="#ff867c"/>
+    <path d="M37 39C42 39 46 42 47 47M27 63C34 60 39 63 41 68M90 38C84 38 81 42 81 46M101 63C94 60 89 63 87 68M64 29V38M64 88V95" stroke="#28223d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M49 48H80L49 78H81" stroke="#28223d" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M49 48H80L49 78H81" stroke="#d8f36a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M244 18L250 35L267 41L250 47L244 64L238 47L221 41L238 35L244 18Z" fill="#d8f36a" stroke="#28223d" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M51 119L54 128L63 131L54 134L51 143L48 134L39 131L48 128L51 119Z" fill="#d95650"/>
+  <path d="M46 59L54 50M59 66L71 62M39 45L43 33" stroke="#d95650" stroke-width="4" stroke-linecap="round"/>
+  <path d="M233 111L243 105L240 117L251 112" stroke="#a99ade" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="68" cy="91" r="5" fill="#a99ade"/>
+  <circle cx="221" cy="152" r="4" fill="#d95650"/>
+</svg>

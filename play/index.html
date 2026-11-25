@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-game-active>
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Ziggle your brain. Find your sharp. Untangle colorful arrows and make a little room for a daily brain teaser. Free to play, no account needed.">
+  <title>Arrow escape — Ziggle</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/daily-journey.js"><link rel="modulepreload" href="/play/howto-boot.js"><link rel="modulepreload" href="/play/howto-store.js"><link rel="modulepreload" href="/play/play-assist.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/style.css">
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/arrow-appearance.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/arrow-view.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <script src="/play/collection-shell.js"></script>
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Arrow escape — Ziggle">
+  <meta property="og:description" content="Ziggle your brain. Find your sharp. Untangle colorful arrows and make a little room for a daily brain teaser. Free to play, no account needed.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body>
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary class="has-current"><span class="nav-label">Games</span><span class="nav-current">Arrow escape</span></summary><div class="nav-panel"><a href="/play/words.html?game=search&amp;resume=1" data-nav="search"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></a><a href="/play/words.html?game=crossword&amp;resume=1" data-nav="crossword"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></a><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow" aria-current="page"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary><span class="nav-label">Train</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-page-title"><p class="menu-heading" id="menu-page-title">On this page</p><button type="button" data-shell-help="help-button">How to play</button><button id="daily-button" type="button"><span data-icon="calendar"></span>Daily challenge</button><button id="trophies-button" type="button"><span data-icon="trophy"></span>Trophies <span id="trophy-count">0</span></button><button id="settings-button" type="button"><span data-icon="settings"></span>Arrow style and sound</button></div><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+  <main class="game-shell">
+    <div class="collection-page-heading game-bar"><h1 id="collection-title">Arrow escape</h1><div class="game-bar-items"><span class="bar-chip"><span>Streak</span> <strong data-mirror="daily-streak">0</strong></span><span class="bar-chip"><span>Points</span> <strong data-mirror="daily-points">0</strong></span><span class="bar-chip"><span>Wins</span> <strong data-mirror="daily-wins">0</strong></span><span class="bar-chip" title="Every arrow you’ve set free, in every mode"><span>Arrows</span> <strong data-mirror="arrows-collected">0</strong></span><a class="bar-link" href="/play/twists.html">✦ Arrow Twists</a></div><div class="mode-switch" role="group" aria-label="Mode"><button type="button" id="mode-daily" aria-pressed="false">Today</button><button type="button" id="mode-practice" aria-pressed="false">Practice</button></div><button type="button" class="drawer-button" data-drawer-open aria-controls="game-drawer" aria-expanded="false" aria-label="More: stats"><svg class="drawer-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg><span>More</span></button></div>
+    <section class="collection-welcome" aria-label="Welcome tip" data-welcome-banner><p><strong>A little play. A lot of spark.</strong> Your daily brain break, at your own pace.</p><button type="button" data-welcome-close aria-label="Close welcome tip" title="Close welcome tip">×</button></section>
+    <button id="new-day-button" class="new-day-button" hidden>A new daily challenge is ready →</button>
+    <div class="play-layout">
+      <section class="puzzle-column" aria-label="Play Ziggle">
+        <div class="game-heading">
+          <button id="levels-button" class="level-picker" title="Choose a puzzle"><span class="eyebrow" id="mode-label">YOUR NEXT LITTLE CHALLENGE</span><span class="level-title"><span id="level-prefix">Today’s</span> <span id="level-number">puzzle</span><span data-icon="chevron"></span></span></button>
+          <div class="heading-right"><span class="difficulty"><i></i><span id="difficulty-text">Daily flow</span></span><button id="help-button" class="icon-button help" aria-label="How to play" title="How to play"><span data-icon="help"></span></button></div>
+        </div>
+        <section id="arrow-completion" class="completion" hidden aria-label="Puzzle complete"><div><h2>Every arrow cleared!</h2><p id="arrow-result-detail"></p></div><div class="completion-actions"><button id="continue-arrow" class="primary-button" type="button">Next puzzle →</button><button id="repeat-arrow" class="secondary-button" type="button">Play again</button></div></section>
+          <details id="piece-guide" hidden><summary>Special arrows · how they work</summary><p id="piece-guide-text"></p></details>
+        <section class="game-panel" aria-label="Arrow escape puzzle">
+          <div class="board-hud">
+            <button id="pause-button" class="icon-button pause-button" aria-label="Pause game" title="Pause (P)"><span data-icon="pause"></span></button>
+            <div class="hearts" id="hearts" role="img" aria-label="3 lives remaining"></div>
+            <div class="timer"><span data-icon="clock"></span><span id="timer">00:00</span></div>
+          </div>
+          <div class="board-view-controls" aria-label="Board view controls">
+            <div class="board-zoom-controls" role="group" aria-label="Board zoom">
+              <button id="board-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+              <output id="board-zoom-level" aria-live="polite" aria-label="Board zoom level">100%</output>
+              <button id="board-zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+              <button id="board-zoom-fit" type="button" title="Fit the whole puzzle">Fit</button>
+            </div>
+            <button id="lanes-button" class="lanes-button" type="button" aria-pressed="false" title="Exit lanes: show where each arrow would go"><span data-icon="lanes"></span><span>Lanes</span></button><button id="grid-button" class="lanes-button" type="button" aria-pressed="false" aria-label="Grid markers" title="Grid markers: letters and numbers around the board, and dots under the arrows"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3h0M8 3h0M13 3h0M3 8h0M8 8h0M13 8h0M3 13h0M8 13h0M13 13h0" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg><span>Grid</span></button>
+            <button id="board-labels-button" type="button" aria-pressed="false">IDs off</button>
+            <button id="focus-button" class="lanes-button focus-button" type="button" aria-pressed="false" aria-label="Full-screen board" title="Full-screen board: hide the page header while you play"><svg class="fs-in" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><svg class="fs-out" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
+            <button id="hint-top" class="hint-top" type="button" title="Hint: light up an arrow with a clear way out"><span data-icon="bulb"></span><span class="tool-word">Hint</span><span class="tool-count" id="hint-top-count">3</span></button>
+            <button id="view-more" class="view-more" type="button" aria-expanded="false" aria-controls="board-zoom-fit grid-button board-labels-button" title="More view options">View</button>
+            <button id="board-maximize" type="button" aria-pressed="false"><span aria-hidden="true">⛶</span> Maximize</button>
+          </div>
+          <div class="board-view">
+            <div class="board-wrap" id="board-viewport" tabindex="0" role="region" aria-label="Arrow board. Scroll to move around when zoomed." aria-describedby="board-view-help">
+              <div class="board-canvas" id="board-canvas">
+            <svg id="board" viewBox="35 35 530 530" role="group" aria-label="Puzzle arrows" aria-describedby="keyboard-help"></svg>
+              </div>
+            </div>
+            <div class="board-label"><span id="shape-label">A LITTLE HEART, A CLEAR MIND</span></div>
+          </div>
+          <p id="board-view-help" class="board-view-help">Zoom in for larger arrows and IDs. Scroll or swipe to move around.</p>
+          <div class="board-progress"><span><strong id="cleared-count">0</strong> <span class="muted">/ <span id="total-count">0</span> arrows free</span></span><div class="progress-track"><div id="progress-fill"></div></div><span id="progress-percent">0%</span></div>
+          <div class="tools" aria-label="Puzzle tools">
+            <button id="hint-button" class="tool-button hint-tool"><span class="tool-icon" data-icon="bulb"></span><span class="tool-word">Hint</span><span class="tool-count" id="hint-count">3</span></button>
+            <span class="tool-divider"></span>
+            <button id="restart-button" class="tool-button"><span class="tool-icon" data-icon="restart"></span><span>Restart</span></button>
+            <button id="theme-button" class="tool-button"><span class="tool-icon" data-icon="palette"></span><span>Style</span></button>
+          </div>
+          <section class="keyboard-panel" aria-label="Keyboard controls">
+          <div class="keyboard-heading"><span class="keyboard-title"><span data-icon="keyboard"></span>Play your way</span><span class="keyboard-badge">TAP OR TYPE</span></div>
+          <div class="identifier-options"><label for="identifier-mode">Arrow IDs</label><select id="identifier-mode"><option value="coordinates">A1 · Coordinates</option><option value="numbers">123 · Numbers</option><option value="letters">ABC · Letters</option></select><button id="labels-button" class="labels-button" aria-pressed="true">IDs on</button></div>
+          <form id="arrow-command" class="arrow-command" autocomplete="off">
+            <label for="arrow-address">Select an arrow</label>
+            <div class="command-entry"><input id="arrow-address" type="text" placeholder="e.g. A1" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="selection-status keyboard-help" aria-keyshortcuts="/"><button id="fire-button" type="submit">Go <span aria-hidden="true">↗</span></button></div>
+          </form>
+          <p id="selection-status" class="selection-status" role="status" aria-live="polite">Type an ID to highlight its arrow. Enter fires it.</p>
+          <p id="keyboard-help" class="keyboard-help"><span><kbd>/</kbd> select</span><span><kbd>↑ ↓ ← →</kbd> move</span><span><kbd>Enter</kbd> go</span><span><kbd>Esc</kbd> cancel</span></p>
+        </section>
+        </section>
+        <p id="game-message" class="game-message" role="status" aria-live="polite"><span data-icon="cursor"></span>Tap an arrow with a clear path and watch it go.</p>
+      </section>
+      <aside class="side-panel frame-drawer" id="game-drawer" aria-label="Your progress and play controls"><div class="drawer-head"><h2 class="drawer-title" id="drawer-title">Stats</h2><button type="button" class="drawer-close" data-drawer-close aria-label="Close stats">×</button></div>
+        <section class="daily-overview" aria-labelledby="progress-title">
+          <div class="daily-overview-heading"><div><span class="eyebrow">LITTLE WINS ADD UP</span><h2 id="progress-title">Your daily glow</h2></div><span class="section-icon" data-icon="sparkle"></span></div>
+          <div class="daily-stats">
+            <div class="stat-days"><span class="stat-icon" data-icon="calendar"></span><strong id="days-played">0</strong><span>days played</span></div>
+            <div class="stat-streak"><span class="stat-icon" data-icon="flame"></span><strong id="daily-streak">0</strong><span>day streak</span></div>
+            <div class="stat-points"><span class="stat-icon" data-icon="sparkle"></span><strong id="daily-points">0</strong><span>points earned</span></div>
+            <div class="stat-wins"><span class="stat-icon" data-icon="trophy"></span><strong id="daily-wins">0</strong><span>daily wins</span></div>
+            <div class="stat-arrows"><span class="stat-icon" data-icon="sparkle"></span><strong id="arrows-collected">0</strong><span>arrows collected</span></div>
+            <div class="stat-week"><span class="stat-icon" data-icon="calendar"></span><strong id="arrows-week">0</strong><span>arrows this week</span></div>
+          </div>
+          <div class="daily-footnote"><span class="live-dot"></span>A fresh puzzle, every day<span id="challenge-date"></span></div>
+        </section>
+        
+        <section class="daily-invitation" aria-label="Optional email reminders" data-grownups><span class="invitation-icon" data-icon="mail"></span><div><strong>A little joy. On repeat.</strong><p>Tomorrow’s brain break, delivered to your inbox.</p></div><button id="email-button">Remind me <span aria-hidden="true">↗</span></button><small>Always optional. Always your pace.</small></section>
+      </aside>
+    </div>
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
+  </main>
+  <footer class="game-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><button id="save-status">Progress saves in this browser</button><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <div id="modal-root" class="modal-root" hidden></div>
+  <script type="module" src="/play/main.js"></script>
+  <script type="module" src="/play/arrow-view.js"></script>
+</body>
+</html>

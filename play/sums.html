@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-game-active>
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Sum Spark: reach the target with a chain of number tiles. Three rounds a day: add up, add and take away, then all four operations. Calm, untimed and fresh every day.">
+  <title>Sum Spark — Ziggle</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/howto-boot.js"><link rel="modulepreload" href="/play/howto-store.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/sums-style.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <script src="/play/collection-shell.js"></script>
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Sum Spark — Ziggle">
+  <meta property="og:description" content="Sum Spark: reach the target with a chain of number tiles. Three rounds a day: add up, add and take away, then all four operations. Calm, untimed and fresh every day.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body>
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary class="has-current"><span class="nav-label">Games</span><span class="nav-current">Sum Spark</span></summary><div class="nav-panel"><a href="/play/words.html?game=search&amp;resume=1" data-nav="search"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></a><a href="/play/words.html?game=crossword&amp;resume=1" data-nav="crossword"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></a><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums" aria-current="page"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary><span class="nav-label">Train</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-page-title"><p class="menu-heading" id="menu-page-title">On this page</p><button type="button" data-shell-help="sum-help">How to play</button></div><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+  <main class="sum-shell">
+    <div class="collection-page-heading game-bar"><h1 id="collection-title">Sum Spark</h1><div class="game-bar-items"><span class="bar-chip"><span aria-hidden="true">🎯</span><span class="chip-label">On target</span> <strong data-mirror="sum-exact">0</strong></span><div class="mode-switch" role="group" aria-label="Mode"><button type="button" id="mode-daily" aria-pressed="true">Today</button><button type="button" id="mode-practice" aria-pressed="false">Practice</button></div></div><button type="button" class="drawer-button" data-drawer-open aria-controls="game-drawer" aria-expanded="false" aria-label="More: stats"><svg class="drawer-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg><span>More</span></button></div>
+    <section class="collection-welcome" aria-label="Welcome tip" data-welcome-banner><p><strong>A little play. A lot of spark.</strong> Chain the number tiles to hit the target. No timer: take it at your own pace.</p><button type="button" data-welcome-close aria-label="Close welcome tip" title="Close welcome tip">×</button></section>
+    <div class="sum-layout">
+      <section class="sum-card" aria-labelledby="sum-title">
+        <div class="sum-top">
+          <div><span class="sum-kicker" id="sum-kicker">TODAY’S SUMS</span><h2 id="sum-title">Add up</h2></div>
+          <button id="sum-help" class="circle-button" type="button" aria-label="How to play Sum Spark">?</button>
+        </div>
+        <div class="round-tabs" id="round-tabs" role="group" aria-label="Rounds"></div>
+        <div class="sum-board" tabindex="-1" aria-label="Sum Spark board">
+          <div class="score-row">
+            <div class="pill-wrap"><span class="pill-label" id="target-label">Target</span><output class="target" id="sum-target" aria-labelledby="target-label" aria-live="polite">0</output></div>
+            <div class="gauge"><span class="gap" id="sum-gap"></span><span class="meter" aria-hidden="true"><span class="meter-fill" id="sum-meter"></span></span></div>
+            <div class="pill-wrap"><span class="pill-label" id="total-label">Total</span><output class="now" id="sum-total" aria-labelledby="total-label">–</output></div>
+          </div>
+          <p class="chain" id="sum-chain" aria-live="polite"></p>
+          <p class="reveal" id="sum-reveal" hidden></p>
+          <div class="ops" id="sum-ops" role="group" aria-label="Next operator"></div>
+          <div class="tiles" id="sum-tiles" role="group" aria-label="Number tiles"></div>
+        </div>
+        <div class="sum-tools">
+          <button type="button" class="tool" id="sum-undo">Undo</button>
+          <button type="button" class="tool" id="sum-clear">Clear</button>
+          <button type="button" class="tool" id="sum-hint">Hint <span class="tool-count" id="sum-hints">3</span></button>
+          <button type="button" class="primary-button" id="sum-lock">Lock it in</button>
+        </div>
+        <p class="sum-message" id="sum-message" role="status" aria-live="polite"></p>
+        <p class="sr-only" id="sum-keys">Keys: 1 to 6 pick a tile, plus, minus, x or star, and slash pick the operator, Backspace undoes, Escape clears, Enter locks it in.</p>
+        <section class="sum-done" id="sum-done" hidden aria-labelledby="sum-done-title"><h3 id="sum-done-title">All three done!</h3><p id="sum-done-detail"></p><p class="marks" id="sum-marks" aria-hidden="true"></p><p class="next-sums" id="next-sums" hidden></p><div class="done-actions"><button type="button" class="secondary-button" id="sum-share">Share result</button><button type="button" class="primary-button" id="sum-next">Practice more →</button></div><p class="share-status" id="sum-share-status" role="status" aria-live="polite"></p><p class="share-status" id="sum-board-status" role="status" aria-live="polite" data-grownups data-online></p></section>
+      </section>
+      <aside class="sum-side frame-drawer" id="game-drawer" aria-label="Sum Spark stats"><div class="drawer-head"><h2 class="drawer-title" id="drawer-title">Stats</h2><button type="button" class="drawer-close" data-drawer-close aria-label="Close stats">×</button></div>
+        <section class="side-card"><h3>Your sums</h3><div class="side-stats"><div class="side-stat"><strong id="sum-played">0</strong><span>rounds played</span></div><div class="side-stat"><strong id="sum-exact">0</strong><span>on target</span></div><div class="side-stat"><strong id="sum-best">0</strong><span>best daily score (of 300)</span></div><div class="side-stat"><strong id="sum-days">0</strong><span>dailies finished</span></div></div></section>
+        <section class="side-card"><h3>Three rounds a day</h3><ol class="round-legend"><li><strong>Add up:</strong> only +.</li><li><strong>Add and take away:</strong> + and −.</li><li><strong>All four:</strong> + − × ÷, with a big tile or two.</li></ol><p class="note">That’s the medium daily. Easy days have two add-up rounds, then add and take away; hard days have add and take away, then two all-four rounds. Choose your level in Settings → Play.</p><p class="note">On target scores 100. Within 2 scores 60, within 5 scores 40, within 10 scores 20. Each hint costs 15.</p></section>
+      </aside>
+    </div>
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
+  </main>
+  <footer class="sum-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><span id="save-status">Progress saves in this browser</span><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <dialog id="sum-dialog" aria-labelledby="sum-help-title"><button id="close-sum-help" class="circle-button dialog-close" type="button" aria-label="Close how to play">×</button><span class="sum-kicker">SUM SPARK</span><h2 id="sum-help-title">Chain your way to the target.</h2><ul><li>Tap a tile to start. Then pick an operator and the next tile: the total updates after every step, worked left to right like a calculator.</li><li>Each tile can be used once. Totals stay whole numbers from 0 to 9,999, so a division has to come out even.</li><li>Hit the target exactly for 100 points, or lock in your closest total: within 2 scores 60, within 5 scores 40, within 10 scores 20. Each hint costs 15.</li><li>Three rounds a day: Add up (+), Add and take away (+ −), and All four (+ − × ÷). There is always an exact answer.</li><li>Keys: 1–6 pick a tile, + − × (or * or x) ÷ (or /) pick the operator, Backspace undoes, Escape clears, Enter locks it in.</li></ul><p>Everyone gets the same three rounds each day. Practice gives you as many more as you like.</p><button id="sum-help-done" class="primary-button" type="button">Let’s spark →</button></dialog>
+  <script type="module" src="/play/sums-main.js"></script>
+</body>
+</html>

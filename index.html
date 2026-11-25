@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Ziggle your brain. Find your sharp. Eight playful daily brain teasers: word search, crossword, Word Cloud, Letter Lock, arrow escape, Memory Mischief, Sudoku and Sum Spark. Free to play, no account needed.">
+  <title>Ziggle — A little play. A lot of spark.</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <script src="/play/collection-shell.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/week-word.js"><link rel="modulepreload" href="/play/week-words.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/home.css">
+  <link rel="stylesheet" href="/play/week-card.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Ziggle — A little play. A lot of spark.">
+  <meta property="og:description" content="Ziggle your brain. Find your sharp. Eight playful daily brain teasers: word search, crossword, Word Cloud, Letter Lock, arrow escape, Memory Mischief, Sudoku and Sum Spark. Free to play, no account needed.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body class="ziggle-home">
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home" aria-current="page"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary><span class="nav-label">Games</span></summary><div class="nav-panel"><a href="/play/words.html?game=search&amp;resume=1" data-nav="search"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></a><a href="/play/words.html?game=crossword&amp;resume=1" data-nav="crossword"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></a><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary><span class="nav-label">Train</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/" aria-current="page">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+
+  <main id="ziggle-home" class="home-shell">
+    <section class="home-hero" aria-labelledby="home-title">
+      <div class="hero-copy">
+        <p class="home-eyebrow" id="hero-eyebrow">Your daily brain break</p>
+        <h1 id="home-title">Ziggle your brain. <span>Find your sharp.</span></h1>
+        <p class="home-lede" data-home="notes">Eight little brain teasers for words, numbers, logic and memory. Finish any one each day to keep your streak glowing, or all eight for a perfect day.</p>
+        <a class="home-cta" id="hero-cta" href="/play/index.html">Start today’s Ziggle <span aria-hidden="true">→</span></a>
+        <ul class="home-notes hero-notes" data-home="notes" aria-label="About Ziggle">
+          <li><span class="note-icon" aria-hidden="true">✦</span><p><strong>Free, no account.</strong> Progress saves in this browser, with a backup copy kept on this device too.</p></li>
+          <li><span class="note-icon" aria-hidden="true">☁</span><p><strong>Play online.</strong> Open fresh puzzles as you play. Your progress stays saved on this device.</p></li>
+          <li><span class="note-icon" aria-hidden="true">⌨</span><p><strong>Play your way.</strong> Mouse, touch or keyboard, in Day Spark or Night Fizz. <a href="/?settings=play" id="a11y-link" data-settings-tab-open="play">Accessibility</a></p></li>
+        </ul>
+      </div>
+      <section class="today-card" id="today" aria-labelledby="today-title">
+        <div class="today-top"><h2 id="today-title">Today’s Ziggle</h2><span class="season-chip" id="season-chip">League play</span></div>
+        <button type="button" id="today-toggle" class="today-toggle" aria-expanded="true" aria-controls="today-content" hidden></button>
+        <div id="today-content">
+        <p><a href="/?settings=daily-games" data-settings-tab-open="daily-games">Choose the games in your daily set</a></p>
+        <ul class="today-list" id="today-list" role="list">
+          <li><a href="/play/words.html?game=search&amp;daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/search.svg" width="32" height="32" alt="">Word search</a></li>
+          <li><a href="/play/words.html?game=crossword&amp;daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/crossword.svg" width="32" height="32" alt="">Crossword</a></li>
+          <li><a href="/play/weaver.html"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/weaver.svg" width="32" height="32" alt="">Word Cloud</a></li>
+          <li><a href="/play/lock.html"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/lock.svg" width="32" height="32" alt="">Letter Lock</a></li>
+          <li><a href="/play/index.html"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/arrows.svg" width="32" height="32" alt="">Arrow escape</a></li>
+          <li><a href="/play/memory.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/memory.svg" width="32" height="32" alt="">Memory Mischief</a></li>
+          <li><a href="/play/sudoku.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/sudoku.svg" width="32" height="32" alt="">Sudoku</a></li>
+        </ul>
+        <div class="streak-row">
+          <div><strong id="streak-current">0</strong><small>day streak</small></div>
+          <div><strong id="streak-best">0</strong><small>best streak</small></div>
+          <div><strong id="streak-freezes">0</strong><small>freezes banked</small></div>
+          <div><strong id="season-points">0</strong><small id="season-points-label">season points</small></div>
+        </div>
+        <div class="lives-strip" id="lives-strip">
+          <span class="lives-hearts" id="lives-hearts" aria-hidden="true">❤️❤️❤️</span>
+          <span class="lives-text" id="lives-text">3 free lives today</span>
+          <button type="button" class="lives-how" id="lives-how" aria-expanded="false" aria-controls="lives-help">How lives work</button>
+        </div>
+        <p class="today-note lives-help" id="lives-help" hidden>Lose a level and a life lets you keep going: one more heart in the arrow games, one more guess in Letter Lock, or another go at a Sum Spark round. You get 3 free lives a day. After that, 50 ✦ credits buy one. Earn credits by playing: 20 for each daily, 50 for a perfect day, and 5 for each practice level (up to 50 a day). Credits can’t be bought. A daily finished with a life still counts for your streak, but it stays off the leaderboards.</p>
+        <div class="perfect-day" id="perfect-day" hidden><strong>Perfect day!</strong> Every daily done. <button type="button" class="secondary-button" id="share-day">Share your day</button></div>
+        <p class="share-status" id="share-day-status" role="status" aria-live="polite"></p>
+        <p class="today-note" id="season-note">Every 7-day run earns a freeze that covers one missed day (up to 2).</p>
+        </div>
+      </section>
+    </section>
+
+    <section class="week-card" id="week-word" aria-labelledby="week-title">
+      <div class="week-top"><div><p class="section-kicker">Every week</p><h2 id="week-title">This week’s word</h2></div><span class="week-count" id="week-count">0 of 7 letters</span></div>
+      <p class="week-lede" id="week-lede">Finish any daily each day to light up one letter of this week’s secret seven-letter word. Guess it on Sunday.</p>
+      <ol class="week-slots" id="week-slots" role="list" aria-label="This week’s secret word, one letter for each day"><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Mon</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Tue</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Wed</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Thu</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Fri</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Sat</span><span class="week-mark"></span></li><li class="week-slot" data-state="future"><span class="week-tile" aria-hidden="true"></span><span class="week-day">Sun</span><span class="week-mark"></span></li></ol>
+      <p class="week-note" id="week-note" hidden></p>
+      <form class="week-form" id="week-form" hidden autocomplete="off">
+        <label class="week-label" for="week-guess">Your guess</label>
+        <div class="week-entry"><input id="week-guess" name="guess" type="text" maxlength="7" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-describedby="week-status"><button type="submit" class="week-go">Guess</button></div>
+        <button type="button" class="week-tiles" id="week-tiles" aria-expanded="false" aria-controls="week-keys">Show letter tiles</button>
+        <div class="week-keys" id="week-keys" role="group" aria-label="Letter tiles" hidden></div>
+      </form>
+      <p class="week-tried" id="week-tried" hidden></p>
+      <p class="week-status" id="week-status" role="status" aria-live="polite"></p>
+      <p class="week-last" id="week-last" hidden></p>
+    </section>
+
+    <section class="home-band band-games" aria-labelledby="games-title">
+      <p class="section-kicker">Play</p><h2 id="games-title" class="home-section-title">Choose your game</h2>
+      <ul class="game-grid" role="list">
+        <li>
+          <a class="game-card game-card--search" href="/play/words.html?game=search">
+            <img class="game-art" src="/play/art/search.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Words · 16 themes</span>
+            <span class="game-card-title">Word search</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--crossword" href="/play/words.html?game=crossword">
+            <img class="game-art" src="/play/art/crossword.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Words · Clues</span>
+            <span class="game-card-title">Crossword</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--weaver" href="/play/weaver.html">
+            <img class="game-art" src="/play/art/weaver.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Words · Clues</span>
+            <span class="game-card-title">Word Cloud</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--lock" href="/play/lock.html">
+            <img class="game-art" src="/play/art/lock.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Words · Deduction</span>
+            <span class="game-card-title">Letter Lock</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--arrows" href="/play/index.html">
+            <img class="game-art" src="/play/art/arrows.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Logic · World Tour</span>
+            <span class="game-card-title">Arrow escape</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--memory" href="/play/memory.html">
+            <img class="game-art" src="/play/art/memory.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Memory · Ziggle original</span>
+            <span class="game-card-title">Memory Mischief</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--sudoku" href="/play/sudoku.html">
+            <img class="game-art" src="/play/art/sudoku.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Logic · 5 styles</span>
+            <span class="game-card-title">Sudoku</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="game-card game-card--sums" href="/play/sums.html">
+            <img class="game-art" src="/play/art/sums.svg" width="108" height="108" alt="">
+            <span class="game-card-kicker">Numbers · New</span>
+            <span class="game-card-title">Sum Spark</span>
+            <span class="game-card-go">Play <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <p class="home-more"><a href="/?settings=home" data-settings-tab-open="home">Show more on your home page: training, trophies, history, leaderboards and the blog <span aria-hidden="true">→</span></a></p>
+
+    <section class="home-band band-training training-section" id="training" data-home="training" aria-labelledby="training-title">
+      <p class="section-kicker">Practise</p><div class="section-head"><h2 id="training-title" class="home-section-title">Ziggle Training</h2><span class="section-lede">Skills that grow with practice, Level 1 to mastery</span></div>
+      <p class="section-lede">Trainers sit beside the dailies: play at your own pace, and they never touch your streak.</p>
+      <ul class="training-grid" role="list">
+        <li><a class="training-card live" href="/play/typing.html"><img class="training-icon training-tile" src="/play/art/still/typing.svg" width="52" height="52" alt=""><span class="training-name">Typing trainer</span><span class="training-detail" id="typing-progress">Ten levels from the home row to code. Accuracy first.</span><span class="training-state">Train →</span></a></li>
+        <li><a class="training-card live" href="/play/emoji.html"><img class="training-icon training-tile" src="/play/art/still/emoji.svg" width="52" height="52" alt=""><span class="training-name">Emoji and flags</span><span class="training-detail" id="emoji-progress">Emoji names, codes and history, Unicode symbols, and 82 flags drawn by Ziggle.</span><span class="training-state">Learn →</span></a></li>
+        <li><a class="training-card live" href="/play/palace.html"><img class="training-icon training-tile" src="/play/art/still/palace.svg" width="52" height="52" alt=""><span class="training-name">Memory palace</span><span class="training-detail" id="palace-progress">The technique memory athletes use, from a ten-object story to a whole deck of cards.</span><span class="training-state">Train →</span></a></li>
+        <li><a class="training-card live" href="/play/cube.html"><img class="training-icon training-tile" src="/play/art/still/cube.svg" width="52" height="52" alt=""><span class="training-name">Cube trainer</span><span class="training-detail" id="cube-progress">A virtual cube from 2×2 to 7×7, from your first solve to full OLL and PLL, plus a timer for your real cube.</span><span class="training-state">Train →</span></a></li>
+        <li><a class="training-card live" href="/play/vocab.html"><img class="training-icon training-tile" src="/play/art/still/vocab.svg" width="52" height="52" alt=""><span class="training-name">Word Builder</span><span class="training-detail" id="vocab-progress">A new word every day with its meaning and an example, then short quizzes that bring each word back at the right time.</span><span class="training-state">Train →</span></a></li>
+        <li><a class="training-card live" href="/play/atlas.html"><img class="training-icon training-tile" src="/play/art/still/atlas.svg" width="52" height="52" alt=""><span class="training-name">Lexicon Atlas</span><span class="training-detail" id="atlas-progress">A map of English that lights up as you meet words in your games. Tap a region to see its words. Goal: 5,000.</span><span class="training-state">Explore →</span></a></li>
+      </ul>
+    </section>
+
+    <section class="home-band band-trophies trophy-section" data-home="trophies" aria-labelledby="trophy-title">
+      <p class="section-kicker">Collect</p><div class="section-head"><h2 id="trophy-title" class="home-section-title">Trophy shelf</h2><span class="section-lede" id="trophy-count">0 of 10</span></div>
+      <ul class="trophy-grid" id="trophy-grid" role="list"></ul>
+      <div class="section-head season-head"><h3 id="season-trophy-title" class="season-trophy-title">This season</h3><span class="section-lede" id="season-trophy-count"></span></div>
+      <p class="season-explain" id="season-explain">A season is three months: January to March, April to June, July to September or October to December. Points from every daily add up, then start again next season. Trophies stay on your shelf.</p>
+      <ul class="trophy-grid season-grid" id="season-trophy-grid" role="list" aria-labelledby="season-trophy-title"></ul>
+      <p class="past-season" id="past-season-trophies"></p>
+    </section>
+
+    <section class="home-band band-history" data-home="history" aria-label="Your play history">
+      <p class="section-kicker">Look back</p>
+      <div class="history-section">
+      <div class="history-card">
+        <div class="section-head"><h2 id="activity-title" class="home-section-title">Your last 12 weeks</h2><span class="section-lede" id="activity-summary"></span></div>
+        <div class="activity" id="activity" role="img" aria-labelledby="activity-title activity-summary"></div>
+        <p class="activity-key" aria-hidden="true"><span>Fewer</span><i class="lvl-0"></i><i class="lvl-1"></i><i class="lvl-2"></i><i class="lvl-3"></i><i class="lvl-4"></i><span>All eight</span></p>
+      </div>
+      <div class="history-card" id="archive">
+        <div class="section-head"><h2 id="archive-title" class="home-section-title">Missed a day?</h2></div>
+        <p class="section-lede">Replay any past daily from the archive. Just for fun: archive games don’t change your streak or points.</p>
+        <label class="archive-pick" for="archive-day">Day <select id="archive-day"></select></label>
+        <ul class="archive-links" id="archive-links" role="list"></ul>
+        <p class="archive-empty" id="archive-empty" hidden>The archive opens tomorrow, once there’s a past day to play.</p>
+      </div>
+      </div>
+    </section>
+
+    <section class="home-band band-boards board-section" data-home="boards" data-grownups aria-labelledby="leaderboard-title">
+      <p class="section-kicker">Compete</p>
+      <div class="board-layout">
+      <div class="board-main">
+      <div class="section-head"><h2 id="leaderboard-title" class="home-section-title">Today’s leaderboards</h2><span class="board-picks"><label class="league-pick">Game <select id="leaderboard-game"><option value="arrows">Arrow escape</option><option value="lock">Letter Lock</option><option value="sudoku-easy">Sudoku · easy</option><option value="sudoku-medium">Sudoku · medium</option><option value="sudoku-hard">Sudoku · hard</option><option value="sums">Sum Spark</option></select></label><label class="league-pick" id="tier-pick">Level <select id="leaderboard-tier"><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select></label><label class="league-pick">Show <select id="leaderboard-scope"><option value="">Everyone</option></select></label></span></div>
+      <p class="section-lede">Times from today’s Arrow escape, verified by replaying each run on the server. Post yours from the win screen.</p>
+      <ol class="leaderboard" id="leaderboard" aria-live="polite"><li class="empty">Loading…</li></ol>
+      </div>
+      <div class="league-card" aria-labelledby="league-title">
+        <h3 id="league-title">Friend leagues</h3>
+          <p>Private weekly standings from the verified dailies: Arrow escape, Letter Lock, Sudoku and Sum Spark. Harder levels earn more (medium ×1.2, hard ×1.5), and Grand Slam weeks double everything.</p>
+          <form class="inline-form" id="league-create"><label for="league-name">Start a league</label><input id="league-name" maxlength="30" placeholder="The Puzzle Pals" autocomplete="off"><button class="secondary-button" type="submit">Create</button></form>
+          <form class="inline-form" id="league-join"><label for="league-code">Join with a code</label><input id="league-code" maxlength="6" placeholder="K7Q2MX" autocomplete="off" autocapitalize="characters"><button class="secondary-button" type="submit">Join</button></form>
+          <div id="league-list"></div>
+          <p class="panel-status" id="league-status" role="status" aria-live="polite"></p>
+      </div>
+      </div>
+    </section>
+
+    <section class="home-band band-blog blog-section" data-home="blog" aria-labelledby="blog-home-title">
+      <p class="section-kicker">Read</p><div class="section-head"><h2 id="blog-home-title" class="home-section-title">From the Ziggle blog</h2><a class="section-link" href="/play/blog.html">All posts →</a></div>
+      <ul class="post-grid" role="list"><li><a class="post-card" href="/play/blog/the-cube-by-numbers.html"><span class="post-icon" aria-hidden="true">🧊</span><span class="post-card-title">43 quintillion ways to be wrong: the Rubik’s Cube by numbers</span><span class="post-card-dek">The Cube’s history, the eye-watering numbers, and how people go from first solve to sub-10 seconds.</span></a></li><li><a class="post-card" href="/play/blog/flags-for-beginners.html"><span class="post-icon" aria-hidden="true">🏁</span><span class="post-card-title">Square, double-pennant and everything in between: a flag primer</span><span class="post-card-dek">Vexillology for beginners: Nepal’s pennants, the two square flags, and why emoji flags turn into letters.</span></a></li><li><a class="post-card" href="/play/blog/qwerty-nobody-chose.html"><span class="post-icon" aria-hidden="true">⌨️</span><span class="post-card-title">QWERTY: the keyboard layout nobody chose on purpose</span><span class="post-card-dek">Where QWERTY really came from, what’s myth, and why your layout matters less than your habits.</span></a></li></ul>
+    </section>
+
+    <section class="home-band band-yours" data-home="yours" aria-labelledby="yours-title">
+      <div class="yours-strip">
+        <div><h2 id="yours-title" class="home-section-title">Your Ziggle</h2><p class="section-lede">Backups, another device, accessibility and what this page shows now live in Settings, on every page.</p></div>
+        <div class="yours-actions">
+          <a class="yours-button" href="/?settings=progress" data-settings-tab-open="progress"><span aria-hidden="true">⤓</span>Back up or sync</a>
+          <a class="yours-button" href="/?settings=home" data-settings-tab-open="home"><span aria-hidden="true">▦</span>Choose what home shows</a>
+          <a class="yours-button" href="/?settings=play" data-settings-tab-open="play"><span aria-hidden="true">♿</span>Play your way</a>
+        </div>
+      </div>
+    </section>
+
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+  </main>
+
+  <footer class="home-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><span>Progress saves in this browser</span><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <script type="module" src="/play/home.js"></script>
+</body>
+</html>

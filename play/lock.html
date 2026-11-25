@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-game-active>
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Letter Lock: crack the five-letter word in six guesses. A new lock every day, plus endless practice.">
+  <title>Letter Lock — Ziggle</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/howto-boot.js"><link rel="modulepreload" href="/play/howto-store.js"><link rel="modulepreload" href="/play/letter-lock-words.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/lock-style.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <script src="/play/collection-shell.js"></script>
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Letter Lock — Ziggle">
+  <meta property="og:description" content="Letter Lock: crack the five-letter word in six guesses. A new lock every day, plus endless practice.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body>
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary class="has-current"><span class="nav-label">Games</span><span class="nav-current">Letter Lock</span></summary><div class="nav-panel"><a href="/play/words.html?game=search&amp;resume=1" data-nav="search"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></a><a href="/play/words.html?game=crossword&amp;resume=1" data-nav="crossword"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></a><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock" aria-current="page"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary><span class="nav-label">Train</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-page-title"><p class="menu-heading" id="menu-page-title">On this page</p><button type="button" data-shell-help="lock-help">How to play</button></div><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+  <main class="lock-shell">
+    <div class="collection-page-heading game-bar"><h1 id="collection-title">Letter Lock</h1><div class="game-bar-items"><div class="mode-switch" role="group" aria-label="Mode"><button type="button" id="mode-daily" aria-pressed="true" aria-label="Today’s Letter Lock">Today</button><button type="button" id="mode-practice" aria-pressed="false">Practice</button></div></div><button type="button" class="drawer-button" data-drawer-open aria-controls="game-drawer" aria-expanded="false" aria-label="More: options"><svg class="drawer-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg><span>More</span></button></div>
+    <section class="collection-welcome" aria-label="Welcome tip" data-welcome-banner><p><strong>A little play. A lot of spark.</strong> Six tries to crack today’s five-letter lock.</p><button type="button" data-welcome-close aria-label="Close welcome tip" title="Close welcome tip">×</button></section>
+    <div class="lock-layout">
+      <section class="lock-card" aria-labelledby="lock-title">
+        <div class="lock-top">
+          <div><span class="lock-kicker" id="lock-kicker">TODAY’S LOCK</span><h2 id="lock-title">Crack the word</h2></div>
+          <div class="lock-top-actions"><span id="lock-lives" class="lock-lives"></span><button id="lock-hint" class="secondary-button" type="button">Hint</button><button id="lock-help" class="circle-button" type="button" aria-label="How to play Letter Lock">?</button></div>
+        </div>
+        <div class="lock-board" id="lock-board" role="grid" aria-label="Your guesses"></div>
+        <p class="lock-message" id="lock-message" role="status" aria-live="polite"></p>
+        <div class="keyboard" id="keyboard" aria-label="Keyboard"></div>
+        <section class="lock-done" id="lock-done" hidden aria-labelledby="lock-done-title">
+          <h3 id="lock-done-title">Unlocked!</h3>
+          <p id="lock-done-detail"></p>
+          <div class="lock-coach" id="lock-coach" hidden><h4>Lock coach</h4><p>Possible answers left after each guess</p><ol id="coach-steps"></ol></div>
+          <div class="done-actions"><button type="button" class="secondary-button" id="lock-share">Share result</button><button type="button" class="primary-button" id="lock-next">Practice another →</button></div>
+          <p class="share-status" id="lock-share-status" role="status" aria-live="polite"></p><p class="share-status" id="lock-board-status" role="status" aria-live="polite" data-grownups data-online></p>
+        </section>
+      </section>
+      <aside class="lock-side frame-drawer" id="game-drawer" aria-label="Letter Lock options"><div class="drawer-head"><h2 class="drawer-title" id="drawer-title">Options</h2><button type="button" class="drawer-close" data-drawer-close aria-label="Close options">×</button></div>
+        
+        <button id="stats-button" class="secondary-button" type="button">Your Letter Lock stats</button><label class="hard-toggle"><input type="checkbox" id="hard-mode"> <span><strong>Hard mode</strong><small>Every clue you uncover must be used in later guesses. Set it before your first guess.</small></span></label>
+        <div class="key-legend"><h3>Reading the tiles</h3><p><span class="mini c">A</span> right letter, right spot <span class="mark">✓</span></p><p><span class="mini p">A</span> in the word, wrong spot <span class="mark">•</span></p><p><span class="mini a">A</span> not in the word</p></div>
+      </aside>
+    </div>
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
+  </main>
+  <footer class="lock-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><span id="save-status">Progress saves in this browser</span><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <dialog id="lock-dialog" aria-labelledby="lock-help-title"><button id="close-lock-help" class="circle-button dialog-close" type="button" aria-label="Close how to play">×</button><span class="lock-kicker">SIX TRIES</span><h2 id="lock-help-title">Crack the lock.</h2><ul><li>Guess the hidden five-letter word. Each guess must be a real word.</li><li>Tiles show how close you are: a <strong>✓</strong> tile is the right letter in the right spot, a <strong>•</strong> tile is in the word but elsewhere, a plain tile isn’t in the word.</li><li>Type on your keyboard or tap the keys. Enter submits, Backspace deletes.</li></ul><p>Everyone gets the same lock each day. Practice has hundreds more.</p><button id="lock-help-done" class="primary-button" type="button">Let’s crack it →</button></dialog>
+  <dialog id="stats-dialog" aria-labelledby="stats-title"><button id="close-stats" class="circle-button dialog-close" type="button" aria-label="Close stats">×</button><span class="lock-kicker">YOUR LOCKS</span><h2 id="stats-title">Letter Lock stats</h2><div class="stats-grid"><div><strong id="stat-played">0</strong><small>played</small></div><div><strong id="stat-win">0%</strong><small>won</small></div><div><strong id="stat-current">0</strong><small>daily run</small></div><div><strong id="stat-best">0</strong><small>best run</small></div></div><h3 class="dist-title">Guesses needed</h3><ol class="distribution" id="distribution"></ol></dialog>
+  <script type="module" src="/play/lock-main.js"></script>
+</body>
+</html>

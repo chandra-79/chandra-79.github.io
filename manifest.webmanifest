@@ -1,0 +1,24 @@
+{
+  "name": "Ziggle — A little play. A lot of spark.",
+  "short_name": "Ziggle",
+  "description": "Daily brain teasers: word search, crossword, arrow escape, Memory Mischief and Sudoku.",
+  "id": "/",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff8ed",
+  "theme_color": "#34261b",
+  "categories": ["games", "education", "puzzle"],
+  "icons": [
+    { "src": "/play/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/play/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/play/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/play/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Today’s Ziggle", "url": "/#today" },
+    { "name": "Arrow escape", "url": "/play/index.html" },
+    { "name": "Sudoku", "url": "/play/sudoku.html" }
+  ]
+}

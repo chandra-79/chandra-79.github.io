@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 80" fill="none">
+  <title>Ziggle</title>
+  <g stroke="#28223d" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 27H39L11 55H41"/>
+    <path d="M58 29V55"/>
+    <path d="M106 29V56C106 70 98 75 88 74C82 74 78 72 76 70M106 41C106 31 100 26 91 26C81 26 74 32 74 41C74 50 81 56 90 56C99 56 106 50 106 41Z"/>
+    <path d="M156 29V56C156 70 148 75 138 74C132 74 128 72 126 70M156 41C156 31 150 26 141 26C131 26 124 32 124 41C124 50 131 56 140 56C149 56 156 50 156 41Z"/>
+    <path d="M177 10V46C177 53 181 56 187 56"/>
+    <path d="M205 41H230C230 31 223 26 215 26C205 26 199 32 199 41C199 52 207 57 217 57C223 57 228 55 231 53"/>
+  </g>
+  <path d="M58 5L61 11L67 14L61 17L58 23L55 17L49 14L55 11Z" fill="#d95650"/>
+  <circle cx="249" cy="53" r="7" fill="#d8f36a" stroke="#28223d" stroke-width="2"/>
+</svg>

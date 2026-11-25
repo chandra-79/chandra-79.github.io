@@ -1,0 +1,32 @@
+Ziggle (https://github.com/chandra-79/ziggle-app is private; this repository holds only the published website)
+
+Copyright (c) 2026 AjnaCS. All rights reserved.
+
+Except for the third-party material listed below, everything in this repository is
+the proprietary work of the copyright holder, including the Ziggle name, wordmark,
+brain-spark icon and other artwork, the game code, puzzles, clue text, word lists
+chosen and written for Ziggle, blog posts, page designs and styling.
+
+This repository is published only so that the website can be served. You may view
+the website in a browser and play it as offered. No other licence is granted: you
+may not copy, modify, redistribute, republish, host, sell or create derivative works
+from any part of it without prior written permission. Reading this source does not
+grant any right to reuse it.
+
+Third-party material (not covered by the reservation above)
+
+The following data keeps its own licence. Its notice files are part of this
+repository and must stay with any copy of that data:
+
+  - Open English WordNet 2024 (CC BY 4.0), derived from Princeton WordNet 3.0
+    see play/OEWN-NOTICE.txt
+  - Princeton WordNet 3.0 (practice word library)
+    see library/v1/NOTICE.txt
+  - SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson
+    see play/SCOWL-COPYRIGHT.txt
+  - emojibase-data (MIT) and Unicode CLDR / Unicode data (Unicode License V3)
+    see play/emoji/NOTICE.txt
+
+Emoji are drawn by the visitor's own device; no emoji artwork is included.
+
+Contact: info@ajnacs.com

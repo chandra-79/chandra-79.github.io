@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-game-active>
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Ziggle your brain. Find your sharp. Give your curiosity a daily workout with playful word searches, crosswords, and brain teasers.">
+  <title>Word search — Ziggle</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/daily-journey.js"><link rel="modulepreload" href="/play/howto-boot.js"><link rel="modulepreload" href="/play/howto-store.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/word-style.css">
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/word-appearance.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <script src="/play/collection-shell.js"></script>
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Word search — Ziggle">
+  <meta property="og:description" content="Ziggle your brain. Find your sharp. Give your curiosity a daily workout with playful word searches, crosswords, and brain teasers.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body>
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary class="has-current"><span class="nav-label">Games</span><span class="nav-current">Word search</span></summary><div class="nav-panel"><button type="button" data-game="search" data-nav="search" aria-pressed="true" class="active" aria-current="page"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></button><button type="button" data-game="crossword" data-nav="crossword" aria-pressed="false"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></button><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary><span class="nav-label">Train</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-page-title"><p class="menu-heading" id="menu-page-title">On this page</p><button type="button" id="help-button">How to play</button></div><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+  <main class="word-shell">
+    <div class="collection-page-heading game-bar"><h1 id="collection-title">Word search</h1><div class="game-bar-items"><div class="mode-switch" role="group" aria-label="Mode" data-url-switch><button type="button" id="mode-daily" aria-pressed="false">Today</button><button type="button" id="mode-practice" aria-pressed="false">Practice</button></div><span class="bar-chip"><span>Wins</span> <strong data-mirror="wins-count">0</strong></span><button type="button" class="bar-help" id="bar-help" aria-label="How to play">?</button></div><button type="button" class="drawer-button" data-drawer-open aria-controls="game-drawer" aria-expanded="false" aria-label="More: themes"><svg class="drawer-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg><span>More</span></button></div>
+    <section class="collection-welcome" aria-label="Welcome tip" data-welcome-banner><p><strong>A little play. A lot of spark.</strong> Your daily brain break, at your own pace.</p><button type="button" data-welcome-close aria-label="Close welcome tip" title="Close welcome tip">×</button></section>
+    <div class="collection-layout">
+      <aside class="theme-sidebar frame-drawer" id="game-drawer" aria-labelledby="theme-heading"><div class="drawer-head"><h2 class="drawer-title" id="drawer-title">Themes</h2><button type="button" class="drawer-close" data-drawer-close aria-label="Close themes">×</button></div>
+        <div class="section-label"><h2 id="theme-heading">FIND YOUR THEME</h2><span id="theme-count">16</span></div>
+        <button type="button" id="surprise-button" class="secondary-button theme-mix" data-closes-drawer>Mix categories</button>
+        <div data-closes-drawer id="theme-list" class="theme-list"></div>
+        <div class="little-wins"><span class="wins-icon" aria-hidden="true">✧</span><div><strong id="wins-count">0</strong><span>word puzzles solved</span></div><p>Tiny teasers. Mighty little wins.</p></div>
+      </aside>
+      <section class="puzzle-area" aria-label="Word puzzle">
+        <div class="puzzle-heading"><div><span id="puzzle-kicker" class="eyebrow">THE WILD SIDE</span><h2 id="puzzle-title">Animal kingdom</h2></div><span id="game-type-badge" class="game-type-badge">WORD SEARCH</span></div>
+        <div class="puzzle-settings">
+          <div class="difficulty-control" role="group" aria-label="Difficulty"><button data-difficulty="easy" class="active" aria-pressed="true">Easy</button><button data-difficulty="medium" aria-pressed="false">Medium</button><button data-difficulty="hard" aria-pressed="false">Hard</button></div>
+          <div class="puzzle-stepper"><button id="previous-puzzle" aria-label="Previous puzzle">‹</button><label for="puzzle-number">Puzzle</label><select id="puzzle-number" aria-label="Puzzle number"></select><button id="next-puzzle" aria-label="Next puzzle">›</button></div>
+        </div>
+        <section id="completion" class="completion" hidden aria-labelledby="completion-title"><span aria-hidden="true">✦</span><div><h3 id="completion-title">A lovely little win!</h3><p id="completion-detail"></p></div><div class="completion-actions"><button id="review-word" class="secondary-button" type="button" aria-expanded="false" aria-controls="board-frame word-list">Review puzzle</button><button id="share-word" class="secondary-button" type="button" hidden>Share result</button><button id="play-next" class="primary-button">Next puzzle →</button></div><p id="share-word-status" class="share-status" role="status" aria-live="polite"></p></section>
+        <section class="puzzle-card" aria-label="Puzzle board and tools">
+          <div class="board-toolbar"><span id="grid-summary">10 × 10 grid</span><button id="pause-button" class="timer-button" aria-label="Pause puzzle"><span id="pause-symbol" aria-hidden="true">Ⅱ</span><span id="timer">00:00</span></button></div>
+          <div id="board-frame" class="board-frame"><div id="word-board" class="word-board" role="group" aria-label="Word search grid" aria-describedby="play-instructions"></div><div id="pause-overlay" class="pause-overlay" hidden><span aria-hidden="true">☕</span><h3>A little breather.</h3><p>Your letters will be right here.</p><button id="resume-button" class="primary-button">Keep playing</button></div></div>
+          <div id="active-clue" class="active-clue" hidden></div>
+          <div class="puzzle-progress"><span id="progress-label"><strong>0</strong> of 6 words found</span><div class="progress-track"><div id="progress-fill"></div></div><span id="progress-percent">0%</span></div>
+          <div class="puzzle-tools"><button id="hint-button" class="hint-button"><span aria-hidden="true">☀</span> Hint <span id="hint-count">3</span></button><button id="check-button" hidden><span aria-hidden="true">✓</span> Check</button><button id="clear-button" hidden><span aria-hidden="true">⌫</span> Erase word</button><button id="restart-button"><span aria-hidden="true">↻</span> Restart</button></div>
+        </section>
+        <p id="play-instructions" class="play-instructions">Drag across a word, or tap its first and last letters.</p>
+        <p id="game-message" class="game-message" role="status" aria-live="polite"></p>
+      </section>
+      <aside class="words-sidebar" aria-label="Word list and clues">
+        <section class="word-list-card"><div class="word-list-heading"><h2 id="word-list-title">Your word list</h2><span id="word-list-count">0 / 6</span></div><p id="word-list-subtitle">A whole kingdom, hiding in plain sight.</p><div id="word-list" class="word-list"></div><div id="direction-note" class="direction-note"><span aria-hidden="true">→ ↓</span>Look across and down.</div></section>
+        <section class="theme-note"><span id="theme-note-icon" aria-hidden="true">✦</span><span class="eyebrow">FLEX YOUR CURIOSITY</span><h3>Give your brain a plot twist.</h3><p>Fresh themes, sneaky words, satisfying aha! moments. A little play belongs in your daily play routine.</p></section>
+      </aside>
+    </div>
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
+  </main>
+  <footer class="word-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><span id="save-status">Progress saves in this browser</span><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <dialog id="word-dialog" aria-labelledby="dialog-title"><button id="close-dialog" class="close-dialog" aria-label="Close dialog">×</button><div id="dialog-content"></div></dialog>
+  <script type="module" src="/play/word-main.js"></script>
+</body>
+</html>

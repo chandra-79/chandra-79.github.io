@@ -1,0 +1,8 @@
+/* While you play: only the board, its controls and the Ziggle logo. Everything else fades away (it keeps its space, so nothing moves). */
+body>.collection-header :is(.collection-nav,.collection-header-actions,.brand small),.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route{transition:opacity .3s ease}
+html[data-fading] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route),html[data-revealing] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0}
+/* Hidden, not removed: the page never reflows, so the board keeps its size and place from the first move to the last. */
+html[data-playing]:not([data-peek]) body>.collection-header{background:transparent!important;border-color:transparent!important;box-shadow:none!important;pointer-events:none}
+html[data-playing]:not([data-peek]) .collection-header .brand{pointer-events:auto}
+html[data-playing]:not([data-peek]) :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0;visibility:hidden}
+html[data-motion=calm] :is(.collection-nav,.collection-header-actions,.game-bar,.collection-welcome){transition:none}

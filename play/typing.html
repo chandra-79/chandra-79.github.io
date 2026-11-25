@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-game-active>
+<head>
+  <meta charset="UTF-8">
+  <meta name="ziggle-server" content="none">
+  <meta name="ziggle-catalog" content="self">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ed">
+  <meta name="description" content="Ziggle typing trainer: ten levels from the home row to code, built on accuracy first. Speed tests, a falling-words game and a daily phrase.">
+  <title>Typing trainer — Ziggle</title>
+  <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
+  <script type="module" src="/play/hub.js"></script>
+  <script src="/play/appearance.js"></script>
+  <script type="module" src="/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/play/howto-store.js"><link rel="modulepreload" href="/play/typing-texts.js"><link rel="modulepreload" href="/play/typing-words.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/play/appearance.css">
+  <link rel="stylesheet" href="/play/typing-style.css">
+  <link rel="stylesheet" href="/play/collection-shell.css">
+  <link rel="stylesheet" href="/play/compact.css">
+  <script src="/play/collection-shell.js"></script>
+  <!-- Ziggle sharing -->
+  <meta property="og:title" content="Typing trainer — Ziggle">
+  <meta property="og:description" content="Ziggle typing trainer: ten levels from the home row to code, built on accuracy first. Speed tests, a falling-words game and a daily phrase.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/play/icons/icon-512.png">
+  <meta property="og:image:alt" content="Ziggle — A little play. A lot of spark.">
+  <meta name="twitter:card" content="summary">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- /Ziggle sharing -->
+</head>
+<body>
+  <header class="collection-header"><a class="brand" href="/" aria-label="Ziggle home"><img class="brand-symbol" src="/play/logo.svg" alt="" width="48" height="48"><span><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="124" height="42"><small>A little play. A lot of spark.</small></span></a><nav class="collection-nav" aria-label="Ziggle games, training and blog"><details class="nav-group" data-group="games"><summary><span class="nav-label">Games</span></summary><div class="nav-panel"><a href="/play/words.html?game=search&amp;resume=1" data-nav="search"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#search"/></svg><span class="nav-name">Word search</span></a><a href="/play/words.html?game=crossword&amp;resume=1" data-nav="crossword"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#crossword"/></svg><span class="nav-name">Crossword</span></a><a href="/play/weaver.html?resume=1" data-nav="weaver"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cloud"/></svg><span class="nav-name">Word Cloud</span></a><a href="/play/lock.html?resume=1" data-nav="lock"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#lock"/></svg><span class="nav-name">Letter Lock</span></a><a href="/play/index.html?resume=1" data-nav="arrow"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#arrows"/></svg><span class="nav-name">Arrow escape</span></a><a href="/play/memory.html?daily=1" data-nav="memory"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="/play/logo.svg?ui=4#memory"/></svg><span class="nav-name">Memory Mischief</span></a><a href="/play/sudoku.html?resume=1" data-nav="sudoku"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#sudoku"/></svg><span class="nav-name">Sudoku</span></a><a href="/play/sums.html?resume=1" data-nav="sums"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="/play/logo.svg?ui=4#sum"/></svg><span class="nav-name">Sum Spark</span></a><a href="/play/vocab.html" data-nav="vocab"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#book"/></svg><span class="nav-name">Word Builder</span></a></div></details><details class="nav-group" data-group="train"><summary class="has-current"><span class="nav-label">Train</span><span class="nav-current">Typing</span></summary><div class="nav-panel"><a href="/play/typing.html" data-nav="typing" aria-current="page"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#keyboard"/></svg><span class="nav-name">Typing</span></a><a href="/play/emoji.html" data-nav="emoji"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#flag"/></svg><span class="nav-name">Emoji &amp; flags</span></a><a href="/play/palace.html" data-nav="palace"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#palace"/></svg><span class="nav-name">Memory palace</span></a><a href="/play/cube.html" data-nav="cube"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#cube"/></svg><span class="nav-name">Cube</span></a><a href="/play/atlas.html" data-nav="atlas"><svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="/play/logo.svg?ui=4#atlas"/></svg><span class="nav-name">Lexicon Atlas</span></a></div></details><a href="/play/blog.html" data-nav="blog" class="nav-link"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#book"/></svg>Blog</a></nav><div class="collection-header-actions"><button class="header-button theme-shortcut" type="button" data-appearance-toggle aria-label="Switch to Night Fizz dark theme" aria-pressed="false"><span data-appearance-symbol aria-hidden="true">☾</span></button><button class="header-button" type="button" data-settings-open aria-haspopup="dialog" aria-label="Settings"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#settings"/></svg><span class="header-label">Settings</span></button><details class="collection-menu"><summary aria-label="Menu"><svg class="header-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/play/logo.svg?ui=4#menu"/></svg><span class="header-label">Menu</span></summary><div class="collection-menu-panel"><div class="menu-group" role="group" aria-labelledby="menu-page-title"><p class="menu-heading" id="menu-page-title">On this page</p><button type="button" data-shell-help="type-help">How it works</button></div><div class="menu-group" role="group" aria-labelledby="menu-site-title"><p class="menu-heading" id="menu-site-title">Ziggle</p><a class="menu-link" href="/">Home</a><a class="menu-link" href="/#today">Today’s dailies</a><a class="menu-link" href="/#archive">Play a past day</a><a class="menu-link" href="/#training">Ziggle Training</a><a class="menu-link" href="/play/blog.html">Ziggle blog</a><a class="menu-link" href="/?settings=play" data-settings-tab-open="play">Accessibility</a><button type="button" data-whats-new aria-haspopup="dialog">What’s new</button><button type="button" data-install hidden>Install Ziggle as an app</button></div></div></details></div></header>
+  <main class="type-shell">
+    <div class="collection-page-heading game-bar"><h1 id="collection-title">Typing trainer</h1><div class="game-bar-items"></div><button type="button" class="drawer-button" data-drawer-open aria-controls="game-drawer" aria-expanded="false" aria-label="More: levels"><svg class="drawer-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg><span>More</span></button></div>
+    <section class="collection-welcome" aria-label="Welcome tip" data-welcome-banner><p><strong>Accuracy first, speed follows.</strong> The cursor waits for the right key, so you build clean habits from the very first lesson.</p><button type="button" data-welcome-close aria-label="Close welcome tip" title="Close welcome tip">×</button></section>
+    <p class="touch-note" id="touch-note" hidden>This trainer needs a physical keyboard. Connect one, or come back on a computer.</p>
+    <div class="type-layout">
+      <section class="type-card" aria-labelledby="type-title">
+        <div class="type-top">
+          <div><span class="type-kicker" id="type-kicker">LEVEL 1 · HOME ROW</span><h2 id="type-title">Home row</h2></div>
+          <button id="type-help" class="circle-button" type="button" aria-label="How the typing trainer works">?</button>
+        </div>
+        <div class="mode-tabs" role="group" aria-label="Mode"><button type="button" data-mode="lesson" data-tip="Ten levels from the home row up. Each one adds keys and sets a speed and accuracy goal to pass." aria-description="Ten levels from the home row up. Each one adds keys and sets a speed and accuracy goal to pass." aria-pressed="true">Lessons</button><button type="button" data-mode="test" data-tip="Common words against the clock: your words per minute and accuracy." aria-description="Common words against the clock: your words per minute and accuracy." aria-pressed="false">Speed test</button><button type="button" data-mode="rain" data-tip="Type each falling word before it lands. The words come from your current level." aria-description="Type each falling word before it lands. The words come from your current level." aria-pressed="false">Word Rain</button><button type="button" data-mode="daily" data-tip="One sentence, the same for everyone today. Share your speed when you are done." aria-description="One sentence, the same for everyone today. Share your speed when you are done." aria-pressed="false">Daily phrase</button></div>
+        <p class="type-blurb" id="type-blurb"></p>
+        <div class="test-options" id="test-options" hidden role="group" aria-label="Test length"><button type="button" data-seconds="15" aria-pressed="false">15 s</button><button type="button" data-seconds="30" aria-pressed="true">30 s</button><button type="button" data-seconds="60" aria-pressed="false">60 s</button><label class="ghost-toggle"><input type="checkbox" id="ghost-toggle" checked> Race your best (ghost)</label></div>
+        <div class="type-stage" id="type-stage" tabindex="0" role="group" aria-label="Typing area: focus here and type">
+          <div class="type-text" id="type-text" aria-hidden="true"></div>
+          <p class="sr-only" id="type-sr" aria-live="polite"></p>
+          <p class="type-hint" id="type-hint">Start typing when you’re ready. The timer starts with your first key.</p>
+        </div>
+        <div class="rain" id="rain" hidden tabindex="0" role="group" aria-label="Word Rain: focus here and type the falling words">
+          <div class="rain-hud"><span>Score <strong id="rain-score">0</strong></span><span>Lives <strong id="rain-lives">♥♥♥</strong></span><span class="rain-typed" aria-live="off">Typing: <strong id="rain-buffer">…</strong></span></div>
+          <div class="rain-field" id="rain-field" aria-hidden="true"></div>
+          <p class="sr-only" id="rain-sr" aria-live="polite"></p>
+          <button type="button" class="primary-button rain-start" id="rain-start">Start Word Rain</button>
+        </div>
+        <div class="type-live" aria-label="Live stats"><div><strong id="live-wpm">0</strong><small>WPM</small></div><div><strong id="live-acc">100%</strong><small>accuracy</small></div><div><strong id="live-time">0.0</strong><small id="live-time-label">seconds</small></div></div>
+        <section class="type-result" id="type-result" hidden aria-labelledby="result-title">
+          <h3 id="result-title">Nice run</h3>
+          <p id="result-detail"></p>
+          <div class="result-grid"><div><strong id="res-wpm">0</strong><small>WPM</small></div><div><strong id="res-acc">0%</strong><small>accuracy</small></div><div><strong id="res-raw">0</strong><small>raw WPM</small></div><div><strong id="res-con">0%</strong><small>steadiness</small></div></div>
+          <div class="result-actions"><button type="button" class="secondary-button" id="result-again">Go again</button><button type="button" class="primary-button" id="result-next" hidden>Next level →</button><button type="button" class="secondary-button" id="result-share" hidden>Share result</button></div>
+          <p class="share-status" id="result-status" role="status" aria-live="polite"></p>
+        </section>
+        <div class="keymap" id="keymap" aria-label="Keyboard: how each key is going"></div>
+      </section>
+      <aside class="type-side frame-drawer" id="game-drawer" aria-label="Typing trainer progress"><div class="drawer-head"><h2 class="drawer-title" id="drawer-title">Levels</h2><button type="button" class="drawer-close" data-drawer-close aria-label="Close levels">×</button></div>
+        <section class="side-card"><h3>Levels</h3><ol class="level-list" data-closes-drawer id="level-list"></ol><button type="button" class="secondary-button wide" id="placement">Already type well? Take a placement test</button></section>
+        <section class="side-card"><h3>Keys to work on</h3><ul class="weak-keys" id="weak-keys"></ul></section>
+        <section class="side-card"><h3>Recent runs</h3><div id="history-chart" class="history-chart"></div></section>
+        <section class="side-card settings"><h3>Settings</h3><label for="layout">Keyboard layout</label><select id="layout"><option value="qwerty">QWERTY</option><option value="qwertz">QWERTZ</option><option value="azerty">AZERTY</option><option value="dvorak">Dvorak</option><option value="colemak">Colemak</option></select><label class="check"><input type="checkbox" id="show-keyboard" checked> Show the keyboard (turn off to practise without looking)</label></section>
+      </aside>
+    </div>
+    <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
+    <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
+  </main>
+  <footer class="type-footer"><span class="footer-motto">✦ &nbsp; A little play. A lot of spark.</span><span id="save-status">Progress saves in this browser</span><span class="legal-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms of use</a><a href="/accessibility.html">Accessibility</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a></span><small>© 2026 Ziggle · v2.41.1</small></footer>
+  <dialog id="type-dialog" aria-labelledby="type-help-title"><button id="close-type-help" class="circle-button dialog-close" type="button" aria-label="Close how it works">×</button><span class="type-kicker">ACCURACY FIRST</span><h2 id="type-help-title">How the trainer works</h2><ul><li><strong>Lessons</strong> climb ten levels, from the home row to code. In the first three, a new key opens only when every key so far is quick and accurate.</li><li>The cursor <strong>waits for the right key</strong>. A wrong key is marked and counts against accuracy, so mistakes never pile up.</li><li>A level passes when one run meets its speed <strong>and</strong> accuracy goal. Runs under 95% accuracy never count toward speed goals.</li><li><strong>WPM</strong> counts five characters as one word. <strong>Raw WPM</strong> includes wrong keys. <strong>Steadiness</strong> shows how even your pace was.</li><li>The keyboard shows how each key is going. Turn it off in Settings to practise without looking.</li><li><strong>Word Rain</strong>: type falling words before they land. <strong>Daily phrase</strong>: one sentence for everyone, every day.</li></ul><p>Your progress stays in this browser and in your Ziggle backups.</p><button id="type-help-done" class="primary-button" type="button">Let’s type →</button></dialog>
+  <script type="module" src="/play/typing-main.js"></script>
+</body>
+</html>
