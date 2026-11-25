@@ -1,6 +1,6 @@
 # Ziggle credits
 
-Ziggle 2.56.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
+Ziggle 2.57.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
 
 ## Third-party data and notices
 
@@ -22,7 +22,7 @@ Memory Mischief is an original Ziggle game concept and implementation: a remembe
 
 Sudoku puzzles are generated locally by Ziggle's own solver-checked engine (Classic, Addoku, Diagonal, Mini 6×6, Even/Odd). The World Tour arrow boards use original geometric silhouettes inspired by city landmarks; no map data, photos or third-party artwork are used. App icons are rendered from the Ziggle brain-spark logo.
 
-Word Cloud and Letter Lock grew out of ideas from Mind Gym, an earlier, now retired project by the same owner; their Ziggle code, clue text and styling are new. Word Cloud's 127 weaves and clues are original. Letter Lock's word lists are derived from SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson, via the `wordlist-english` package; SCOWL's permission notice ships with the lists in `play/SCOWL-COPYRIGHT.txt`. Letter Lock's answers were curated by hand from the common-word levels. The typing trainer's practice words also come from SCOWL (its most common level); its sentences, number and code snippets were written for Ziggle. The blog posts are original writing; facts and figures link to their sources.
+Word Cloud and Letter Lock grew out of ideas from Mind Gym, an earlier, now retired project by the same owner; their Ziggle code, clue text and styling are new. Word Cloud's 127 weaves and clues are original. Letter Lock's word lists are derived from SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson, via the `wordlist-english` package; SCOWL's permission notice ships with the lists in `play/SCOWL-COPYRIGHT.txt`. Letter Lock's answers were curated by hand from the common-word levels. Its second answer list (1,014 words, used once the first 809 have each been a daily) was chosen by hand from the same SCOWL-derived guess list: no plurals in -s and no -ed forms, and about three in four are also entries in Ziggle's WordNet-based word catalog (`library/v1/`, see above). The typing trainer's practice words also come from SCOWL (its most common level); its sentences, number and code snippets were written for Ziggle. The blog posts are original writing; facts and figures link to their sources.
 
 The emoji and flags learner's emoji names, code points, versions and groups come from emojibase-data (MIT, by Miles Johnson), built on the Unicode CLDR project (Unicode License V3); both notices ship in `play/emoji/NOTICE.txt`. Symbol names are the official Unicode character names. The emoji themselves are drawn by the player's device. The 82 flags are drawn by Ziggle's own renderer (`play/flags.js`) from each flag's published geometry and colours; no flag artwork or icon set is copied. Questions, levels and notes were written for Ziggle.
 
