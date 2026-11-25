@@ -1,5 +1,5 @@
 // Word Builder logic (2.23): pure functions, no page needed. Words come from vocab-data.js (Open English WordNet, CC BY 4.0).
-// Entry: [word, part of speech, definition, example, synonyms, opposites, tier, pronunciation].
+// Entry: [word, part of speech, definition, example, synonyms, opposites, tier].
 // Daily picks and quiz questions are seeded, so everyone gets the same word of the day and the same first round (rule 13: seeded
 // Fisher–Yates, never a random sort).
 export const POS_NAMES = Object.freeze({ n: 'noun', v: 'verb', a: 'adjective', r: 'adverb' });
@@ -27,7 +27,7 @@ export function wordOfDay(list, key) {
   const order = shuffled(list.map((_, i) => i), seeded(0x5A1D));
   return list[order[((dayNumber(key) % list.length) + list.length) % list.length]];
 }
-export const asEntry = row => ({ word: row[0], pos: row[1], def: row[2], example: row[3], syn: row[4], ant: row[5], tier: row[6], ipa: row[7] });
+export const asEntry = row => ({ word: row[0], pos: row[1], def: row[2], example: row[3], syn: row[4], ant: row[5], tier: row[6] });
 
 /** The example with the word hidden ("_____"), or '' if the word does not appear in it (inflected forms are matched by their stem). */
 export function blank(example, word) {
@@ -48,7 +48,7 @@ export function makeQuestion(list, entry, kind, random) {
   const same = others.filter(row => row[1] === entry.pos), pool = shuffled(same.length >= 3 ? same : others, random);
   const picks = [];
   for (const row of pool) { if (!picks.some(p => p[0] === row[0] || (kind !== 'word' && p[2] === row[2])) && row[2] !== entry.def) picks.push(row); if (picks.length === 3) break; }
-  const choices = shuffled([asEntry([entry.word, entry.pos, entry.def, entry.example, entry.syn, entry.ant, entry.tier, entry.ipa]), ...picks.map(asEntry)], random);
+  const choices = shuffled([asEntry([entry.word, entry.pos, entry.def, entry.example, entry.syn, entry.ant, entry.tier]), ...picks.map(asEntry)], random);
   const prompt = kind === 'meaning' ? entry.word : kind === 'word' ? sentence(entry.def) : blank(entry.example, entry.word);
   return { kind, word: entry.word, prompt, choices: choices.map(choice => ({ word: choice.word, label: kind === 'word' || kind === 'blank' ? choice.word : sentence(choice.def) })), answer: choices.findIndex(choice => choice.word === entry.word), entry };
 }

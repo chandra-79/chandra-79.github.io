@@ -16,7 +16,7 @@ const entryFor = word => { const row = VOCAB.find(item => item[0] === word); ret
 
 function wordCard(entry, extra) {
   return el('div', { class: 'word-card' },
-    el('div', { class: 'word-head' }, el('h3', { class: 'word-big', text: entry.word }), entry.ipa ? el('span', { class: 'word-ipa', text: `/${entry.ipa}/` }) : null, el('span', { class: 'word-pos', text: POS_NAMES[entry.pos] })),
+    el('div', { class: 'word-head' }, el('h3', { class: 'word-big', text: entry.word }), el('span', { class: 'word-pos', text: POS_NAMES[entry.pos] })),
     el('p', { class: 'word-def', text: sentence(entry.def) }),
     entry.example ? el('p', { class: 'word-example', text: `“${sentence(entry.example)}”` }) : null,
     entry.syn.length ? el('p', { class: 'word-links' }, el('strong', { text: 'Similar: ' }), entry.syn.join(', ')) : null,
@@ -41,7 +41,7 @@ function renderPractice() {
   if (!round) { const due = dueNow().length; $('stage').replaceChildren(el('p', { class: 'note', text: due ? `${due} ${due === 1 ? 'word is' : 'words are'} ready to review. They come first.` : 'New words first, then your own words as they come due.' }), el('div', { class: 'actions-row' }, el('button', { type: 'button', class: 'primary-button', text: 'Start', onclick: () => { startRound(); renderPractice(); } }))); return; }
   const q = round.questions[round.index];
   const prompt = q.kind === 'meaning' ? 'What does this word mean?' : q.kind === 'word' ? 'Which word means this?' : 'Which word fits the gap?';
-  const text = q.kind === 'meaning' ? el('p', { class: 'q-text' }, q.prompt, q.entry.ipa ? el('span', { class: 'q-ipa', text: `/${q.entry.ipa}/` }) : null) : el('p', { class: 'q-text', text: q.kind === 'blank' ? `“${sentence(q.prompt)}”` : q.prompt });
+  const text = q.kind === 'meaning' ? el('p', { class: 'q-text' }, q.prompt) : el('p', { class: 'q-text', text: q.kind === 'blank' ? `“${sentence(q.prompt)}”` : q.prompt });
   const feedback = el('div', { class: 'feedback', hidden: '', role: 'status', 'aria-live': 'polite' });
   feedback.hidden = true;
   const next = el('button', { type: 'button', class: 'primary-button', id: 'q-next', hidden: '', text: round.index === round.questions.length - 1 ? 'See how I did' : 'Next word →', onclick: () => { round.index++; round.answered = false; if (round.index >= round.questions.length) finishRound(); else renderPractice(); } });

@@ -287,3 +287,5 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 :root{--f0:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--f1:"Avenir Next","Century Gothic","Segoe UI",system-ui,sans-serif;--f2:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;--f3:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;--f4:Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;--f5:"Arial Black","Helvetica Neue",Arial,sans-serif;}
 :root :is(h1,h2,h3,.game-card-title){font-family:var(--hf,var(--f0));letter-spacing:var(--ls,-.01em)}
 :root[data-look="amber"] body{font-family:var(--f3)}
+/* iPhone Safari zooms the page in when a field under 16px gets focus, and never zooms back out (2.41.1). */
+@media (pointer:coarse){:root:root:root:root :is(input:not([type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit]),select,textarea){font-size:max(16px,1em)!important}}

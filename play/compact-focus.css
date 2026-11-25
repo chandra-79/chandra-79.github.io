@@ -372,7 +372,7 @@ html[data-play-focus] .game-shell .game-panel[hidden]{display:none!important}
 html[data-play-focus] .cube-main .scramble-box{grid-template-columns:minmax(0,1fr) 90px!important}
 html[data-play-focus] .cube-main .timer-bar{flex-wrap:nowrap!important}
 html[data-play-focus] .cube-main .timer-bar>label[for=timer-size]{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-html[data-play-focus] .cube-main .timer-bar select{min-height:32px!important;width:45%!important;min-width:0!important;font-size:12px!important;flex:1}
+html[data-play-focus] .cube-main .timer-bar select{min-height:32px!important;max-height:32px;padding-block:0!important;width:45%!important;min-width:0!important;font-size:12px!important;flex:1}
 html[data-play-focus] .cube-main .timer-bar .check{min-width:0;flex:1}
 html[data-play-focus] .metronome:has(#opt-metronome:not(:checked)) :is(label[for=bpm],#bpm,#bpm-out){display:none!important}
 html[data-play-focus] #times:has(.empty){display:none!important}

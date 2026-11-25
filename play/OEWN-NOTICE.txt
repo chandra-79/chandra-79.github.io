@@ -1,10 +1,10 @@
 Word Builder: word data notice
 
-The definitions, example sentences, synonyms, opposites and pronunciations in play/vocab-data.js are a small selection from
+The definitions, example sentences, synonyms and opposites in play/vocab-data.js are a small selection from
 Open English WordNet 2024 (https://en-word.net, https://github.com/globalwordnet/english-wordnet), licensed under the
 Creative Commons Attribution 4.0 International licence (https://creativecommons.org/licenses/by/4.0/).
 Changes made by Ziggle: about 240 words were chosen by hand; for each, one sense, one short definition, one example,
-up to four synonyms, one opposite and the US pronunciation were kept; the first letter of each definition was lower-cased
+up to four synonyms, and one opposite were kept; the first letter of each definition was lower-cased
 and long definitions were shortened. Open English WordNet is derived from Princeton WordNet 3.0 and the notice below applies.
 
 WordNet Release 3.0

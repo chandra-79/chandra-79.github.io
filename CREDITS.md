@@ -1,6 +1,6 @@
 # Ziggle credits
 
-Ziggle 2.41.1. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
+Ziggle 2.41.2. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
 
 ## Third-party data and notices
 
@@ -30,7 +30,7 @@ The memory palace trainer's word lists, objects, names, made-up historical event
 
 The cube trainer's engine, 3D view, pictures, timer and lessons were written for Ziggle; no cube library is used. Cube notation follows the WCA regulations. The OLL, PLL, two-look, Ortega and parity algorithms are the standard ones the cubing community has shared for decades (move sequences, which Ziggle checks itself in `cube.test.js`); OLL numbers and PLL letters follow common usage. The F2L solutions are found by Ziggle's own search.
 
-The Word Builder's meanings, example sentences, synonyms, opposites and pronunciations are a small selection from Open English WordNet 2024 (https://en-word.net), licensed CC BY 4.0 and derived from Princeton WordNet 3.0; the notice ships in `play/OEWN-NOTICE.txt` and is linked from the trainer. Ziggle chose the words, tiers and questions, and `vocab-build.mjs` records exactly how the data was trimmed.
+The Word Builder's meanings, example sentences, synonyms and opposites are a small selection from Open English WordNet 2024 (https://en-word.net), licensed CC BY 4.0 and derived from Princeton WordNet 3.0; the notice ships in `play/OEWN-NOTICE.txt` and is linked from the trainer. Ziggle chose the words, tiers and questions, and `vocab-build.mjs` records exactly how the data was trimmed.
 
 The Lexicon Atlas adds no word data of its own: its regions are the Word Cloud categories, the word-game themes, the Word Builder levels and the Letter Lock list (SCOWL, see above) that Ziggle already ships. Its map drawing and code were written for Ziggle.
 
