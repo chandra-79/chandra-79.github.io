@@ -183,7 +183,12 @@ function paint() {
   $('notes-button').disabled = paused || complete || fixed;
   const state=cells[selected].dataset.entryState;
   $('cell-status').dataset.state=state;
-  $('cell-status').textContent=paused?'Paused':complete?'Puzzle complete':`R${rowOf(selected)+1} C${colOf(selected)+1} · ${{fixed:'Fixed clue',empty:'Empty · editable',conflict:'Rule conflict',valid:'Valid so far',entered:'Your entry'}[state]}`;
+  if(paused||complete)$('cell-status').textContent=paused?'Paused':'Puzzle complete';
+  else{ // The row and column are for screen readers; sighted players see the cell itself, so only a state worth a word is shown.
+    const words={fixed:'Fixed clue',empty:'Empty · editable',conflict:'Rule conflict',valid:'Valid so far',entered:'Your entry'}[state],plain=state==='empty'||state==='entered';
+    const where=document.createElement('span');where.className='visually-hidden';where.textContent=`R${rowOf(selected)+1} C${colOf(selected)+1} · ${plain?words:''}`;
+    $('cell-status').replaceChildren(where,...(plain?[]:[words]));
+  }
   $('mistakes-toggle').checked = progress.showMistakes;
   // Easy and medium: once every copy is placed without a current conflict, its key turns
   // off with a tick, so you can see what's left. Hard and expert leave the pad as it is.

@@ -210,7 +210,7 @@ function updateKeyboardControls(){
     const button=$(id);
     button.setAttribute('aria-pressed',String(saved.showLabels));
     button.textContent=saved.showLabels?'IDs on':'IDs off';
-    button.setAttribute('aria-label',saved.showLabels?'Hide arrow IDs':'Show arrow IDs');
+    button.setAttribute('aria-label',saved.showLabels?'IDs on: hide arrow IDs':'IDs off: show arrow IDs');
     button.disabled=locked;
   }
   $('arrow-address').inputMode=saved.identifierMode==='numbers'?'numeric':'text';

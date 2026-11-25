@@ -31,7 +31,7 @@ export const HOME_SECTIONS = Object.freeze([
   ['yours', 'Your Ziggle shortcuts', 'Quick links to backup, sync and Play your way.'],
 ]);
 let tab = 'look';
-const DAILY_GAMES = Object.freeze([['search', 'Word search'], ['crossword', 'Crossword'], ['weaver', 'Word Cloud'], ['lock', 'Letter Lock'], ['arrows', 'Arrow escape'], ['memory', 'Memory Mischief'], ['sudoku', 'Sudoku'], ['sums', 'Sum Spark']]);
+const DAILY_GAMES = Object.freeze([['search', 'Word Search'], ['crossword', 'Crossword'], ['weaver', 'Word Cloud'], ['lock', 'Letter Lock'], ['arrows', 'Arrow Escape'], ['memory', 'Memory Mischief'], ['sudoku', 'Sudoku'], ['sums', 'Sum Spark']]);
 const PLANS = Object.freeze([['easy', 'Start at Easy'], ['medium', 'Start at Medium'], ['hard', 'Start at Expert']]);
 let dialog = null, opener = null;
 
@@ -73,7 +73,7 @@ function build() {
       <p class="settings-note">Keyboard, touch and screen readers work in every game.</p>
       <details class="settings-more"><summary>How Ziggle plays your way</summary>
       <ul class="a11y-list">
-        <li><strong>Keyboard, mouse or touch</strong> for every game. Letter Lock and Word Cloud take typing; Arrow escape lets you type an arrow’s ID; Sudoku uses arrow keys and 1–9.</li>
+        <li><strong>Keyboard, mouse or touch</strong> for every game. Letter Lock and Word Cloud take typing; Arrow Escape lets you type an arrow’s ID; Sudoku uses arrow keys and 1–9.</li>
         <li><strong>Never colour alone.</strong> Letter Lock tiles carry ✓ and •, Word Cloud clues are labelled, and Sudoku conflicts are outlined.</li>
         <li><strong>Calmer motion</strong> above, and Ziggle follows your device’s reduced-motion setting too.</li>
         <li><strong>Share in words</strong> above writes results as sentences a screen reader can read.</li>
@@ -105,7 +105,7 @@ function build() {
     <fieldset class="settings-group" data-tab="more" data-needs-hub><legend class="sr-only">Home page</legend>
       <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Trophies, history, leaderboards, blog</small></span></summary>
       <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak and the games. Switch on anything else you’d like to see there.</p>
-      ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail)).join('')}</details>
+      ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail, id === 'boards' ? ' data-online' : '')).join('')}</details>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups data-online><legend class="sr-only">Feedback</legend>
       <details class="settings-more" id="feedback-more"><summary><span>Send feedback<small>Ideas, bugs or a name to report</small></span></summary>
@@ -113,14 +113,14 @@ function build() {
       <form class="settings-feedback" id="feedback-form"><label class="sr-only" for="feedback-topic">Topic</label><select id="feedback-topic"><option value="idea">An idea</option><option value="game">A game or trainer</option><option value="bug">Something broke</option><option value="name">A public name</option><option value="other">Something else</option></select>
       <label class="sr-only" for="feedback-message">Your message</label><textarea id="feedback-message" rows="3" maxlength="1000" placeholder="What would make Ziggle better?"></textarea><button type="submit">Send</button></form></details>
     </fieldset>
-    <fieldset class="settings-group" data-tab="more"><legend class="sr-only">Testing details</legend>
-      <details class="settings-more" id="errors-more"><summary><span>Something not working?<small>View error details saved on this device</small></span></summary>
-      <p class="settings-note">Recent errors stay on this device. Nothing is sent automatically. Review these details before sharing them with your bug report.</p>
-      <div class="settings-feedback settings-diagnostics"><button type="button" id="view-error-report">View local error details</button>
-      <label class="sr-only" for="local-error-report" hidden>Local error details — select and copy</label>
+    <fieldset class="settings-group" data-tab="more" id="errors-group" hidden><legend class="sr-only">Report a problem</legend>
+      <details class="settings-more" id="errors-more"><summary><span>Report a problem<small>Ziggle noticed a hiccup on this device</small></span></summary>
+      <p class="settings-note">Something didn’t go to plan earlier. Nothing is sent anywhere unless you send it. If you tell us about it, these notes help us find the cause.</p>
+      <div class="settings-feedback settings-diagnostics"><button type="button" id="view-error-report">Show the notes</button>
+      <label class="sr-only" for="local-error-report" hidden>Notes about the problem: select and copy</label>
       <textarea id="local-error-report" rows="6" readonly hidden></textarea></div></details>
     </fieldset>
-    <div class="settings-group settings-about" data-tab="more"><p class="settings-note"><span id="settings-version">Ziggle</span> · <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/accessibility.html">Accessibility</a></p></div>
+    <div class="settings-group settings-about" data-tab="more"><p class="settings-note" id="ios-install-hint" hidden>Install Ziggle on iPhone or iPad: tap Share, then “Add to Home Screen”.</p><p class="settings-note"><span id="settings-version">Ziggle</span> · <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/accessibility.html">Accessibility</a></p></div>
     </div>
     <p class="settings-status" id="settings-status" role="status" aria-live="polite"></p>
     <div class="settings-foot"><small>Changes save as you go</small><button type="button" class="settings-done">Done</button></div>`;
@@ -131,7 +131,7 @@ function build() {
     const errors = hub()?.errors?.() || [];
     report.value = errors.length ? errors.slice(-20).map(item =>
       `${item.at || ''} | ${item.version || ''} | ${item.page || ''}\n${item.message || ''}`
-    ).join('\n\n') : 'No local errors recorded.';
+    ).join('\n\n') : 'Nothing has gone wrong on this device.';
     report.hidden = false;
     dialog.querySelector('label[for="local-error-report"]').hidden = false;
     report.focus({ preventScroll: true });
@@ -246,6 +246,8 @@ function render() {
   }));
   const Z = hub();
   if (Z?.version) dialog.querySelector('#settings-version').textContent = `Ziggle ${Z.version}`;
+  // iPhone and iPad have no install prompt: say where the system keeps it, unless Ziggle is already on the Home Screen.
+  dialog.querySelector('#ios-install-hint').hidden = !('standalone' in navigator) || navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
   dialog.querySelectorAll('[data-needs-hub]').forEach(group => { group.hidden = !Z; });
   if (!Z) return;
   const profile = Z.profile();
@@ -256,7 +258,7 @@ function render() {
     label.innerHTML = '<input type="radio" name="skin"><span class="swatch" aria-hidden="true"></span><span class="skin-name"></span><span class="option-tick" aria-hidden="true">✓</span>';
     const input = label.querySelector('input');
     input.value = skin.id; input.checked = skin.id === chosen; input.disabled = !skin.unlocked;
-    label.querySelector('.skin-name').textContent = skin.unlocked ? skin.name : `${skin.name} · ${skin.need}-day streak`;
+    label.querySelector('.skin-name').textContent = skin.unlocked ? skin.name : `${skin.name} · ${skin.need}-day streak`; if (!skin.unlocked) label.title = `Locked until a ${skin.need}-day streak`;
     input.addEventListener('change', () => { const value = Z.profile(); value.skin = skin.id; Z.saveProfile(value); say(`${skin.name} boards it is.`); changed('skin'); });
     return label;
   }));
@@ -334,6 +336,8 @@ function open(focusId = '', trigger) {
   render();
   const holder = !named && focusId && dialog.querySelector(`#${focusId}`)?.closest('[data-tab]');
   showTab(named ? focusId : holder ? holder.dataset.tab : tab);
+  // The problem notes only appear once something has actually gone wrong on this device.
+  dialog.querySelector('#errors-group').hidden = !(hub()?.errors?.() || []).length;
   if (!dialog.open) dialog.showModal();
   const target = !named && focusId ? dialog.querySelector(`#${focusId}`) : null;
   const fold = target?.closest('details'); if (fold) fold.open = true;

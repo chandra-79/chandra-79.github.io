@@ -42,6 +42,7 @@ button:disabled{cursor:default}
 .op[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:var(--paper)}
 .op:disabled{opacity:.45}
 .tiles{grid-template-columns:repeat(6,minmax(0,76px));justify-content:center;gap:10px;width:100%;display:grid}
+.tiles:empty{min-height:76px}
 .tile{aspect-ratio:1;border:2px solid var(--stroke);background:var(--surface);box-shadow:0 4px 0 var(--stroke);color:var(--ink);font-variant-numeric:tabular-nums;border-radius:22px;place-items:center;font-size:26px;font-weight:800;transition:transform .15s,opacity .2s,box-shadow .15s;display:grid;position:relative}
 .tile.big{background:color-mix(in srgb, var(--citrus) 45%, var(--surface))}
 .tile-key{color:var(--muted);font-size:11px;font-weight:700;position:absolute;top:5px;left:8px}
@@ -97,6 +98,7 @@ dialog li{margin-bottom:6px;font-size:15px;line-height:1.5}
 .chain{font-size:17px}
 .op{width:46px;height:46px;font-size:23px}
 .tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tiles:empty{aspect-ratio:2.4;min-height:0}
 .tile{aspect-ratio:5/3;border-radius:16px;font-size:24px}
 .sum-tools{flex-wrap:nowrap;gap:6px;margin-top:10px}
 .game-bar .chip-label{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
@@ -112,6 +114,7 @@ dialog li{margin-bottom:6px;font-size:15px;line-height:1.5}
 .gauge{padding-bottom:10px}
 .op{width:44px;height:44px;font-size:22px}
 .tiles{grid-template-columns:repeat(6,minmax(0,64px))}
+.tiles:empty{min-height:64px}
 .sum-tools{margin-top:10px}
 }
 @media (height<=520px) and (orientation:landscape) and (width>=651px){.sum-top{display:none}
@@ -123,6 +126,7 @@ dialog li{margin-bottom:6px;font-size:15px;line-height:1.5}
 .chain{grid-area:chain;font-size:17px}
 .ops{grid-area:ops}
 .tiles{grid-area:tiles;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tiles:empty{aspect-ratio:3.6;min-height:0}
 .tile{aspect-ratio:5/2;border-radius:14px;font-size:22px}
 .target,.now{min-width:0;padding:2px 14px;font-size:28px}
 .op{width:42px;height:42px;font-size:21px}

@@ -1,7 +1,7 @@
 // Ziggle's cards for the ad spaces. Loaded on demand; nothing here loads anything from another site.
 
 export const PROMOS = [
-  { href: '/play/words.html?game=search', title: 'Word search', line: 'Sixteen themes and a fresh grid every day.', art: '🔎', go: 'Play' },
+  { href: '/play/words.html?game=search', title: 'Word Search', line: 'Sixteen themes and a fresh grid every day.', art: '🔎', go: 'Play' },
   { href: '/play/words.html?game=crossword', title: 'Crossword', line: 'Friendly clues, a small grid, one coffee long.', art: '✏️', go: 'Play' },
   { href: '/play/weaver.html', title: 'Word Cloud', line: 'Flip the clue clouds and type the hidden word.', art: '☁️', go: 'Play' },
   { href: '/play/lock.html', title: 'Letter Lock', line: 'Crack today’s five-letter lock in six tries.', art: '🔐', go: 'Play' },

@@ -65,3 +65,5 @@ html[data-play-focus] .game-bar .bar-brand::after{content:"";position:absolute;i
 @media(pointer:coarse) and (min-height:780px) and (orientation:portrait){
 html[data-play-focus] :is(#mm-sound,#mm-new){min-height:40px!important}
 }
+/* 2.55: the crossword letter window (2.43) lost to a later width rule, so its squares shrank to 12 px instead of scrolling at 29 px. */
+html[data-letter-window][data-play-focus]:not([data-play-keyboard]) body .word-shell .word-board.crossword-grid{width:max(var(--keyboard-board-width,196px),min(calc(100vw - 42px),var(--focus-board-width,280px)))!important;max-width:none!important}

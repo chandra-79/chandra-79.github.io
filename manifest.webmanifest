@@ -18,9 +18,14 @@
     { "src": "/play/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
     { "src": "/play/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ],
+  "screenshots": [
+    { "src": "/play/icons/shot-home.webp", "sizes": "720x1280", "type": "image/webp", "form_factor": "narrow", "label": "Today’s Ziggle: eight quick puzzles a day" },
+    { "src": "/play/icons/shot-sudoku.webp", "sizes": "720x1280", "type": "image/webp", "form_factor": "narrow", "label": "Sudoku on a phone" },
+    { "src": "/play/icons/shot-wide.webp", "sizes": "1280x720", "type": "image/webp", "form_factor": "wide", "label": "The Ziggle home page on a desktop" }
+  ],
   "shortcuts": [
-    { "name": "Today’s Ziggle", "url": "/#today" },
-    { "name": "Arrow escape", "url": "/play/index.html" },
-    { "name": "Sudoku", "url": "/play/sudoku.html" }
+    { "name": "Today’s Ziggle", "url": "/#today", "icons": [{ "src": "/play/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Arrow Escape", "url": "/play/index.html", "icons": [{ "src": "/play/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Sudoku", "url": "/play/sudoku.html", "icons": [{ "src": "/play/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }

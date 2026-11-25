@@ -135,3 +135,16 @@ body>main.blog-shell:not(.wide){max-width:808px!important}
 .toc[open] summary{border-bottom:1px solid var(--stroke);margin-bottom:6px}
 .toc ol{counter-reset:toc;list-style:none;padding:0 16px 12px}.toc li{counter-increment:toc;display:flex;gap:10px}.toc li::before{content:counter(toc);color:var(--muted);flex:none;width:1.4em;padding-top:4px;font-size:13px;font-weight:700;text-align:right}
 .post-body{overflow-wrap:break-word}.post-body table.data{width:100%}
+/* 2.55 review fixes: reading width near 72 characters, 404 game links, bigger back link, one row of topic chips on phones. */
+.post-body :is(p,li,blockquote){max-width:36em}
+ul.try-links{margin:0 0 18px;padding:0;list-style:none}
+ul.try-links li{margin:0}
+.back-link{align-items:center;min-height:28px;display:inline-flex}
+@media(pointer:coarse){.back-link{min-height:44px;margin:0 0 6px}}
+@media(width<=650px){.cat-filter{flex-wrap:nowrap;margin-inline:-16px;padding:4px 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.cat-filter::-webkit-scrollbar{display:none}
+.cat-filter button{white-space:nowrap;flex:none}
+.blog-tools{flex-wrap:nowrap}
+.blog-tools .search-box{flex:1 1 0;min-width:0}
+.blog-tools label[for=post-sort]{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
+.blog-tools select{flex:none;max-width:46%}}

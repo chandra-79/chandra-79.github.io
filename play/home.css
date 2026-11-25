@@ -344,3 +344,4 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .today-edit{margin:10px 0 0;font-size:14px}
 .today-edit a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .streak-row[hidden],.season-chip[hidden]{display:none}
+.trophy-grid:empty{display:none}

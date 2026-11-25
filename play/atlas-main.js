@@ -36,7 +36,7 @@ function renderMeter() {
   const countNode = el('span', { class: 'meter-count', id: 'meter-count', text: number(count) });
   $('atlas-meter').replaceChildren(
     el('div', { class: 'meter-line' }, countNode, el('span', { class: 'meter-goal', text: `of ${number(GOAL)} words` })),
-    el('div', { class: 'meter-bar', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(GOAL), 'aria-valuenow': String(Math.min(count, GOAL)), 'aria-valuetext': `${number(count)} of ${number(GOAL)} words` }, el('div', { class: 'meter-fill', style: `width:${Math.max(percent(count), count ? 1 : 0)}%` })),
+    el('div', { class: 'meter-bar', role: 'progressbar', 'aria-label': 'Words you have met', 'aria-valuemin': '0', 'aria-valuemax': String(GOAL), 'aria-valuenow': String(Math.min(count, GOAL)), 'aria-valuetext': `${number(count)} of ${number(GOAL)} words` }, el('div', { class: 'meter-fill', style: `width:${Math.max(percent(count), count ? 1 : 0)}%` })),
     el('p', { class: 'meter-sub', text: sub }));
   if (shown >= 0 && count > shown) loadFx().then(m => m.countUp?.(countNode, count, { format: n => number(Math.round(n)) }));
   shown = count;

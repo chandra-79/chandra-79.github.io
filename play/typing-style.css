@@ -70,7 +70,8 @@ a{color:inherit;text-decoration:none}
 .kc.good{background:var(--mint-soft);border-color:var(--mint-ink)}
 .kc.ok{background:color-mix(in srgb, var(--citrus) 45%, var(--surface))}
 .kc.weak{background:color-mix(in srgb, var(--coral) 30%, var(--surface));border-color:var(--danger);border-style:dashed}
-.kc.locked{opacity:.45}
+.kc.locked{border-style:dotted;background:0 0}
+.kc.locked b{color:var(--muted);font-weight:600}
 .kc.next{outline:3px solid var(--accent);outline-offset:1px}
 .kc.space-key{width:260px}
 .key-legend{color:var(--muted);flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:8px 0 0;font-size:12px;display:flex}

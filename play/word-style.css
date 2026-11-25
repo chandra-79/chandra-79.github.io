@@ -85,6 +85,8 @@ h1 em{color:var(--accent);font-style:normal}
 .crossword-block{aspect-ratio:1;background:#ede7f4;min-width:0}
 .crossword-cell input{width:100%;min-width:0;height:100%;color:inherit;text-align:center;caret-color:#0000;text-transform:uppercase;-webkit-appearance:none;appearance:none;background:0 0;border:0;border-radius:0;outline:none;padding:5px 0 0;font-size:18px;font-weight:650;line-height:1;position:absolute;top:0;left:0}
 .cell-number{z-index:1;color:#7e6895;pointer-events:none;font:600 8px/1 Avenir Next,sans-serif;position:absolute;top:2px;left:3px}
+.crossword-cell{container-type:inline-size}
+.cell-number{font-size:clamp(8px,32cqw,11px)}
 .crossword-cell.active-word{background:#eee5ff}
 .crossword-cell.active-cell,.crossword-cell:focus-within{z-index:1;background:#d8c4ff;box-shadow:inset 0 0 0 2px #8057da}
 .crossword-cell.correct{color:#20745a;background:#e4f4e9}
@@ -238,7 +240,7 @@ h1{letter-spacing:-1.3px;margin:9px 0 10px;font-size:31px;line-height:1.15}
 .search-grid[style*="12"] .letter-cell{font-size:14px}
 .crossword-grid{gap:1px}
 .crossword-cell input{padding-top:5px;font-size:16px}
-.cell-number{font-size:9px;top:1px;left:2px}
+.cell-number{font-size:9px;font-size:clamp(8px,32cqw,11px);top:1px;left:2px}
 .puzzle-progress{gap:9px;margin:0 15px;padding:14px 0}
 .puzzle-tools{gap:5px;padding:11px 7px}
 .puzzle-tools button{gap:5px;padding:9px 10px;font-size:12px}
@@ -317,12 +319,13 @@ html[data-letter-window] body .word-shell .crossword-grid.word-board{aspect-rati
 html[data-letter-window] .word-shell .crossword-cell input{font-size:15px!important;padding-top:3px!important}
 @media (height<=520px) and (orientation:landscape) and (width>=651px){html[data-letter-keys] body .word-shell .collection-layout:has(#cross-keys:not([hidden])){grid-template-columns:minmax(0,1fr)!important}
 html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden])){grid-template-columns:fit-content(52%) minmax(0,1fr) auto!important;grid-template-rows:auto auto auto 1fr;align-content:start;align-items:start;column-gap:12px;display:grid!important}
-html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.board-frame{grid-area:1/1/span 4!important}
+html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.board-frame{max-width:44vw;grid-area:1/1/span 4!important}
 html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.puzzle-tools{grid-area:1/2!important}
 html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.board-toolbar{grid-area:1/3!important}
 html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.cross-keys{grid-area:2/2/auto/-1!important;width:100%;margin:2px 0}
 html[data-letter-keys] body .word-shell .puzzle-card:has(#cross-keys:not([hidden]))>.puzzle-progress{grid-area:3/2/auto/-1!important;margin:0!important}
+html[data-letter-keys][data-play-focus] body .word-shell .collection-layout:has(#cross-keys:not([hidden])) .puzzle-settings{flex-direction:column!important;align-items:flex-end!important}
 }
-@media (height<=520px) and (orientation:landscape){html[data-play-focus] body .word-shell .cross-keys .key{min-height:36px!important;font-size:15px}html[data-play-focus] body .word-shell .cross-keys{gap:4px}html[data-play-focus] body .word-shell .cross-keys .key-row{gap:4px}}
+@media (height<=520px) and (orientation:landscape){html[data-play-focus] body .word-shell .cross-keys .key{min-height:36px!important;font-size:15px}html[data-play-focus] body .word-shell .cross-keys{gap:4px}html[data-play-focus] body .word-shell .cross-keys .key-row{gap:4px}html[data-play-focus] body .word-shell .cross-keys .clue-keys .key[data-key=TURN]{padding:3px 8px;font-size:12px!important;line-height:1.2}.cross-keys .clue-text{-webkit-line-clamp:3}}
 /* 2.42: crossword cells stay square on phones (the 1.35 stretch above made 42x60 px cells); the board takes the width it is given and its height follows. */
 @media(width<=650px){html[data-play-focus]:not([data-play-keyboard]) body .word-shell .word-board.crossword-grid{aspect-ratio:var(--cols,10)/var(--rows,10)!important;height:auto!important;width:min(100%,calc(100vw - 42px),var(--focus-board-width,320px))!important}html[data-play-focus] body .word-shell .word-board.crossword-grid :is(.crossword-cell,.crossword-block){aspect-ratio:1}html[data-play-focus] body .word-shell .word-board.crossword-grid .crossword-cell{font-size:calc(min(100vw - 42px,var(--focus-board-width,320px))/var(--cols,10)*.52)}}
