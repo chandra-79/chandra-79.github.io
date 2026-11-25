@@ -25,6 +25,7 @@ export const HOME_SECTIONS = Object.freeze([
   ['notes', 'About Ziggle', 'The welcome line and notes about how Ziggle works.'],
   ['training', 'Ziggle Training', 'Typing, emoji and flags, memory palace and cube trainers.'],
   ['trophies', 'Trophy shelf and season', 'Trophies you’ve earned and this season’s goals.'],
+  ['stickers', 'Surprises', 'Stickers for the surprises you’ve found, and one clue to the next. On unless you switch it off.', 'on'],
   ['history', 'History and missed days', 'Your last 12 weeks, and replays of past dailies.'],
   ['boards', 'Leaderboards and leagues', 'Today’s verified times and your friend leagues.'],
   ['blog', 'From the blog', 'The three newest posts.'],
@@ -103,8 +104,8 @@ function build() {
       <form class="settings-name" id="settings-nickname-form"><label class="sr-only" for="settings-nickname">Leaderboard name</label><input id="settings-nickname" maxlength="20" autocomplete="off" placeholder="Puzzle Pal"><button type="submit">Save</button></form>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub><legend class="sr-only">Home page</legend>
-      <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Trophies, history, leaderboards, blog</small></span></summary>
-      <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak and the games. Switch on anything else you’d like to see there.</p>
+      <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Surprises, trophies, history, leaderboards, blog</small></span></summary>
+      <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak, the games and your Surprises. Switch on anything else you’d like to see there, or switch Surprises off.</p>
       ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail, id === 'boards' ? ' data-online' : '')).join('')}</details>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups data-online><legend class="sr-only">Feedback</legend>
@@ -157,10 +158,12 @@ function build() {
     const next = event.key === 'Home' ? ids[0] : event.key === 'End' ? ids.at(-1) : ids[(ids.indexOf(current) + keys[event.key] + ids.length) % ids.length];
     showTab(next); dialog.querySelector(`[data-settings-tab="${next}"]`).focus();
   });
-  for (const [id, title] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).addEventListener('change', event => {
+  for (const [id, title, , on] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).addEventListener('change', event => {
     const Z = hub(); if (!Z) return;
     const profile = Z.profile();
-    profile.homeShow = event.target.checked ? [...new Set([...(profile.homeShow || []), id])] : (profile.homeShow || []).filter(item => item !== id);
+    // Most sections are extras (listed in homeShow when on); one that starts on is listed in homeHide when off.
+    const list = on ? 'homeHide' : 'homeShow', add = on ? !event.target.checked : event.target.checked;
+    profile[list] = add ? [...new Set([...(profile[list] || []), id])] : (profile[list] || []).filter(item => item !== id);
     Z.saveProfile(profile);
     say(`${title} ${event.target.checked ? 'now shows on' : 'is off'} your home page.`);
     changed('home');
@@ -271,7 +274,7 @@ function render() {
   dialog.querySelector('#kids-mode').checked = profile.kidsMode;
   dialog.querySelector('#analytics-toggle').checked = profile.analytics && !profile.kidsMode;
   dialog.querySelector('#analytics-toggle').disabled = profile.kidsMode;
-  for (const [id] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).checked = (profile.homeShow || []).includes(id);
+  for (const [id, , , on] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).checked = on ? !(profile.homeHide || []).includes(id) : (profile.homeShow || []).includes(id);
   for (const [id] of DAILY_GAMES) dialog.querySelector(`#daily-game-${id}`).checked = (profile.dailyGames || DAILY_GAMES.map(([game]) => game)).includes(id);
   dialog.querySelector('#daily-selection-note').textContent = (profile.dailyGames || DAILY_GAMES).length ? `${(profile.dailyGames || DAILY_GAMES).length} of ${DAILY_GAMES.length} in your set. Every game stays in the Games menu.` : 'No daily games selected. Choose any when you are ready.';
   renderLevels();
