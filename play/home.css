@@ -1,7 +1,7 @@
 .ziggle-home{margin:0;font-family:Avenir Next,Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
 .ziggle-home *,.ziggle-home :before,.ziggle-home :after{box-sizing:border-box}
 .ziggle-home a{color:inherit;text-decoration:none}
-.ziggle-home button,.ziggle-home input,.ziggle-home select{font:inherit;color:inherit}
+.ziggle-home :is(button,input,select):where(:not(dialog *,.ziggle-toast *)){font:inherit;color:inherit}
 .ziggle-home button{cursor:pointer}
 .ziggle-home .brand{align-items:center;display:flex}
 .home-shell,.home-footer{width:100%;max-width:1240px;margin:0 auto;padding:0 24px}

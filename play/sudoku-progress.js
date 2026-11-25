@@ -4,7 +4,8 @@ import { SUDOKU_VARIANTS, SUDOKU_DIFFICULTIES } from './sudoku-engine.js';
 export const SUDOKU_STORAGE_KEY = 'ziggle-sudoku-v1';
 const MAX_SESSIONS = 400;
 const MAX_LEVEL = 1_000_000;
-const DEFAULT_CURRENT = { variant: 'classic', difficulty: 'easy', level: 1 };
+// New players start on generation 2 practice puzzle 1 (level 201000, see sudoku-engine.js sudokuGeneration).
+const DEFAULT_CURRENT = { variant: 'classic', difficulty: 'easy', level: 201_000 };
 const record = value => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
 export function validSudokuOptions(options) {

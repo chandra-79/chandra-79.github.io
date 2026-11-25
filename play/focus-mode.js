@@ -2,7 +2,9 @@
 // the board has the whole screen, and the Ziggle logo sits at the left of the title bar (it leads home). The corner button in the title bar
 // brings the header back (and puts it away again). Loaded on demand (game-frame.js), so
 // it costs pages nothing up front. Arrow Escape also has its own full-screen button for big boards; the title-bar button hides itself then.
-const compact = matchMedia('(max-width:650px)');
+// Phones held sideways (short and wide) get the same full-screen play: this is the query fit.js uses for data-play-focus (2.41.2).
+const compact = matchMedia('(max-width:650px), (max-height:520px) and (orientation:landscape)');
+const sideways = matchMedia('(max-height:520px) and (orientation:landscape) and (min-width:651px)');
 const bar = document.querySelector('.game-bar');
 if (bar) {
   const root = document.documentElement;
@@ -18,8 +20,8 @@ if (bar) {
   const set = on => {
     on = on && compact.matches; mark.style.display = on ? 'flex' : 'none';
     // One standard bar on every game: logo, then the title (or the Today / Practice switch), then the corner button, Help and More, on a single row.
-    const put = (el, rules) => { for (const [key, value] of Object.entries(rules)) { if (on) el.style.setProperty(key, value, 'important'); else el.style.removeProperty(key); } };
-    put(bar, { display: 'flex', 'flex-wrap': 'nowrap', 'align-items': 'center', gap: '6px', padding: '5px 8px', 'min-height': '56px', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
+    const put = (el, rules) => { for (const [key, value] of Object.entries(rules)) { if (on && value) el.style.setProperty(key, value, 'important'); else el.style.removeProperty(key); } };
+    put(bar, { display: 'flex', 'flex-wrap': 'nowrap', 'align-items': 'center', gap: '6px', padding: sideways.matches ? '0 8px' : '5px 8px', 'min-height': sideways.matches ? '44px' : '56px', height: sideways.matches ? 'auto' : '', 'margin-bottom': sideways.matches ? '4px' : '', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
     for (const el of bar.children) {
       if (el === mark) put(el, { flex: 'none', margin: '0 2px 0 0' });
       else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
@@ -41,7 +43,7 @@ if (bar) {
   const sync = () => { button.hidden = !compact.matches; set(compact.matches && !leftFullScreen); };
   button.addEventListener('click', () => { leftFullScreen = root.hasAttribute('data-focused'); set(!leftFullScreen); });
   addEventListener('keydown', event => { if (event.key === 'Escape' && root.hasAttribute('data-focused') && !document.querySelector('dialog[open]') && !document.getElementById('game-drawer')?.classList.contains('open')) { leftFullScreen = true; set(false); } });
-  compact.addEventListener('change', sync);
+  compact.addEventListener('change', sync); sideways.addEventListener('change', sync);
   bar.insertBefore(button, bar.querySelector('.drawer-button'));
   sync();
 }

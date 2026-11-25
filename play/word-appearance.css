@@ -29,7 +29,10 @@
 .letter-cell:focus-visible{outline-color:var(--accent)}
 .crossword-grid{background:var(--stroke)}
 .crossword-cell{background:var(--surface);color:var(--ink)}
-.crossword-block{background:var(--surface-soft)}
+/* Blocks stand out from answer cells in every look (2.42; they were about 1.1:1 in dark): the muted ink colour in light,
+   softened 70% toward the cells in dark so they do not glare. word-ui.test.js holds both to 3:1 against cells. */
+.crossword-block{background:var(--muted)}
+:root[data-appearance="dark"] .crossword-block{background:color-mix(in srgb,var(--muted) 70%,var(--surface))}
 .cell-number{color:var(--muted)}
 .crossword-cell.active-word{background:var(--accent-soft)}
 .crossword-cell.active-cell,.crossword-cell:focus-within{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}

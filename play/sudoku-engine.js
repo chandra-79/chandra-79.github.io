@@ -18,30 +18,30 @@ function r(e, o) {
 }
 
 function s(e, r, s) {
-    const l = `${e}:${r}:${s}`;
-    if (!o.has(l)) {
-        const i = [];
+    const i = `${e}:${r}:${s}`;
+    if (!o.has(i)) {
+        const l = [];
         for (let o = 1; o < 1 << e; o++) {
             if (t(o) !== r) continue;
             let e = 0;
             for (let t = o; t; t &= t - 1) e += n(t & -t);
-            e === s && i.push(o);
+            e === s && l.push(o);
         }
-        o.set(l, i);
+        o.set(i, l);
     }
-    return o.get(l);
+    return o.get(i);
 }
 
-function l(o) {
+function i(o) {
     if (e.has(o)) return e.get(o);
     const {size: t, boxRows: n, boxCols: r} = o;
     if (![ 6, 9 ].includes(t) || n * r !== t || t % n || t % r) throw new RangeError("Invalid Sudoku dimensions.");
-    const l = [], i = Array.from({
+    const i = [], l = Array.from({
         length: t * t
     }, () => []), a = e => {
-        const o = l.length;
-        l.push(e);
-        for (const t of e) i[t].push(o);
+        const o = i.length;
+        i.push(e);
+        for (const t of e) l[t].push(o);
         return o;
     };
     for (let e = 0; e < t; e++) a(Array.from({
@@ -81,8 +81,8 @@ function l(o) {
     }), d = {
         size: t,
         fullMask: c,
-        groups: l,
-        cellGroups: i,
+        groups: i,
+        cellGroups: l,
         cages: f,
         cellCages: u,
         parityMasks: g
@@ -90,41 +90,41 @@ function l(o) {
     return e.set(o, d), d;
 }
 
-function i(e, o) {
+function l(e, o) {
     return Array.isArray(o) && o.length === e.size * e.size && o.every(o => Number.isInteger(o) && o >= 0 && o <= e.size);
 }
 
 export function candidateMask(e, o, t) {
-    const n = l(e);
+    const n = i(e);
     let r = n.parityMasks[t];
     for (const e of n.cellGroups[t]) for (const s of n.groups[e]) s !== t && o[s] && (r &= ~(1 << o[s] - 1));
     return r;
 }
 
 export function explainHint(e, o, t) {
-    const n = l(e), {size: r, solution: s} = e, i = s[t], a = 1 << i - 1, u = o.map((o, t) => e.givens[t] || o === s[t] ? o : 0), f = `Row ${Math.floor(t / r) + 1}, column ${t % r + 1}`;
+    const n = i(e), {size: r, solution: s} = e, l = s[t], a = 1 << l - 1, u = o.map((o, t) => e.givens[t] || o === s[t] ? o : 0), f = `Row ${Math.floor(t / r) + 1}, column ${t % r + 1}`;
     if (candidateMask(e, u, t) === a) return {
         kind: "only",
-        digit: i,
-        text: `${f} can only be ${i}: every other digit is ruled out by its row, column, box or special rules.`
+        digit: l,
+        text: `${f} can only be ${l}: every other digit is ruled out by its row, column, box or special rules.`
     };
     for (const o of n.cellGroups[t]) {
         const s = n.groups[o];
         if (s.length === r && s.every(o => o === t || u[o] || !(candidateMask(e, u, o) & a))) return {
             kind: "hidden",
-            digit: i,
-            text: `In this ${o < r ? "row" : o < 2 * r ? "column" : o < 3 * r ? "box" : "diagonal"}, ${i} has nowhere else to go, so ${f} is ${i}.`
+            digit: l,
+            text: `In this ${o < r ? "row" : o < 2 * r ? "column" : o < 3 * r ? "box" : "diagonal"}, ${l} has nowhere else to go, so ${f} is ${l}.`
         };
     }
     return {
         kind: "direct",
-        digit: i,
-        text: `${f} is ${i}. No simple pattern shows it, so try noting the possibilities nearby.`
+        digit: l,
+        text: `${f} is ${l}. No simple pattern shows it, so try noting the possibilities nearby.`
     };
 }
 
 export function getConflicts(e, o) {
-    const t = l(e), n = new Set;
+    const t = i(e), n = new Set;
     if (!Array.isArray(o) || o.length !== e.size * e.size) return Array.from({
         length: e.size * e.size
     }, (e, o) => o);
@@ -148,11 +148,11 @@ export function getConflicts(e, o) {
 }
 
 function a(e, o, s, a, u = !0) {
-    if (!i(e, o)) return {
+    if (!l(e, o)) return {
         count: 0,
         solution: null
     };
-    const f = l(e), c = [ ...o ], g = new Array(f.groups.length).fill(0);
+    const f = i(e), c = [ ...o ], g = new Array(f.groups.length).fill(0);
     for (let o = 0; o < c.length; o++) {
         const t = c[o];
         if (u && e.givens?.[o] && t !== e.givens[o]) return {
@@ -183,7 +183,7 @@ function a(e, o, s, a, u = !0) {
             return n ? t : -1;
         });
         if (o.some(e => -1 === e)) return;
-        let l = -1, i = 0, u = f.size + 1;
+        let i = -1, l = 0, u = f.size + 1;
         for (let e = 0; e < c.length; e++) {
             if (c[e]) continue;
             let n = f.parityMasks[e];
@@ -192,18 +192,18 @@ function a(e, o, s, a, u = !0) {
             -1 !== r && (n &= o[r]);
             const s = t(n);
             if (!s) return;
-            if (s < u && (l = e, i = n, u = s, 1 === s)) break;
+            if (s < u && (i = e, l = n, u = s, 1 === s)) break;
         }
-        if (-1 === l) return d++, void (h || (h = [ ...c ]));
+        if (-1 === i) return d++, void (h || (h = [ ...c ]));
         let p = [];
-        for (let e = i; e; e &= e - 1) p.push(e & -e);
+        for (let e = l; e; e &= e - 1) p.push(e & -e);
         a && (p = r(p, a));
         for (const o of p) {
-            c[l] = n(o);
-            for (const e of f.cellGroups[l]) g[e] |= o;
+            c[i] = n(o);
+            for (const e of f.cellGroups[i]) g[e] |= o;
             e();
-            for (const e of f.cellGroups[l]) g[e] &= ~o;
-            if (c[l] = 0, d >= s) break;
+            for (const e of f.cellGroups[i]) g[e] &= ~o;
+            if (c[i] = 0, d >= s) break;
         }
     }(), {
         count: d,
@@ -217,14 +217,27 @@ export function countSolutions(e, o = e.givens, t = 2) {
 }
 
 export function isSolved(e, o) {
-    return i(e, o) && o.every(Boolean) && 0 === getConflicts(e, o).length;
+    return l(e, o) && o.every(Boolean) && 0 === getConflicts(e, o).length;
+}
+
+export const SUDOKU_GEN2_DAY = 27;
+
+export const SUDOKU_PRACTICE_V2 = 201e3;
+
+export const SUDOKU_LADDER_V2 = 99e4;
+
+export function sudokuGeneration(e) {
+    if (e >= 99e4) return 2;
+    if (e >= 201e3 && e < 202e3) return 2;
+    const o = e >= 7e5 ? -1 : e >= 6e5 ? 6e5 : e >= 45e4 ? 45e4 : e >= 3e5 ? 3e5 : e >= 1e3 && e < 2e5 ? 1e3 : -1;
+    return o >= 0 && e - o >= 27 ? 2 : 1;
 }
 
 export function generatePuzzle({variant: o = "classic", difficulty: t = "easy", level: n = 1} = {}) {
     if (!SUDOKU_VARIANTS.includes(o)) throw new RangeError("Unknown Sudoku variant.");
     if (!SUDOKU_DIFFICULTIES.includes(t)) throw new RangeError("Unknown Sudoku difficulty.");
     if (!Number.isSafeInteger(n) || n < 1 || n > 1e6) throw new RangeError("Level must be an integer from 1 to 1000000.");
-    const s = "mini" === o ? 6 : 9, l = {
+    const s = "mini" === o ? 6 : 9, i = {
         variant: o,
         difficulty: t,
         level: n,
@@ -235,7 +248,7 @@ export function generatePuzzle({variant: o = "classic", difficulty: t = "easy", 
         solution: [],
         cages: [],
         parity: {}
-    }, i = function(e) {
+    }, l = sudokuGeneration(n), u = function(e) {
         let o = 2166136261;
         for (const t of e) o = Math.imul(o ^ t.charCodeAt(0), 16777619);
         return () => {
@@ -244,11 +257,11 @@ export function generatePuzzle({variant: o = "classic", difficulty: t = "easy", 
             return e = Math.imul(e ^ e >>> 15, 1 | e), e ^= e + Math.imul(e ^ e >>> 7, 61 | e),
             ((e ^ e >>> 14) >>> 0) / 4294967296;
         };
-    }(`ziggle:${o}:${n}`), u = SUDOKU_DIFFICULTIES.indexOf(t);
-    if (l.solution = "diagonal" === o ? a(l, l.givens, 1, i).solution : function(e, o) {
-        const {size: t, boxRows: n, boxCols: s} = e, l = r(Array.from({
+    }(2 === l ? `ziggle2:${o}:${t}:${n}` : `ziggle:${o}:${n}`), f = SUDOKU_DIFFICULTIES.indexOf(t);
+    if (i.solution = "diagonal" === o || 2 === l ? a(i, i.givens, 1, u).solution : function(e, o) {
+        const {size: t, boxRows: n, boxCols: s} = e, i = r(Array.from({
             length: t
-        }, (e, o) => o + 1), o), i = r(Array.from({
+        }, (e, o) => o + 1), o), l = r(Array.from({
             length: t / n
         }, (e, o) => o), o).flatMap(e => r(Array.from({
             length: n
@@ -257,47 +270,47 @@ export function generatePuzzle({variant: o = "classic", difficulty: t = "easy", 
         }, (e, o) => o), o).flatMap(e => r(Array.from({
             length: s
         }, (o, t) => e * s + t), o));
-        return i.flatMap(e => a.map(o => l[(e * s + Math.floor(e / n) + o) % t]));
-    }(l, i), !l.solution) throw new Error("Could not create a solved grid.");
-    if ("addoku" === o && (l.cages = function(e, o, t, n) {
+        return l.flatMap(e => a.map(o => i[(e * s + Math.floor(e / n) + o) % t]));
+    }(i, u), !i.solution) throw new Error("Could not create a solved grid.");
+    if ("addoku" === o && (i.cages = function(e, o, t, n) {
         const s = new Set(r(Array.from({
             length: e.length
-        }, (e, o) => o), n)), l = [ 2, 3, 4, 5 ][t], i = [];
+        }, (e, o) => o), n)), i = [ 2, 3, 4, 5 ][t], l = [];
         for (;s.size; ) {
             const t = s.values().next().value, r = [ t ], a = new Set([ e[t] ]);
             s.delete(t);
-            const u = 2 + Math.floor(n() * (l - 1));
+            const u = 2 + Math.floor(n() * (i - 1));
             for (;r.length < u; ) {
                 const t = new Set;
                 for (const n of r) {
-                    const r = Math.floor(n / o), l = n % o;
-                    for (const i of [ r > 0 ? n - o : -1, r < o - 1 ? n + o : -1, l > 0 ? n - 1 : -1, l < o - 1 ? n + 1 : -1 ]) s.has(i) && !a.has(e[i]) && t.add(i);
+                    const r = Math.floor(n / o), i = n % o;
+                    for (const l of [ r > 0 ? n - o : -1, r < o - 1 ? n + o : -1, i > 0 ? n - 1 : -1, i < o - 1 ? n + 1 : -1 ]) s.has(l) && !a.has(e[l]) && t.add(l);
                 }
                 if (!t.size) break;
-                const l = [ ...t ][Math.floor(n() * t.size)];
-                r.push(l), a.add(e[l]), s.delete(l);
+                const i = [ ...t ][Math.floor(n() * t.size)];
+                r.push(i), a.add(e[i]), s.delete(i);
             }
-            r.sort((e, o) => e - o), i.push({
+            r.sort((e, o) => e - o), l.push({
                 cells: r,
                 sum: r.reduce((o, t) => o + e[t], 0)
             });
         }
-        return i.sort((e, o) => e.cells[0] - o.cells[0]);
-    }(l.solution, s, u, i)), "even-odd" === o) {
+        return l.sort((e, o) => e.cells[0] - o.cells[0]);
+    }(i.solution, s, f, u)), "even-odd" === o) {
         const e = r(Array.from({
             length: s * s
-        }, (e, o) => o), i).slice(0, [ 32, 26, 20, 14 ][u]);
-        for (const o of e) l.parity[o] = l.solution[o] % 2 ? "odd" : "even";
+        }, (e, o) => o), u).slice(0, [ 32, 26, 20, 14 ][f]);
+        for (const o of e) i.parity[o] = i.solution[o] % 2 ? "odd" : "even";
     }
-    e.delete(l), l.givens = [ ...l.solution ];
-    const f = "mini" === o ? [ 22, 17, 13, 10 ][u] : "addoku" === o ? [ 30, 22, 14, 8 ][u] : "even-odd" === o ? [ 40, 32, 26, 22 ][u] : [ 44, 36, 29, 24 ][u];
-    let c = l.givens.length;
+    e.delete(i), i.givens = [ ...i.solution ];
+    const c = "mini" === o ? [ 22, 17, 13, 10 ][f] : "addoku" === o ? [ 30, 22, 14, 8 ][f] : "even-odd" === o ? [ 40, 32, 26, 22 ][f] : [ 44, 36, 29, 24 ][f];
+    let g = i.givens.length;
     for (const e of r(Array.from({
         length: s * s
-    }, (e, o) => o), i)) {
-        if (c <= f) break;
-        const o = l.givens[e];
-        l.givens[e] = 0, 1 === a(l, l.givens, 2, void 0, !1).count ? c-- : l.givens[e] = o;
+    }, (e, o) => o), u)) {
+        if (g <= c) break;
+        const o = i.givens[e];
+        i.givens[e] = 0, 1 === a(i, i.givens, 2, void 0, !1).count ? g-- : i.givens[e] = o;
     }
-    return l;
+    return i;
 }

@@ -124,7 +124,7 @@ html:is([data-immersive],[data-focused]) .play-layout[data-big] :is(.board-hud,.
 @media(width<=650px){html[data-play-focus] .play-layout .board-view .board-wrap{display:flex!important;justify-content:flex-start!important;align-items:flex-start!important}}
 
 /* One full-screen button for every game on phones: the title bar's corner button (focus-mode.js); Arrow's own #focus-button is retired. */
-/* Phones: fewer controls on the board. One heart with a number, the hint as a bulb and a count, and the view options (zoom, Fit, IDs, Grid, Lanes, Maximize) behind one View button. */
+/* Phones: one heart with a number, the hint as a bulb and a count, and the view options behind one View button. */
 .view-more{display:none}
 @media(width<=650px){
 html body #hearts .heart:not(:first-child){display:none}
@@ -134,6 +134,6 @@ html body .board-view-controls .view-more{display:inline-flex;min-height:44px;al
 html body .board-view-controls:not([data-view-open]) :is(.board-zoom-controls,#lanes-button,#grid-button,#board-labels-button,#board-maximize){display:none!important}
 html body .board-view-controls[data-view-open]{flex-wrap:wrap}
 }
-/* The header is hidden in Focus, but its Skip to content link must still take focus: the header stays in the page, invisible and empty of tab stops, and only the skip link shows when focused. */
+/* Focus hides the header but keeps it in the page, so its Skip to content link still shows when focused. */
 html:is([data-immersive],[data-focused])[data-play-focus] body>.collection-header{visibility:hidden!important;position:absolute!important;top:0;left:0;width:100%;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important;box-shadow:none!important}
 html:is([data-immersive],[data-focused])[data-play-focus] body>.collection-header .skip-link{visibility:visible!important}

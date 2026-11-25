@@ -53,9 +53,6 @@ to{transform:rotateX(0)}
 .secondary-button{background:var(--surface);border:1px solid var(--stroke)}
 .share-status{color:var(--muted);white-space:pre-line;margin:8px 0 0;font-size:13px}
 .lock-side{gap:14px;display:grid}
-.mode-switch{background:var(--surface-soft);border-radius:14px;grid-template-columns:1fr 1fr;padding:4px;display:grid}
-.mode-switch button{min-height:40px;color:var(--muted);border-radius:10px;font-size:14px;font-weight:800}
-.mode-switch button[aria-pressed=true]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--stroke)}
 .hard-toggle{border:1px solid var(--stroke);background:var(--surface);border-radius:16px;gap:10px;padding:14px;font-size:14px;display:flex}
 .hard-toggle input{width:18px;height:18px;accent-color:var(--accent);margin-top:2px}
 .hard-toggle small{color:var(--muted);margin-top:2px;font-size:13px;line-height:1.4;display:block}

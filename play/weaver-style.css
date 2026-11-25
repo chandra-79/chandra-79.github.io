@@ -121,9 +121,6 @@ to{opacity:1;scale:1}
 .done-actions{flex-wrap:wrap;gap:8px;display:flex}
 .share-status{color:var(--muted);white-space:pre-line;margin:8px 0 0;font-size:13px}
 .weave-side{gap:14px;display:grid}
-.mode-switch{background:var(--surface-soft);border-radius:14px;grid-template-columns:1fr 1fr;padding:4px;display:grid}
-.mode-switch button{min-height:40px;color:var(--muted);border-radius:10px;font-size:14px;font-weight:800}
-.mode-switch button[aria-pressed=true]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--stroke)}
 .side-stats{grid-template-columns:1fr 1fr;gap:10px;display:grid}
 .side-stat.flawless{background:var(--mint-soft)}
 .side-stat.flawless strong{color:var(--mint-ink)}
@@ -267,3 +264,21 @@ html body .cloud-q{font-size:34px}
 html body .type-hint{font-size:17px}
 }
 @media(width<=650px){html #weave-sky:not(:has(.cloud)),html[data-play-focus] #weave-sky:not(:has(.cloud)){min-height:min(474px,58vh)!important}}
+
+/* The sky fits the screen (2.41.2): on laptops and desktops the clouds, the word cloud and the hint row all fit
+   below --fit-top (fit.js measures #weave-sky), shrinking padding, gaps and type smoothly as the window gets
+   shorter. --sky-t runs from 0 (a short laptop) to 240px (room for the full 600px sky). Phones keep their own layout. */
+@media (width>=651px) and (height>520px){
+#weave-sky{--sky-t:clamp(0px, var(--room) - 472px, 240px);min-height:min(600px, max(360px, var(--room) - 112px));align-content:space-evenly;row-gap:calc(6px + var(--sky-t) * .083);padding:calc(12px + var(--sky-t) * .075) 22px}
+#weave-sky .cloud-face{min-height:calc(64px + var(--sky-t) * .175);padding:calc(12px + var(--sky-t) * .058) 24px calc(10px + var(--sky-t) * .058)}
+#weave-sky .word-cloud{padding:calc(16px + var(--sky-t) * .092) 30px calc(12px + var(--sky-t) * .075)}
+#weave-sky .word-cloud-body{gap:calc(3px + var(--sky-t) * .021)}
+#weave-sky .slots-wrap{padding:calc(3px + var(--sky-t) * .021) 6px}
+#weave-sky .slot{height:min(46px, calc(34px + var(--sky-t) * .05))}
+#weave-sky .weave-go{min-height:calc(36px + var(--sky-t) * .042);padding-block:calc(6px + var(--sky-t) * .017)}
+}
+@media (width>=651px) and (height>520px) and (min-width:1100px) and (hover:hover) and (pointer:fine){
+html body #weave-sky .cloud-text{font-size:calc(16px + var(--sky-t) * .021)}
+html body #weave-sky .cloud-q{font-size:calc(22px + var(--sky-t) * .05)}
+html body #weave-sky .type-hint{font-size:calc(13px + var(--sky-t) * .017)}
+}

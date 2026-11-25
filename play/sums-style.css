@@ -57,9 +57,6 @@ button:disabled{cursor:default}
 .tool{border:1px solid var(--stroke);background:var(--surface-soft);border-radius:12px;min-height:44px;padding:8px 14px;font-size:14px;font-weight:700}
 .tool:disabled{opacity:.5}
 .tool-count{background:var(--accent);min-width:18px;color:var(--paper);text-align:center;border-radius:9px;margin-left:4px;padding:0 5px;font-size:11px;line-height:18px;display:inline-block}
-.mode-switch{background:var(--surface-soft);border-radius:14px;grid-template-columns:1fr 1fr;padding:4px;display:grid}
-.mode-switch button{min-height:40px;color:var(--muted);border-radius:10px;font-size:14px;font-weight:800}
-.mode-switch button[aria-pressed=true]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--stroke)}
 .primary-button,.secondary-button{border-radius:14px;min-height:44px;padding:8px 18px;font-size:15px;font-weight:800}
 .primary-button{background:var(--accent);color:var(--paper)}
 .primary-button:disabled{opacity:.5}

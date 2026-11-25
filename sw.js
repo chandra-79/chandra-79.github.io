@@ -1,6 +1,6 @@
 // Online web play: never retain a playable offline release.
 // Keep a worker so existing installations migrate safely without touching saved progress.
-const CACHE = 'ziggle-2.44.0';
+const CACHE = 'ziggle-2.45.0';
 self.addEventListener('install', event => {
   event.waitUntil(self.skipWaiting());
 });

@@ -83,11 +83,15 @@ export function generateRound(kindId, seed) {
 /** Today's three rounds for a Ziggle day number. */
 // Daily levels (2.8): medium is the original three rounds (add, mix, all four). Easy is two adding rounds and one
 // add-and-take-away; hard is add-and-take-away then two all-four rounds. Each level has its own seeds.
+// Until SUMS_SPREAD_FROM Expert's first seed (base + 53) was Easy's third (base + 31 + 2 × 11), so those two rounds
+// were the same puzzle; days before it stay as published. From day 27 (2026-11-27) every level has its own seeds:
+// Medium base + 0/7/14, Easy base + 31/42/53, Expert base + 60/71/82, all below the next day's base (+97).
+export const SUMS_SPREAD_FROM = 27;
 const TIER_ROUNDS = Object.freeze({ easy: ['add', 'add', 'mix'], hard: ['mix', 'all', 'all'] });
 export function dailyRounds(dayNumber, tier = 'medium') {
-  const base = 20261105 + Math.max(1, dayNumber) * 97;
+  const day = Math.max(1, dayNumber), base = 20261105 + day * 97;
   if (!Object.hasOwn(TIER_ROUNDS, tier)) return KINDS.map((kind, i) => generateRound(kind.id, base + i * 7));
-  const salt = tier === 'easy' ? 31 : 53;
+  const salt = tier === 'easy' ? 31 : day >= SUMS_SPREAD_FROM ? 60 : 53;
   return TIER_ROUNDS[tier].map((kind, i) => generateRound(kind, base + salt + i * 11));
 }
 

@@ -37,7 +37,7 @@ a{color:inherit;text-decoration:none}
 .timer-chip{background:var(--surface-soft);color:var(--ink);font-variant-numeric:tabular-nums;border-radius:10px;align-items:center;gap:6px;padding:4px 10px 4px 4px;font-weight:800;display:inline-flex}
 .timer-chip button{border-radius:7px;width:28px;height:28px;font-size:13px}
 .board-wrap{position:relative}
-.sudoku-board{--size:9;grid-template-columns:repeat(var(--size), minmax(0, 1fr));border:2px solid var(--ink);aspect-ratio:1;background:var(--surface);touch-action:manipulation;border-radius:10px;display:grid;overflow:hidden}
+.sudoku-board{--size:9;isolation:isolate;grid-template-columns:repeat(var(--size), minmax(0, 1fr));border:2px solid var(--ink);aspect-ratio:1;background:var(--surface);touch-action:manipulation;border-radius:10px;display:grid;overflow:hidden}
 .cell{aspect-ratio:1;border-right:1px solid var(--stroke);border-bottom:1px solid var(--stroke);min-width:0;color:var(--accent);background:var(--surface);font-variant-numeric:tabular-nums;border-radius:0;place-items:center;padding:0;font-size:clamp(18px,4.4vw,26px);font-weight:650;display:grid;position:relative}
 .cell.box-left{border-left:2px solid var(--ink)}
 .cell.box-top{border-top:2px solid var(--ink)}
@@ -57,7 +57,7 @@ a{color:inherit;text-decoration:none}
 .notes{color:var(--muted);pointer-events:none;grid-template-columns:repeat(3,1fr);font-size:11px;font-weight:700;line-height:1;display:grid;position:absolute;inset:3px}
 .notes i{visibility:hidden;place-items:center;font-style:normal;display:grid}
 .notes i.on{visibility:visible}
-.pause-overlay{z-index:6;padding:16px;justify-content:stretch;justify-items:center;text-align:center;background:var(--surface);border-radius:10px;place-content:center;gap:12px;font-size:16px;display:grid;position:absolute;inset:0}
+.pause-overlay{z-index:10;padding:16px;justify-content:stretch;justify-items:center;text-align:center;background:var(--surface);border-radius:10px;place-content:center;gap:12px;font-size:16px;display:grid;position:absolute;inset:0}
 .pause-overlay[hidden],.legend[hidden]{display:none}
 .legend{color:var(--muted);align-items:center;gap:6px;margin:10px 0 0;font-size:13px;display:flex}
 .legend-even,.legend-odd{border:2px solid var(--muted);width:14px;height:14px;display:inline-block}
@@ -163,6 +163,10 @@ html[data-play-focus] .sudoku-main .puzzle-controls{gap:6px!important;margin:0!i
 @media (min-width:1100px) and (hover:hover) and (pointer:fine){
 html body :is(#cell-status,#selection-status){font-size:14px}
 }
+/* Given clues, valid entries and conflict marks (moved from compact.css to keep it inside its size budget). */
+.sudoku-shell .cell.given{background-color:color-mix(in srgb,var(--ink) 5%,var(--surface))}
+.sudoku-shell .cell.valid-entry .value{color:var(--mint-ink)}
+.sudoku-shell .cell.conflict:after{content:"!";color:var(--danger);font-size:11px;font-weight:800;line-height:1;position:absolute;bottom:2px;right:3px}
 /* 2.41.3: Addoku on phones. Cage lines stay softer and thinner than the box lines, sums sit in a cut-out in the
    cell's own colour and scale with the board, and dark mode keeps its highlight and starting-number shading. */
 .sudoku-board{--cage-inset:3px;container-type:inline-size}

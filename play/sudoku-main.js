@@ -1,5 +1,5 @@
 import { registerAssistance } from './play-assist.js';
-import { SUDOKU_VARIANTS, SUDOKU_DIFFICULTIES, generatePuzzle, getConflicts, isSolved, candidateMask, explainHint } from './sudoku-engine.js';
+import { SUDOKU_VARIANTS, SUDOKU_DIFFICULTIES, SUDOKU_PRACTICE_V2, SUDOKU_LADDER_V2, SUDOKU_GEN2_DAY, generatePuzzle, getConflicts, isSolved, candidateMask, explainHint } from './sudoku-engine.js';
 import { loadSudokuProgress, saveSudokuProgress, sudokuKey, recordSudokuWin } from './sudoku-progress.js';
 import { pop, shake, wave, play, haptic, feedback } from './fx.js';
 import { showLevelEnd } from './level-end.js';
@@ -14,8 +14,12 @@ const VARIANTS = {
   'even-odd': { name: 'Even / Odd', emoji: 'e/o', blurb: 'Classic rules. Round markers hold even digits; square markers hold odd.' },
 };
 const LEVELS_SHOWN = 1000;
-const practiceAt=i=>i<50?i+1:199950+i;
-const practiceIndex=n=>n>=1&&n<=50?n-1:n>=200000&&n<200950?n-199950:-1;
+// Practice puzzles 1–1000 are levels 201000–201999 (generation 2, 27 Nov 2026: fresh grids, each difficulty its own).
+// Generation 1 practice (levels 1–50 and 200000–200949) still opens a half-played save; Next and Prev lead on to generation 2.
+const practiceAt=i=>SUDOKU_PRACTICE_V2+i;
+const practiceIndex=n=>n>=SUDOKU_PRACTICE_V2&&n<SUDOKU_PRACTICE_V2+LEVELS_SHOWN?n-SUDOKU_PRACTICE_V2:n>=1&&n<=50?n-1:n>=200000&&n<200950?n-199950:-1;
+/** The generation 2 practice puzzle at the same number (puzzle 1 for a daily or ladder grid). */
+const practiceLevel=n=>practiceAt(Math.max(0,practiceIndex(n)));
 // What changes from level to level (2.6), shown when you hover or focus a difficulty. Easy and medium help more.
 const DIFFICULTY_TIPS = {
   easy: 'Most numbers given. Rule conflicts are marked when enabled. A number’s key switches off after all its copies are placed without a current conflict.',
@@ -44,7 +48,8 @@ const LADDER_STYLES = ['classic', 'addoku', 'diagonal', 'even-odd', 'classic', '
 function ladderPuzzle(place) {
   if (place.daily) return todayDaily(place.tier);
   const number = hub().dailyNumber();
-  return { variant: LADDER_STYLES[(number + place.index) % LADDER_STYLES.length], difficulty: place.tier, level: 700_000 + ((number * 53 + place.index) % 290_000) };
+  const level = number >= SUDOKU_GEN2_DAY ? SUDOKU_LADDER_V2 + ((number * 53 + place.index) % 10_000) : 700_000 + ((number * 53 + place.index) % 290_000);
+  return { variant: LADDER_STYLES[(number + place.index) % LADDER_STYLES.length], difficulty: place.tier, level };
 }
 let onLadder = false;
 // The Games menu opens ?resume=1: carry on with a half-played puzzle, otherwise today's daily. ?daily=… always means today's.
@@ -62,7 +67,7 @@ if (!params.get('daily') && !archiveDate && !(resuming && dailyLevelOf(progress.
   const cur = progress.current, wins = new Set(progress.wins || []);
   const oldDaily = practiceIndex(cur.level)<0 && !DAILY_LEVELS.some(level => { const daily = todayDaily(level); return daily && sudokuKey(daily) === sudokuKey(cur); });
   if (oldDaily || wins.has(sudokuKey(cur))) {
-    const base = { ...cur, level: practiceIndex(cur.level)<0?1:cur.level };
+    const base = { ...cur, level: practiceLevel(cur.level) };
     let level = null;
     for (let step = 0; step < LEVELS_SHOWN && level === null; step++) { const n = practiceAt((practiceIndex(base.level)+step)%LEVELS_SHOWN); if (!wins.has(sudokuKey({ ...base, level: n }))) level = n; }
     progress.current = { ...base, level: level ?? base.level };
@@ -325,7 +330,7 @@ function loadPuzzle(changes = {}) {
   puzzle.givens.forEach((given, index) => { if (given) session.values[index] = given; });
   selected = Math.max(0, puzzle.givens.findIndex(value => !value));
   paused = false; complete = isSolved(puzzle, session.values); lastTick = Date.now();
-  $('pause-overlay').hidden = true;
+  showPaused(); // A new puzzle always starts unpaused: no cover, a live board and a pause (not play) button.
   const info = VARIANTS[puzzle.variant];
   $('puzzle-title').textContent = info.name;
   paintDailyButtons();
@@ -336,7 +341,7 @@ function loadPuzzle(changes = {}) {
   document.querySelectorAll('[data-difficulty]').forEach(button => { const active = button.dataset.difficulty === puzzle.difficulty; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
   const select = $('puzzle-number');
   if (practiceIndex(progress.current.level)<0) { select.disabled = true; $('daily-note').textContent = 'Today’s daily puzzle'; }
-  else { select.disabled = false; select.value = String(progress.current.level); $('daily-note').textContent = ''; }
+  else { select.disabled = false; select.value = String(practiceLevel(progress.current.level)); $('daily-note').textContent = ''; }
   $('previous-puzzle').disabled = practiceIndex(progress.current.level)<=0;
   $('next-puzzle').disabled = practiceIndex(progress.current.level)===LEVELS_SHOWN-1;
   $('share-sudoku').hidden = !(complete && isDaily());
@@ -345,13 +350,16 @@ function loadPuzzle(changes = {}) {
   if (complete) $('completion-detail').textContent = 'You’ve already solved this one.';
   buildBoard(); paint(); persist();
 }
-function setPaused(value) {
-  if (complete) return;
-  paused = value;
+function showPaused() {
   $('pause-overlay').hidden = !paused;
   $('sudoku-board').inert = paused;
   $('pause-button').setAttribute('aria-label', paused ? 'Resume puzzle' : 'Pause puzzle');
   $('pause-symbol').textContent = paused ? '▶' : 'Ⅱ';
+}
+function setPaused(value) {
+  if (complete) return;
+  paused = value;
+  showPaused();
   lastTick = Date.now();
   paint();
   if(paused)$('resume-button').focus({preventScroll:true});else cells[selected]?.focus({preventScroll:true});
@@ -362,14 +370,14 @@ $('variant-list').append(...SUDOKU_VARIANTS.map(variant => {
   const button = document.createElement('button');
   button.type = 'button'; button.className = 'variant-option'; button.dataset.variant = variant;
   button.innerHTML = `<span class="variant-icon" aria-hidden="true">${VARIANTS[variant].emoji}</span><span>${VARIANTS[variant].name}</span>`;
-  button.addEventListener('click', () => loadPuzzle({ variant, level: practiceIndex(progress.current.level)<0?1:progress.current.level }));
+  button.addEventListener('click', () => loadPuzzle({ variant, level: practiceLevel(progress.current.level) }));
   return button;
 }));
 $('difficulty-tabs').append(...SUDOKU_DIFFICULTIES.map(difficulty => {
   const button = document.createElement('button');
   button.type = 'button'; button.dataset.difficulty = difficulty; button.textContent = difficulty[0].toUpperCase() + difficulty.slice(1);
   button.dataset.tip = DIFFICULTY_TIPS[difficulty]; button.setAttribute('aria-description', DIFFICULTY_TIPS[difficulty]);
-  button.addEventListener('click', () => loadPuzzle({ difficulty, level: practiceIndex(progress.current.level)<0?1:progress.current.level }));
+  button.addEventListener('click', () => loadPuzzle({ difficulty, level: practiceLevel(progress.current.level) }));
   return button;
 }));
 $('puzzle-number').append(...Array.from({ length: LEVELS_SHOWN }, (_, i) => new Option(`${i + 1} / ${LEVELS_SHOWN}`, String(practiceAt(i)))));
