@@ -55,3 +55,13 @@ dialog.level-end>*{grid-column:1}dialog.level-end>:is(.le-lives,.le-actions,.le-
 dialog.level-end>:is(.le-symbol,.le-praise,.le-kicker,.le-note){margin-bottom:6px}dialog.level-end>.le-symbol{display:none}dialog.level-end h2{margin:2px 0 4px;font-size:22px}dialog.level-end>.le-stats{margin:0 0 6px}dialog.level-end>.le-stats{flex-wrap:nowrap}dialog.level-end .le-stats>div{min-width:0;padding:5px 8px}dialog.level-end .le-stats dd{font-size:17px}dialog.level-end>.le-note{font-size:13px;padding:6px 10px}
 dialog.level-end>.le-lives{margin:6px 36px 8px 0}dialog.level-end .le-actions button{min-height:44px;padding:8px 12px}}
 @media (max-height:520px) and (orientation:landscape){.hearts{position:static;transform:none}}
+/* 2.54 touch targets: in portrait the game bar is already 56 px tall, so Today/Practice can be 40 px without costing the board a pixel; the logo gets a 44 px hit area. */
+@media(pointer:coarse) and (orientation:portrait){
+html[data-play-focus] .game-bar .mode-switch button:not(#mm-daily,#mm-practice){min-height:40px!important;font-size:12px!important}
+html[data-play-focus] .game-bar .bar-brand{position:relative}
+html[data-play-focus] .game-bar .bar-brand::after{content:"";position:absolute;inset:-7px}
+}
+/* Memory's Sound / New game grow only where a tall portrait screen has the room to spare. */
+@media(pointer:coarse) and (min-height:780px) and (orientation:portrait){
+html[data-play-focus] :is(#mm-sound,#mm-new){min-height:40px!important}
+}

@@ -340,3 +340,7 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 
 @media(max-width:359px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (width>900px){.home-hero>.hero-copy{align-self:start;position:sticky;top:88px;padding-top:24px}}
+.home-sub{color:var(--muted);max-width:34ch;margin:-4px 0 20px;font-size:17px;font-weight:700;line-height:1.4}
+.today-edit{margin:10px 0 0;font-size:14px}
+.today-edit a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.streak-row[hidden],.season-chip[hidden]{display:none}

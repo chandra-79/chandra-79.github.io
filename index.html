@@ -13,19 +13,19 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/play/hub.js"></script>
-  <script src="/play/appearance.js"></script>
-  <script type="module" src="/play/settings-boot.js"></script>
-  <script src="/play/collection-shell.js"></script>
-  <!--modulepreload--><link rel="modulepreload" href="/play/week-word.js"><link rel="modulepreload" href="/play/week-words.js"><!--/modulepreload-->
-  <link rel="stylesheet" href="/play/appearance.css">
-  <link rel="stylesheet" href="/play/collection-shell.css">
-  <link rel="stylesheet" href="/play/home.css">
-  <link rel="stylesheet" href="/play/week-card.css">
-  <link rel="stylesheet" href="/play/level-end.css">
-  <link rel="stylesheet" href="/play/desktop-read.css">
-  <link rel="stylesheet" href="/play/compact-focus.css">
-  <link rel="stylesheet" href="/play/compact.css">
+  <script type="module" src="/v/058ba2cb29/play/hub.js"></script>
+  <script src="/v/058ba2cb29/play/appearance.js"></script>
+  <script type="module" src="/v/058ba2cb29/play/settings-boot.js"></script>
+  <script src="/v/058ba2cb29/play/collection-shell.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/v/058ba2cb29/play/week-word.js"><link rel="modulepreload" href="/v/058ba2cb29/play/week-words.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/v/058ba2cb29/play/appearance.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/home.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/week-card.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/level-end.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/compact-focus.css">
+  <link rel="stylesheet" href="/v/058ba2cb29/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Ziggle — A little play. A lot of spark.">
   <meta property="og:description" content="Ziggle your brain. Find your sharp. Eight playful daily brain teasers: word search, crossword, Word Cloud, Letter Lock, arrow escape, Memory Mischief, Sudoku and Sum Spark. Free to play, no account needed.">
@@ -44,6 +44,7 @@
       <div class="hero-copy">
         <p class="home-eyebrow" id="hero-eyebrow">Your daily brain break</p>
         <h1 id="home-title">Ziggle your brain. <span>Find your sharp.</span></h1>
+        <p class="home-sub">Eight quick puzzles a day. Free, no sign-up.</p>
         <p class="home-lede" data-home="notes">Eight little brain teasers for words, numbers, logic and memory. Finish any one each day to keep your streak glowing, or all eight for a perfect day.</p>
         <a class="home-cta" id="hero-cta" href="/play/index.html">Start today’s Ziggle <span aria-hidden="true">→</span></a>
         <ul class="home-notes hero-notes" data-home="notes" aria-label="About Ziggle">
@@ -56,7 +57,6 @@
         <div class="today-top"><h2 id="today-title">Today’s Ziggle</h2><span class="season-chip" id="season-chip">League play</span></div>
         <button type="button" id="today-toggle" class="today-toggle" aria-expanded="true" aria-controls="today-content" hidden></button>
         <div id="today-content">
-        <p><a href="/?settings=daily-games" data-settings-tab-open="daily-games">Choose the games in your daily set</a></p>
         <ul class="today-list" id="today-list" role="list">
           <li><a href="/play/words.html?game=search&amp;daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/search.svg" width="32" height="32" alt="">Word search</a></li>
           <li><a href="/play/words.html?game=crossword&amp;daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/crossword.svg" width="32" height="32" alt="">Crossword</a></li>
@@ -66,7 +66,8 @@
           <li><a href="/play/memory.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/memory.svg" width="32" height="32" alt="">Memory Mischief</a></li>
           <li><a href="/play/sudoku.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/sudoku.svg" width="32" height="32" alt="">Sudoku</a></li>
         </ul>
-        <div class="streak-row">
+        <p class="today-edit"><a href="/?settings=daily-games" data-settings-tab-open="daily-games">Edit my daily set</a></p>
+        <div class="streak-row" id="streak-row">
           <div><strong id="streak-current">0</strong><small>day streak</small></div>
           <div><strong id="streak-best">0</strong><small>best streak</small></div>
           <div><strong id="streak-freezes">0</strong><small>freezes banked</small></div>
@@ -258,7 +259,7 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
 
-  <footer class="home-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v2.53.1</small></footer>
-  <script type="module" src="/play/home.js"></script>
+  <footer class="home-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v2.54.0</small></footer>
+  <script type="module" src="/v/058ba2cb29/play/home.js"></script>
 </body>
 </html>

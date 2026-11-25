@@ -6,7 +6,7 @@ const root = document.documentElement;
 const AREAS = '#board-viewport,#word-board,#weave-sky,#weave-input,#lock-board,#keyboard,#memory-board,.sum-board,#sum-keys,#sudoku-board,#twist-board';
 if (document.querySelector(AREAS) && document.querySelector('.collection-header')) {
   const calm = () => globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = '/play/playing.css'; document.head.append(link);
+  const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL('./playing.css', import.meta.url).href; document.head.append(link);
   let playing = false, timer = 0;
   const resize = () => dispatchEvent(new Event('resize'));
   // On phones every game already starts full screen (focus-mode.js), so the first-move fade is for bigger screens only.
