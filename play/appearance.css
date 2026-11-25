@@ -287,5 +287,30 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 :root{--f0:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--f1:"Avenir Next","Century Gothic","Segoe UI",system-ui,sans-serif;--f2:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;--f3:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;--f4:Impact,Haettenschweiler,"Arial Narrow Bold",sans-serif;--f5:"Arial Black","Helvetica Neue",Arial,sans-serif;}
 :root :is(h1,h2,h3,.game-card-title){font-family:var(--hf,var(--f0));letter-spacing:var(--ls,-.01em)}
 :root[data-look="amber"] body{font-family:var(--f3)}
+
+/* 2.42 tile art. Game cards and menu items show the game's tile; each game bar opens with it too, picked from the menu item marked
+   as this page. hub.js swaps data-art pictures to their moving copies; under Calmer motion everything stays on the still copies. */
+.game-card .game-art{filter:drop-shadow(0 8px 12px var(--shadow))}
+.game-bar h1{display:flex;align-items:center;gap:10px}
+.game-bar h1:before{content:"";flex:none;width:38px;height:38px;background:var(--bar-art) center/contain no-repeat;filter:drop-shadow(0 3px 5px var(--shadow))}
+:root:not(:has(.collection-nav [data-nav][aria-current])) .game-bar h1:before{display:none}
+:root:has([data-nav=search][aria-current]){--bar-art:url(/play/art/search.svg)}[data-motion=calm]:has([data-nav=search][aria-current]){--bar-art:url(/play/art/still/search.svg)}
+:root:has([data-nav=crossword][aria-current]){--bar-art:url(/play/art/crossword.svg)}[data-motion=calm]:has([data-nav=crossword][aria-current]){--bar-art:url(/play/art/still/crossword.svg)}
+:root:has([data-nav=weaver][aria-current]){--bar-art:url(/play/art/weaver.svg)}[data-motion=calm]:has([data-nav=weaver][aria-current]){--bar-art:url(/play/art/still/weaver.svg)}
+:root:has([data-nav=lock][aria-current]){--bar-art:url(/play/art/lock.svg)}[data-motion=calm]:has([data-nav=lock][aria-current]){--bar-art:url(/play/art/still/lock.svg)}
+:root:has([data-nav=arrow][aria-current]){--bar-art:url(/play/art/arrows.svg)}[data-motion=calm]:has([data-nav=arrow][aria-current]){--bar-art:url(/play/art/still/arrows.svg)}
+:root:has([data-nav=memory][aria-current]){--bar-art:url(/play/art/memory.svg)}[data-motion=calm]:has([data-nav=memory][aria-current]){--bar-art:url(/play/art/still/memory.svg)}
+:root:has([data-nav=sudoku][aria-current]){--bar-art:url(/play/art/sudoku.svg)}[data-motion=calm]:has([data-nav=sudoku][aria-current]){--bar-art:url(/play/art/still/sudoku.svg)}
+:root:has([data-nav=sums][aria-current]){--bar-art:url(/play/art/sums.svg)}[data-motion=calm]:has([data-nav=sums][aria-current]){--bar-art:url(/play/art/still/sums.svg)}
+:root:has([data-nav=vocab][aria-current]){--bar-art:url(/play/art/vocab.svg)}[data-motion=calm]:has([data-nav=vocab][aria-current]){--bar-art:url(/play/art/still/vocab.svg)}
+:root:has([data-nav=typing][aria-current]){--bar-art:url(/play/art/typing.svg)}[data-motion=calm]:has([data-nav=typing][aria-current]){--bar-art:url(/play/art/still/typing.svg)}
+:root:has([data-nav=emoji][aria-current]){--bar-art:url(/play/art/emoji.svg)}[data-motion=calm]:has([data-nav=emoji][aria-current]){--bar-art:url(/play/art/still/emoji.svg)}
+:root:has([data-nav=palace][aria-current]){--bar-art:url(/play/art/palace.svg)}[data-motion=calm]:has([data-nav=palace][aria-current]){--bar-art:url(/play/art/still/palace.svg)}
+:root:has([data-nav=cube][aria-current]){--bar-art:url(/play/art/cube.svg)}[data-motion=calm]:has([data-nav=cube][aria-current]){--bar-art:url(/play/art/still/cube.svg)}
+:root:has([data-nav=atlas][aria-current]){--bar-art:url(/play/art/atlas.svg)}[data-motion=calm]:has([data-nav=atlas][aria-current]){--bar-art:url(/play/art/still/atlas.svg)}
+.collection-nav img.nav-icon.nav-tile{background:none!important;box-shadow:none!important;border-radius:9px;flex:0 0 32px;width:32px;height:32px;padding:0;filter:drop-shadow(0 2px 3px var(--shadow));transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+@media (hover:hover){.collection-nav :is(a,button):hover>img.nav-tile{transform:scale(1.12) rotate(-4deg)}}
+:root[data-motion=calm] .collection-nav img.nav-tile{transition:none}
+@media (prefers-reduced-motion:reduce){.collection-nav img.nav-tile{transition:none}}
 /* iPhone Safari zooms the page in when a field under 16px gets focus, and never zooms back out (2.41.1). */
 @media (pointer:coarse){:root:root:root:root :is(input:not([type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit]),select,textarea){font-size:max(16px,1em)!important}}

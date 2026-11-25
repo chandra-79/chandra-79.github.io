@@ -185,9 +185,10 @@ body{position:relative}
 .game-shell .board-wrap{padding-bottom:6px}
 .game-shell .daily-stats strong{font-size:20px}
 }
-@keyframes art-bob{0%,to{transform:translateY(0) rotate(0)}
-35%{transform:translateY(-4px) rotate(-2deg)}
-70%{transform:translateY(1px) rotate(1.5deg)}
+@keyframes art-bob{0%,to{transform:translateY(0) rotate(0) scale(1)}
+30%{transform:translateY(-9px) rotate(-5deg) scale(1.08)}
+60%{transform:translateY(1px) rotate(3deg) scale(1.02)}
+80%{transform:translateY(-2px) rotate(-1deg) scale(1.03)}
 }
 @media (prefers-reduced-motion:reduce){.game-card .game-art{animation:none!important}
 :is(.game-card,.home-cta,.primary-button,.primary-action,.tool-button,.collection-nav a):active{transform:none!important}
@@ -453,7 +454,7 @@ dialog.level-end .le-close{border:1px solid var(--stroke);background:var(--surfa
 dialog.level-end .le-close:hover{background:var(--surface-soft)}
 dialog.level-end .le-close:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 [data-tip]{position:relative}
-@media (hover:hover){.game-card:hover .game-art{animation:.6s ease-in-out art-bob}
+@media (hover:hover){.game-card:hover .game-art{animation:.7s cubic-bezier(.34,1.56,.64,1) art-bob}
 [data-tip]:focus-visible:after,[data-tip]:hover:after{content:attr(data-tip);z-index:90;background:var(--ink);width:max-content;max-width:260px;color:var(--paper);text-align:left;white-space:normal;letter-spacing:0;text-transform:none;pointer-events:none;border-radius:10px;padding:9px 11px;position:absolute;top:calc(100% + 8px);left:50%;transform:translate(-50%);box-shadow:0 8px 24px #140c2838}
 [data-tip]:first-child:focus-visible:after,[data-tip]:first-child:hover:after{left:0;transform:none}
 }
@@ -649,3 +650,4 @@ html[data-game-active] .game-shell:not(:has(#board-viewport g)) .game-panel{visi
 @media(width<=650px){html body>.collection-header .brand{min-width:44px;min-height:44px;justify-content:center;align-items:center;display:inline-flex}html body>.collection-header .collection-nav :is(.nav-group>summary,.nav-link){min-height:44px}}
 @media(hover:none)and (pointer:coarse){:is(#pause-button,#previous-puzzle,#next-puzzle){min-width:44px;min-height:44px}}
 @media(hover:none)and (pointer:coarse)and (height<=430px){html[data-play-focus] #pause-button{min-height:0}}
+
