@@ -117,7 +117,7 @@ function buildBoard() {
       const outline = document.createElement('span');
       outline.className = 'cage';
       const edges = { top: r === 0 || !same(index - puzzle.size), right: c === puzzle.size - 1 || !same(index + 1), bottom: r === puzzle.size - 1 || !same(index + puzzle.size), left: c === 0 || !same(index - 1) };
-      for (const [side, edge] of Object.entries(edges)) { outline.style[side] = edge ? '3px' : '0'; if (!edge) outline.style[`border-${side}-color`] = 'transparent'; }
+      for (const [side, edge] of Object.entries(edges)) { outline.style[side] = edge ? 'var(--cage-inset)' : '0'; if (!edge) outline.style[`border-${side}-color`] = 'transparent'; }
       cell.append(outline);
       if (puzzle.cages[cage].cells[0] === index) {
         const sum = document.createElement('span');

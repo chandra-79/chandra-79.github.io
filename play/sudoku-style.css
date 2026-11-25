@@ -57,7 +57,7 @@ a{color:inherit;text-decoration:none}
 .notes{color:var(--muted);pointer-events:none;grid-template-columns:repeat(3,1fr);font-size:11px;font-weight:700;line-height:1;display:grid;position:absolute;inset:3px}
 .notes i{visibility:hidden;place-items:center;font-style:normal;display:grid}
 .notes i.on{visibility:visible}
-.pause-overlay{z-index:3;text-align:center;background:color-mix(in srgb, var(--surface) 99%, transparent);border-radius:10px;place-content:center;gap:12px;font-size:16px;display:grid;position:absolute;inset:0}
+.pause-overlay{z-index:6;padding:16px;justify-content:stretch;justify-items:center;text-align:center;background:var(--surface);border-radius:10px;place-content:center;gap:12px;font-size:16px;display:grid;position:absolute;inset:0}
 .pause-overlay[hidden],.legend[hidden]{display:none}
 .legend{color:var(--muted);align-items:center;gap:6px;margin:10px 0 0;font-size:13px;display:flex}
 .legend-even,.legend-odd{border:2px solid var(--muted);width:14px;height:14px;display:inline-block}
@@ -148,7 +148,7 @@ dialog li,dialog p{font-size:15px;line-height:1.5}
 .sudoku-shell .board-card .tool-row .tool{height:36px;min-height:36px;padding-block:4px;font-size:13px}
 }
 /* Cage lines remain legible where a cage crosses the heavy box boundary. */
-.cage{border-width:2px;border-color:var(--ink);z-index:2;filter:drop-shadow(0 0 1px var(--surface))}
+.cage{border:1.5px dashed color-mix(in srgb,var(--ink) 58%,var(--surface));z-index:2}
 .cell:has(.cage){overflow:visible}
 .cage-sum{z-index:3}
 .cell.selected:has(.cage) .cage{border-color:var(--accent)}
@@ -162,4 +162,18 @@ html[data-play-focus] .sudoku-main .puzzle-controls{gap:6px!important;margin:0!i
 
 @media (min-width:1100px) and (hover:hover) and (pointer:fine){
 html body :is(#cell-status,#selection-status){font-size:14px}
+}
+/* 2.41.3: Addoku on phones. Cage lines stay softer and thinner than the box lines, sums sit in a cut-out in the
+   cell's own colour and scale with the board, and dark mode keeps its highlight and starting-number shading. */
+.sudoku-board{--cage-inset:3px;container-type:inline-size}
+.cage-sum{background:inherit;border-radius:0 0 3px 0;padding:0 2px 1px 1px;top:1px;left:1px}
+:root[data-appearance=dark] .cell.related{background:color-mix(in srgb,var(--ink) 11%,var(--surface))}
+:root[data-appearance=dark] .sudoku-shell .cell.given{background-color:color-mix(in srgb,var(--ink) 7%,var(--surface))}
+@media (width<=650px){
+.sudoku-board{--cage-inset:2px;border-width:3px}
+.cell.box-left{border-left-width:3px}
+.cell.box-top{border-top-width:3px}
+.cage{border-width:1px}
+.cage-sum{font-size:max(9px,3cqw);top:0;left:0}
+.cell:has(.cage-sum) .value{font-size:min(5.6cqw,22px);translate:0 .14em}
 }
