@@ -18,9 +18,11 @@ const MODES = Object.freeze([
   { id: 'dark', name: 'Night Fizz', icon: svg('M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z') },
 ]);
 const LOOK_KEY = 'ziggle-look-v1';
-const TABS = Object.freeze([['look', 'Look'], ['play', 'Play'], ['progress', 'Progress'], ['home', 'Home'], ['you', 'You']]);
+const TABS = Object.freeze([['look', 'Look'], ['play', 'Play'], ['daily', 'Daily'], ['progress', 'Saving'], ['more', 'More']]);
+// Older links and bookmarks: Home and You moved into More (2.53).
+const MOVED = Object.freeze({ home: 'home-extras', you: 'more' });
 export const HOME_SECTIONS = Object.freeze([
-  ['notes', 'About Ziggle', 'The welcome line and notes: free, saved progress, play your way.'],
+  ['notes', 'About Ziggle', 'The welcome line and notes about how Ziggle works.'],
   ['training', 'Ziggle Training', 'Typing, emoji and flags, memory palace and cube trainers.'],
   ['trophies', 'Trophy shelf and season', 'Trophies you’ve earned and this season’s goals.'],
   ['history', 'History and missed days', 'Your last 12 weeks, and replays of past dailies.'],
@@ -51,35 +53,25 @@ function build() {
   dialog.className = 'settings-dialog';
   dialog.setAttribute('aria-labelledby', 'settings-title');
   dialog.innerHTML = `<div class="settings-top"><div class="settings-head"><h2 id="settings-title">Settings</h2><button type="button" class="settings-close" aria-label="Close settings">×</button></div>
-    <p class="settings-lede">Your preferences for every game on this device.</p>
     <div class="settings-tabs" role="tablist" aria-label="Settings sections">${TABS.map(([id, label]) => `<button type="button" role="tab" id="settings-tab-${id}" data-settings-tab="${id}" aria-controls="settings-body" aria-selected="false">${label}</button>`).join('')}</div>
     </div><div id="settings-body" role="tabpanel">
-    <fieldset class="settings-group" data-tab="look"><legend>Appearance</legend><div class="mode-options">${MODES.map(mode => `<label class="mode-option"><input type="radio" name="appearance" value="${mode.id}">${mode.icon}<span>${mode.name}</span></label>`).join('')}</div></fieldset>
-    <fieldset class="settings-group" data-tab="look"><legend>Colour look <small>Works in Day Spark and Night Fizz</small></legend><div id="look-options" class="skin-options"></div></fieldset>
-    <fieldset class="settings-group" data-tab="look" data-needs-hub><legend>Board style <small>Sudoku, Letter Lock and Word Cloud. Streaks unlock more.</small></legend><div id="skin-options" class="skin-options"></div></fieldset>
-    <fieldset class="settings-group" data-tab="play" data-needs-hub id="sound-settings"><legend>Sound &amp; vibration</legend>
-      ${check('sound-fx', 'Sound effects', 'Pops, dings and gentle feedback. Switch on to hear a preview. Off by default on touch screens.')}
+    <fieldset class="settings-group" data-tab="look"><legend>Theme</legend><div class="mode-options">${MODES.map(mode => `<label class="mode-option"><input type="radio" name="appearance" value="${mode.id}">${mode.icon}<span>${mode.name}</span></label>`).join('')}</div></fieldset>
+    <fieldset class="settings-group" data-tab="look"><legend>Colour</legend><div id="look-options" class="skin-options"></div></fieldset>
+    <fieldset class="settings-group" data-tab="look" data-needs-hub><legend>Board style <small>Longer streaks unlock more.</small></legend><div id="skin-options" class="skin-options"></div></fieldset>
+    <fieldset class="settings-group switches" data-tab="play" data-needs-hub id="sound-settings"><legend class="sr-only">Sound, motion and help</legend>
+      ${check('sound-fx', 'Sound', 'Pops and dings as you play.')}
       ${check('haptics', 'Vibration', 'A small buzz for found words and blocked moves.', ' data-touch-only')}
+      ${check('calm-mode', 'Calmer motion', 'No flips, shakes, confetti or sliding.')}
+      ${check('quick-demos', 'Quick demos', 'A short example when a new rule appears.')}
+      ${check('word-shares', 'Share in words', 'Results as sentences instead of emoji.')}
     </fieldset>
-    <fieldset class="settings-group" data-tab="play" data-needs-hub><legend>Comfort</legend>
-      ${check('calm-mode', 'Calmer motion', 'Turns off flips, shakes, confetti and sliding everywhere, even if your device allows motion.')}
-      ${check('quick-demos', 'First-time quick demos', 'Show a short example when a new rule appears. Remembered in this browser; replay from Help.')}
-      ${check('word-shares', 'Share in words', 'Results are copied as plain sentences instead of emoji, so screen readers read them clearly.')}
-    </fieldset>
-    <fieldset class="settings-group" data-tab="play" id="app-reminder" hidden><legend>Daily reminder <small>One notification a day at the time you choose, so today’s Ziggle doesn’t slip by. It skips days you’ve already played, and it never leaves your phone.</small></legend>
+    <fieldset class="settings-group switches" data-tab="play" id="app-reminder" hidden><legend>Daily reminder <small>One notification a day, skipped once you’ve played. It never leaves your phone.</small></legend>
       ${check('reminder-on', 'Remind me every day', 'Off unless you switch it on.')}
       <label class="setting reminder-time"><span><strong>Time</strong></span> <input type="time" id="reminder-time" value="19:00" step="900"></label>
     </fieldset>
-    <fieldset class="settings-group" data-tab="play" data-needs-hub id="daily-games"><legend>Your Daily Ziggle <small>Choose the games in your daily list. Congratulations and Continue lead through your unfinished choices. All eight games stay available from Games; changing this list never erases progress.</small></legend>
-      <div class="daily-game-choices">${DAILY_GAMES.map(([id, name]) => check(`daily-game-${id}`, name, '')).join('')}</div>
-      <p id="daily-selection-note" role="status"></p>
-    </fieldset>
-    <fieldset class="settings-group" data-tab="play" data-needs-hub id="daily-levels"><legend>Daily level <small>Every day each game is a ladder of puzzles with no end. Start at Easy: 6 Easy, then 10 Medium, then Expert. Start at Medium: 20 Medium, then Expert. Start at Expert: Expert all the way. The first puzzle of each level is that level’s daily, the same for everyone, and counts for leaderboards and points (medium ×1.2, expert ×1.5); the rest are bonus levels that earn ✦ credits. A new choice starts with your next ladder.</small></legend>
-      <p class="level-today" id="level-today"></p>
-      <div class="level-rows">${DAILY_GAMES.map(([id, name]) => `<label class="level-row"><span>${name}</span><select id="plan-${id}" data-plan-game="${id}">${PLANS.map(([plan, label]) => `<option value="${plan}">${label}</option>`).join('')}</select><small class="level-now" id="plan-now-${id}"></small></label>`).join('')}</div>
-      <div class="level-all"><span>All games:</span>${PLANS.map(([plan, label]) => `<button type="button" class="secondary-button" data-plan-all="${plan}">${label}</button>`).join('')}</div>
-    </fieldset>
-    <fieldset class="settings-group" data-tab="play" id="play-your-way"><legend>Play your way <small>How every game works for every player.</small></legend>
+    <fieldset class="settings-group" data-tab="play" id="play-your-way"><legend class="sr-only">Play your way</legend>
+      <p class="settings-note">Keyboard, touch and screen readers work in every game.</p>
+      <details class="settings-more"><summary>How Ziggle plays your way</summary>
       <ul class="a11y-list">
         <li><strong>Keyboard, mouse or touch</strong> for every game. Letter Lock and Word Cloud take typing; Arrow escape lets you type an arrow’s ID; Sudoku uses arrow keys and 1–9.</li>
         <li><strong>Never colour alone.</strong> Letter Lock tiles carry ✓ and •, Word Cloud clues are labelled, and Sudoku conflicts are outlined.</li>
@@ -87,32 +79,51 @@ function build() {
         <li><strong>Share in words</strong> above writes results as sentences a screen reader can read.</li>
         <li><strong>Every colour look</strong>, light and dark, is checked for readable contrast; text is never smaller than 11 px.</li>
         <li><strong>No timers that pressure.</strong> Pause any game; the streak forgives a missed day with freezes.</li>
-      </ul>
+      </ul><p class="settings-note"><a href="/accessibility.html">Accessibility in full</a></p></details>
     </fieldset>
-    <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend>Your progress <small>Everything saves in this browser. Keep a copy, or carry it to another device.</small></legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>
-    <fieldset class="settings-group" data-tab="home" data-needs-hub><legend>Home page <small>Home keeps to the essentials: today’s Ziggle, your streak and the games. Switch on anything else you’d like to see there.</small></legend>
-      ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail)).join('')}
+    <fieldset class="settings-group" data-tab="daily" data-needs-hub id="daily-games"><legend>Games in my daily set</legend>
+      <div class="daily-game-choices">${DAILY_GAMES.map(([id, name]) => check(`daily-game-${id}`, name, '')).join('')}</div>
+      <p id="daily-selection-note" class="settings-note" role="status"></p>
     </fieldset>
-    <fieldset class="settings-group" data-tab="you" data-needs-hub><legend>Family and privacy</legend>
+    <fieldset class="settings-group" data-tab="daily" data-needs-hub id="daily-levels"><legend>Starting level <small>Each game climbs from here as you play. A new choice starts with your next ladder.</small></legend>
+      <div class="level-all" role="group" aria-label="Starting level for all games">${PLANS.map(([plan, label]) => `<button type="button" class="secondary-button" data-plan-all="${plan}" aria-pressed="false" aria-label="${label} for all games">${label.replace('Start at ', '')}</button>`).join('')}</div>
+      <details class="settings-more" id="level-each"><summary>Set a level for each game</summary>
+      <p class="level-today" id="level-today"></p>
+      <div class="level-rows">${DAILY_GAMES.map(([id, name]) => `<label class="level-row"><span>${name}</span><select id="plan-${id}" data-plan-game="${id}">${PLANS.map(([plan, label]) => `<option value="${plan}">${label}</option>`).join('')}</select><small class="level-now" id="plan-now-${id}"></small></label>`).join('')}</div></details>
+      <details class="settings-more"><summary>How levels and points work</summary><p class="settings-note">Every day each game is a ladder of puzzles with no end. Start at Easy: 6 Easy, then 10 Medium, then Expert. Start at Medium: 20 Medium, then Expert. Start at Expert: Expert all the way. The first puzzle of each level is that level’s daily, the same for everyone, and counts for leaderboards and points (medium ×1.2, expert ×1.5); the rest are bonus levels that earn ✦ credits.</p></details>
+    </fieldset>
+    <div class="settings-group save-facts" data-tab="progress" data-needs-hub><span aria-hidden="true">✓</span><p><strong>Your progress is saved in this browser</strong>No sign-up, no cookies. Nothing leaves this device unless you choose it below.</p></div>
+    <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend class="sr-only">Backup and other devices</legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>
+    <fieldset class="settings-group switches" data-tab="progress" data-needs-hub><legend>Privacy</legend>
       ${check('kids-mode', 'Kids mode', 'Hides leaderboards, leagues, names and email signup, and sends nothing to the server.', KIDS_MODE_AVAILABLE ? '' : ' hidden')}
-      ${check('analytics-toggle', 'Share anonymous visit counts', 'Day-level counts only: no cookies, no identifiers. Always off in kids mode or with Do Not Track.', ' data-online')}
+      ${check('analytics-toggle', 'Share anonymous visit counts', 'Day totals only: no cookies, no identifiers. Off in kids mode or with Do Not Track.', ' data-online')}
+      <p class="settings-note"><a href="/privacy.html">Privacy in full</a></p>
     </fieldset>
-    <fieldset class="settings-group" data-tab="you" data-needs-hub data-grownups><legend>Leaderboard name <small>Shown publicly. Not your real name.</small></legend>
+    <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups><legend>Leaderboard name <small>Shown publicly. Not your real name.</small></legend>
       <form class="settings-name" id="settings-nickname-form"><label class="sr-only" for="settings-nickname">Leaderboard name</label><input id="settings-nickname" maxlength="20" autocomplete="off" placeholder="Puzzle Pal"><button type="submit">Save</button></form>
     </fieldset>
-    <fieldset class="settings-group" data-tab="you" data-needs-hub data-grownups data-online><legend>Tell us what you think <small>Only your words, the topic and this page are kept: no name, no address. Please don’t include personal details.</small></legend>
-      <form class="settings-feedback" id="feedback-form"><label class="sr-only" for="feedback-topic">Topic</label><select id="feedback-topic"><option value="idea">An idea</option><option value="game">A game or trainer</option><option value="bug">Something broke</option><option value="name">A public name</option><option value="other">Something else</option></select>
-      <label class="sr-only" for="feedback-message">Your message</label><textarea id="feedback-message" rows="3" maxlength="1000" placeholder="What would make Ziggle better?"></textarea><button type="submit">Send</button></form>
+    <fieldset class="settings-group" data-tab="more" data-needs-hub><legend class="sr-only">Home page</legend>
+      <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Trophies, history, leaderboards, blog</small></span></summary>
+      <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak and the games. Switch on anything else you’d like to see there.</p>
+      ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail)).join('')}</details>
     </fieldset>
-    <fieldset class="settings-group" data-tab="you"><legend>Testing details</legend>
-      <p>Recent errors stay on this device. Nothing is sent automatically. Review these details before sharing them with your bug report.</p>
+    <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups data-online><legend class="sr-only">Feedback</legend>
+      <details class="settings-more" id="feedback-more"><summary><span>Send feedback<small>Ideas, bugs or a name to report</small></span></summary>
+      <p class="settings-note">Only your words, the topic and this page are kept: no name, no address. Please don’t include personal details.</p>
+      <form class="settings-feedback" id="feedback-form"><label class="sr-only" for="feedback-topic">Topic</label><select id="feedback-topic"><option value="idea">An idea</option><option value="game">A game or trainer</option><option value="bug">Something broke</option><option value="name">A public name</option><option value="other">Something else</option></select>
+      <label class="sr-only" for="feedback-message">Your message</label><textarea id="feedback-message" rows="3" maxlength="1000" placeholder="What would make Ziggle better?"></textarea><button type="submit">Send</button></form></details>
+    </fieldset>
+    <fieldset class="settings-group" data-tab="more"><legend class="sr-only">Testing details</legend>
+      <details class="settings-more" id="errors-more"><summary><span>Something not working?<small>View error details saved on this device</small></span></summary>
+      <p class="settings-note">Recent errors stay on this device. Nothing is sent automatically. Review these details before sharing them with your bug report.</p>
       <div class="settings-feedback settings-diagnostics"><button type="button" id="view-error-report">View local error details</button>
       <label class="sr-only" for="local-error-report" hidden>Local error details — select and copy</label>
-      <textarea id="local-error-report" rows="6" readonly hidden></textarea></div>
+      <textarea id="local-error-report" rows="6" readonly hidden></textarea></div></details>
     </fieldset>
+    <div class="settings-group settings-about" data-tab="more"><p class="settings-note"><span id="settings-version">Ziggle</span> · <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/accessibility.html">Accessibility</a></p></div>
     </div>
     <p class="settings-status" id="settings-status" role="status" aria-live="polite"></p>
-    <div class="settings-foot"><button type="button" class="settings-done">Done</button></div>`;
+    <div class="settings-foot"><small>Changes save as you go</small><button type="button" class="settings-done">Done</button></div>`;
   document.body.append(dialog);
   mountReminder(dialog);
   dialog.querySelector('#view-error-report').addEventListener('click', () => {
@@ -180,7 +191,7 @@ function build() {
     const page = location.pathname + (new URLSearchParams(location.search).get('game') ? `?game=${new URLSearchParams(location.search).get('game')}` : '');
     say('Sending…',false,true);
     const result = await Z.api('/api/feedback', { method: 'POST', body: { message, topic: dialog.querySelector('#feedback-topic').value, page } });
-    if(result.ok)box.value='';if(tab==='you')say(result.ok?'Thank you! Your note was sent.':result.message||'That didn’t send. Please try again later.',!result.ok);
+    if(result.ok)box.value='';if(tab==='more')say(result.ok?'Thank you! Your note was sent.':result.message||'That didn’t send. Please try again later.',!result.ok);
   });
 
   dialog.querySelectorAll('input[name="appearance"]').forEach(input => input.addEventListener('change', () => {
@@ -234,6 +245,7 @@ function render() {
     return label;
   }));
   const Z = hub();
+  if (Z?.version) dialog.querySelector('#settings-version').textContent = `Ziggle ${Z.version}`;
   dialog.querySelectorAll('[data-needs-hub]').forEach(group => { group.hidden = !Z; });
   if (!Z) return;
   const profile = Z.profile();
@@ -259,7 +271,7 @@ function render() {
   dialog.querySelector('#analytics-toggle').disabled = profile.kidsMode;
   for (const [id] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).checked = (profile.homeShow || []).includes(id);
   for (const [id] of DAILY_GAMES) dialog.querySelector(`#daily-game-${id}`).checked = (profile.dailyGames || DAILY_GAMES.map(([game]) => game)).includes(id);
-  dialog.querySelector('#daily-selection-note').textContent = (profile.dailyGames || DAILY_GAMES).length ? `${(profile.dailyGames || DAILY_GAMES).length} games in your daily set.` : 'No daily games selected. Choose any when you are ready.';
+  dialog.querySelector('#daily-selection-note').textContent = (profile.dailyGames || DAILY_GAMES).length ? `${(profile.dailyGames || DAILY_GAMES).length} of ${DAILY_GAMES.length} in your set. Every game stays in the Games menu.` : 'No daily games selected. Choose any when you are ready.';
   renderLevels();
   const name = dialog.querySelector('#settings-nickname');
   if (document.activeElement !== name) name.value = profile.nickname || '';
@@ -276,6 +288,8 @@ function renderLevels() {
   dialog.querySelector('#level-today').textContent = Z.climb?.('arrows', today)?.on === false
     ? 'The ladder starts on Sunday 8 November; until then every daily is medium.'
     : 'Today’s ladders, game by game: the level you’re on now is shown beside each one.';
+  const plans = new Set(DAILY_GAMES.map(([id]) => Z.plan(id)));
+  dialog.querySelectorAll('[data-plan-all]').forEach(button => button.setAttribute('aria-pressed', String(plans.size === 1 && plans.has(button.dataset.planAll))));
   for (const [id] of DAILY_GAMES) {
     dialog.querySelector(`#plan-${id}`).value = Z.plan(id);
     dialog.querySelector(`#plan-now-${id}`).textContent = ladderNote(Z, id);
@@ -312,6 +326,7 @@ function showTab(id) {
 /** Open Settings, optionally focusing one control (for example the leaderboard name). */
 function open(focusId = '', trigger) {
   if (!dialog) build();
+  focusId = MOVED[focusId] || focusId;
   const named = TABS.some(([id]) => id === focusId);
   if (!dialog.open) opener = trigger || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
   document.querySelector('.collection-menu')?.removeAttribute('open');
@@ -321,7 +336,8 @@ function open(focusId = '', trigger) {
   showTab(named ? focusId : holder ? holder.dataset.tab : tab);
   if (!dialog.open) dialog.showModal();
   const target = !named && focusId ? dialog.querySelector(`#${focusId}`) : null;
-  ((target?.matches('fieldset') ? target.querySelector('input,select,button') : target) || (tab === 'look' && dialog.querySelector('input[name="appearance"]:checked')) || dialog.querySelector('[data-settings-tab][aria-selected="true"]') || dialog.querySelector('.settings-close')).focus({ preventScroll: true });
+  const fold = target?.closest('details'); if (fold) fold.open = true;
+  ((target?.matches('fieldset,details') ? target.querySelector('input,select,button') : target) || (tab === 'look' && dialog.querySelector('input[name="appearance"]:checked')) || dialog.querySelector('[data-settings-tab][aria-selected="true"]') || dialog.querySelector('.settings-close')).focus({ preventScroll: true });
 }
 globalThis.ZiggleSettings = Object.freeze({ open });
 document.addEventListener('click', event => {

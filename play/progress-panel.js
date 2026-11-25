@@ -8,18 +8,21 @@ const Z = () => globalThis.Ziggle;
 const changed = () => document.dispatchEvent(new CustomEvent('ziggle:settings', { detail: { key: 'progress' } }));
 
 export function mountProgress(root) {
-  root.innerHTML = `<div id="account-slot"></div>${backupMarkup()}
-    <section class="sync-panel" data-online aria-labelledby="sync-heading">
-      <h3 id="sync-heading">Or use a sync code</h3>
+  root.innerHTML = `${backupMarkup()}
+    <details class="settings-more" id="other-devices" data-online><summary><span>Play on another device<small>Sync code, or sign in by email</small></span></summary>
+    <section class="sync-panel" aria-labelledby="sync-heading">
+      <h3 id="sync-heading">Use a sync code</h3>
       <p>No email needed: get a private sync code, then enter it on your other phone or computer. Anyone with the code can load your progress, so keep it to yourself.</p>
       <p class="sync-code" id="sync-code-display" hidden></p>
       <div class="backup-actions"><button class="secondary-button" id="sync-create" type="button">Get a sync code</button><button class="secondary-button" id="sync-now" type="button" hidden>Sync now</button></div>
       <form class="inline-form" id="sync-join"><label for="sync-input">Have a code?</label><input id="sync-input" placeholder="ABCD-EFGH-JKLM-NPQR" autocomplete="off" autocapitalize="characters" maxlength="19"><button class="secondary-button" type="submit">Join</button></form>
       <p class="panel-status" id="sync-status" role="status" aria-live="polite"></p>
-    </section>`;
+    </section><div id="account-slot"></div></details>`;
+  // Already set up on this device: show it without a tap.
+  if (Z().profile().syncCode) root.querySelector('#other-devices').open = true;
   const account=root.querySelector('#account-slot');
   let accountAttempt=0;
-  const loadAccount=()=>{account.textContent='Loading accounts…';import('./account.js'+(accountAttempt++?'?retry='+accountAttempt:'')).then(module=>module.mountAccount(account)).catch(()=>{account.textContent='Accounts could not load. Backup and sync tools are still available below. ';const retry=document.createElement('button');retry.type='button';retry.className='secondary-button';retry.textContent='Try accounts again';retry.onclick=loadAccount;account.append(retry);});};
+  const loadAccount=()=>{account.textContent='Loading accounts…';import('./account.js'+(accountAttempt++?'?retry='+accountAttempt:'')).then(module=>{module.mountAccount(account);if(root.querySelector('#account-in')?.hidden===false)root.querySelector('#other-devices').open=true;}).catch(()=>{account.textContent='Accounts could not load. Backup and sync tools are still available below. ';const retry=document.createElement('button');retry.type='button';retry.className='secondary-button';retry.textContent='Try accounts again';retry.onclick=loadAccount;account.append(retry);});};
   loadAccount();
   const $ = id => root.querySelector(`#${id}`);
   const status = (text, failed = false) => { const el = $('sync-status'); el.textContent = text; el.classList.toggle('error', failed); };

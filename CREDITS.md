@@ -1,6 +1,6 @@
 # Ziggle credits
 
-Ziggle 2.52.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
+Ziggle 2.53.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
 
 ## Third-party data and notices
 
