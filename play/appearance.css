@@ -2,7 +2,7 @@
 :root[data-appearance="dark"] {color-scheme:dark;--paper:#1b1814;--surface:#26211b;--surface-soft:#312a22;--ink:#f4ede0;--muted:#cfc4ad;--accent:#f08a6c;--accent-soft:#4a2a20;--stroke:#4a4237;--secondary:#a9c7a5;--secondary-soft:#28352a;--panel:var(--surface);--citrus:#e8b64a;--citrus-ink:#3a2a00;--coral:#ff9c72;--mint-soft:#203e38;--mint-ink:#9be2c3;--danger:#ff9a7b;--danger-soft:#4c281f;--shadow:#00000030;--hero:#2f2a21;--hero-accent:#e8b64a;background:var(--paper);color:var(--ink)}
 body{background:var(--paper);color:var(--ink)}
 ::selection{background:var(--accent-soft);color:var(--ink)}
-.word-header,.app-header{border-color:var(--stroke)}
+.word-header{border-color:var(--stroke)}
 .brand{gap:11px}
 .brand>span{line-height:1;display:block}
 .brand .brand-symbol{width:48px;height:48px;box-shadow:0 4px 0 var(--stroke);border-radius:15px;transform:rotate(-7deg)}
@@ -42,17 +42,10 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline-color:var(--ac
 .welcome h1{letter-spacing:-1.6px;font-size:36px}
 .welcome p{font-size:12px}
 .welcome .eyebrow,.welcome-kicker{letter-spacing:1.1px;font-size:11px}
-.app-header .top-actions{gap:4px}
-.app-header .brand .brand-wordmark{width:88px;height:32px}
-.app-header .brand small{letter-spacing:.6px;font-size:4px}
-.app-header .brand .brand-symbol{width:36px;height:36px}
 }
 @media (width<=360px){.welcome{padding:23px 17px}
 .welcome h1{font-size:32px}
 .brand{gap:8px}
-.app-header .brand .brand-wordmark{width:77px}
-.app-header .brand .brand-symbol{width:32px;height:32px}
-.app-header .top-actions{gap:2px}
 }
 html[data-kids=true] [data-grownups],html[data-serverless=true] [data-grownups],html[data-serverless=true] [data-online]{display:none!important}
 .share-row{flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;display:flex}
@@ -314,3 +307,10 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 @media (prefers-reduced-motion:reduce){.collection-nav img.nav-tile{transition:none}}
 /* iPhone Safari zooms the page in when a field under 16px gets focus, and never zooms back out (2.41.1). */
 @media (pointer:coarse){:root:root:root:root :is(input:not([type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit]),select,textarea){font-size:max(16px,1em)!important}}
+/* Ziggle mark: see art-source/build-art.mjs */
+.brand{position:relative}
+.brand .brand-symbol{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.brand .brand-love{opacity:0;position:absolute}
+.brand:is(:hover,:focus-visible,:active) .brand-love{opacity:1}
+.brand:is(:hover,:focus-visible) .brand-symbol{transform:rotate(3deg) scale(1.12)}
+.brand:active .brand-symbol{transform:scale(1.14,.86)}

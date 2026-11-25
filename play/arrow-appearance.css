@@ -1,5 +1,4 @@
-.app-header,.game-panel,.keyboard-panel,.board-progress,.tools,.keyboard-help,.daily-overview,.setting-row,.trophy-item,.backup-panel{border-color:var(--stroke)}
-.app-header .brand small{color:var(--muted)}
+.game-panel,.keyboard-panel,.board-progress,.tools,.keyboard-help,.daily-overview,.setting-row,.trophy-item,.backup-panel{border-color:var(--stroke)}
 .game-panel,.keyboard-panel,.modal{background:var(--surface);color:var(--ink)}
 .game-panel{box-shadow:0 8px 28px var(--shadow)}
 .daily-button,.new-day-button,.level-title [data-icon],.section-icon,.modal-symbol,.instruction>span{background:var(--accent-soft);color:var(--accent)}
@@ -86,9 +85,7 @@
 :root[data-appearance=dark] .daily-invitation .invitation-icon{background:var(--citrus)}
 :root[data-appearance=dark] .daily-invitation button{background:var(--citrus);border-color:var(--citrus);color:var(--citrus-ink)}
 :root[data-appearance=dark] .daily-invitation button:hover{background:#e8ff9d}
-@media (width<=360px){.app-header .top-actions{flex-shrink:0}
-.app-header .appearance-toggle{width:34px;padding-inline:6px}
-.tools{gap:3px}
+@media (width<=360px){.tools{gap:3px}
 .tool-button{flex:1;min-width:0;padding-inline:4px}
 .tool-divider{margin-inline:1px}
 .level-title{gap:3px;font-size:20px}

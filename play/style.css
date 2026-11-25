@@ -9,7 +9,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[r
 button:not(:disabled):active{transform:translateY(1px)}
 svg{display:block}
 button svg,[data-icon] svg{fill:none;stroke:currentColor;stroke-width:1.8px;stroke-linecap:round;stroke-linejoin:round;width:20px;height:20px}
-.app-header{border-bottom:1px solid #e8e3ec;justify-content:space-between;align-items:center;max-width:1240px;height:100px;margin:auto;padding:0 40px;display:flex}
 .brand{color:var(--ink);align-items:center;gap:11px;text-decoration:none;display:flex}
 .brand-icon{border-radius:15px;width:46px;height:46px;transform:rotate(-6deg);box-shadow:0 5px 12px #6b46e819}
 .brand strong{letter-spacing:-1.8px;font-size:34px;font-weight:850;line-height:1;display:block}
@@ -256,7 +255,7 @@ to{opacity:1}
 }
 @media (width>=1300px){.board-wrap{height:455px}
 }
-@media (width<=1000px) and (width>=761px){.app-header,.game-shell{padding:0 28px}
+@media (width<=1000px) and (width>=761px){.game-shell{padding:0 28px}
 .play-layout{grid-template-columns:minmax(0,1fr) 290px;gap:20px}
 .side-panel{gap:14px}
 .daily-overview,.keyboard-panel,.daily-invitation{padding:17px}
@@ -272,8 +271,7 @@ to{opacity:1}
 .keyboard-badge{display:none}
 .welcome-art{width:140px;margin-right:0}
 }
-@media (width<=760px){.app-header{height:83px;margin:0 22px;padding:0}
-.brand strong{font-size:30px}
+@media (width<=760px){.brand strong{font-size:30px}
 .brand-icon{border-radius:13px;width:40px;height:40px}
 .brand small{letter-spacing:.9px;font-size:6px}
 .top-actions{gap:9px}
@@ -332,8 +330,7 @@ kbd{font-size:12px}
 .arrow-hit{stroke-width:17px}
 .arrow-ink,.arrow-head{stroke-width:4px}
 }
-@media (width<=430px){.app-header{height:76px;margin:0 18px}
-.brand{gap:8px}
+@media (width<=430px){.brand{gap:8px}
 .brand-icon{border-radius:11px;width:36px;height:36px}
 .brand strong{font-size:28px}
 .brand small{letter-spacing:.7px;margin-top:5px;font-size:5px}
