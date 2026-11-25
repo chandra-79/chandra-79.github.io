@@ -505,11 +505,11 @@ body>.collection-header .collection-header-actions{justify-self:end;margin-left:
 }
 body{background-image:radial-gradient(ellipse at 12% 0,color-mix(in srgb,var(--accent) 5%,transparent),transparent 65%)}
 :is(.game-card,.today-card,.board-card,.puzzle-card,.settings-group,button,.header-button,.nav-group>summary){background-image:none}
-:is(.game-card-kicker,.badge,.nav-current,.stat-chip,.collection-footer,.home-footer){box-shadow:inset 0 1px 0 var(--relief-light)}
+:is(.game-card-kicker,.badge,.nav-current,.stat-chip){box-shadow:inset 0 1px 0 var(--relief-light)}
 .game-art>:is(g,path,rect){filter:drop-shadow(0 2px 0 var(--relief-edge))}
 .training-icon{box-shadow:var(--relief-raised)}
 .brand-symbol{filter:drop-shadow(0 2px 0 var(--relief-edge))}
-body:has(>.collection-header)>footer{margin-top:28px!important;background:var(--surface);border:0;border-top:1px solid var(--stroke);border-radius:18px 18px 0 0;box-shadow:0 -2px 12px var(--shadow);padding-top:18px;padding-bottom:max(24px,env(safe-area-inset-bottom))}
+body:has(>.collection-header)>footer{margin-top:40px!important;background:none;border:0;border-top:1px solid var(--stroke);border-radius:0;box-shadow:none;padding-top:22px;padding-bottom:max(24px,env(safe-area-inset-bottom))}
 .legal-links a{background:transparent;box-shadow:none;border-radius:6px;padding:7px 8px;display:inline-flex}
 .game-card .game-card-go{background:var(--accent);color:var(--paper);box-shadow:inset 0 1px 0 var(--relief-light),0 4px 0 color-mix(in srgb,var(--accent) 65%,var(--ink));border-radius:10px;align-self:flex-start;padding:8px 14px}
 @media (width>=900px){body .collection-header .collection-nav{gap:14px}

@@ -1,16 +1,14 @@
-body:has(>.collection-header) footer{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand links" "copy meta";align-items:center;gap:0 24px;font-size:13px;line-height:1.5;text-align:left}
-footer>:first-child{grid-area:brand}
-footer>:nth-child(2):not(.legal-links){grid-area:meta;justify-self:end;text-align:right;color:var(--muted)}
-footer>.legal-links{grid-area:links;justify-self:end;justify-content:flex-end;gap:0 6px;margin-right:-8px}
-footer>.legal-links a{text-decoration:none;color:inherit}footer>.legal-links a:is(:hover,:focus-visible){text-decoration:underline}footer>.legal-links a[aria-current=page]{font-weight:700}
-footer>small{grid-area:copy;color:var(--muted);font-size:12px}
-@media(width<=700px){body:has(>.collection-header) footer{grid-template-areas:"brand brand" "links links" "copy meta";gap:0 16px}footer>.legal-links{justify-self:start;justify-content:flex-start;margin:2px 0 4px -8px}}
+/* One footer everywhere (2.44.0): the mark, the links and the copyright; the save note shows only for a storage problem */
+body:has(>.collection-header) footer{display:grid;grid-template:"brand links copy" "note note note"/minmax(0,1fr) auto auto;align-items:center;gap:8px 24px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+footer>.footer-motto{grid-area:brand;display:flex;gap:10px;justify-self:start}
+footer>.footer-motto img{height:28px;width:auto}
+footer>.legal-links{grid-area:links;justify-content:flex-end;gap:0 6px;margin:-7px 0}
+footer>.legal-links a{text-decoration:none;color:var(--ink)}footer>.legal-links a:is(:hover,:focus-visible){color:var(--accent);text-decoration:underline}footer [aria-current=page]{font-weight:700}
+footer>.footer-note{grid-area:note}footer>.footer-note>*{font:inherit;color:var(--danger);padding:0;margin:0;background:none;border:0;min-height:0}
+footer>small{grid-area:copy;font-size:13px}
+@media(width<=700px){body:has(>.collection-header) footer{grid-template:"brand copy" "links links" "note note"/1fr auto;gap:8px 12px;font-size:13px}footer>.footer-motto img{height:24px}footer .legal-links [href$=blog\.html]{display:none}footer>.legal-links{justify-content:flex-start;gap:0;margin:-4px -6px}footer>.legal-links a{padding-inline:6px}footer>small{font-size:12px}}
 .collection-header .skip-link{position:absolute;z-index:6;left:8px;top:-99px;padding:8px 14px;border-radius:10px;background:var(--ink);color:var(--paper);font-weight:700}
 .collection-header .skip-link:focus{top:8px}
 @media(width<=650px)and (pointer:coarse){html body>.collection-header :is(.nav-group>summary,.nav-link,.header-button,.collection-menu>summary){min-height:44px;min-width:44px}html body :is(.drawer-button,.secondary-button,.circle-button,.level-picker,.section-chips button,.assist-open,.lives-how,.daily-route>summary){min-height:44px}.circle-button{min-width:44px}}
-/* One footer everywhere (2.35.4) */
-body:has(>.collection-header) footer>:is(.footer-motto,:nth-child(2):not(.legal-links)){display:block;font:inherit;font-size:13px;font-weight:400;line-height:1.5;text-decoration:none;padding:0;margin:0;background:none;border:0;box-shadow:none;width:auto}
-body:has(>.collection-header) footer>button{cursor:pointer}
-body:has(>.collection-header) footer>button.save-warning{color:var(--danger,#af613f)}
 @media(width<=359px)and (pointer:coarse){html body>.collection-header.collection-header :is(.nav-group>summary,.nav-link,.header-button,.collection-menu>summary,.brand){min-width:36px}html body>.collection-header.collection-header :is(.header-button,.collection-menu>summary){width:36px;flex-basis:36px}html[data-play-focus] body>.collection-header.collection-header :is(.header-button,.collection-menu>summary){width:36px!important;min-width:36px!important;flex-basis:36px!important}html body>.collection-header.collection-header .collection-header-actions{gap:5px!important}}
 @media(width>=360px)and (width<=419px)and (pointer:coarse){html body>.collection-header.collection-header :is(.nav-group>summary,.nav-link,.header-button,.collection-menu>summary,.brand){min-width:40px}html body>.collection-header.collection-header :is(.header-button,.collection-menu>summary){width:40px;flex-basis:40px}html[data-play-focus] body>.collection-header.collection-header :is(.header-button,.collection-menu>summary){width:40px!important;min-width:40px!important;flex-basis:40px!important}}

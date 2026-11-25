@@ -1,11 +1,11 @@
-.app-header,.game-footer,.game-panel,.keyboard-panel,.board-progress,.tools,.keyboard-help,.daily-overview,.setting-row,.trophy-item,.backup-panel{border-color:var(--stroke)}
+.app-header,.game-panel,.keyboard-panel,.board-progress,.tools,.keyboard-help,.daily-overview,.setting-row,.trophy-item,.backup-panel{border-color:var(--stroke)}
 .app-header .brand small{color:var(--muted)}
 .game-panel,.keyboard-panel,.modal{background:var(--surface);color:var(--ink)}
 .game-panel{box-shadow:0 8px 28px var(--shadow)}
 .daily-button,.new-day-button,.level-title [data-icon],.section-icon,.modal-symbol,.instruction>span{background:var(--accent-soft);color:var(--accent)}
 .daily-button:hover,.new-day-button:hover{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
 .nav-divider,.tool-divider{background:var(--stroke)}
-.icon-button,.timer,.timer svg,.muted,.board-label,.board-progress,.game-message,.eyebrow,.daily-overview-heading .eyebrow,.daily-footnote,.keyboard-badge,.identifier-options,.arrow-command label,.selection-status,.keyboard-help,.game-footer,.game-footer button,.modal p,.stats-row small,.theme-option small,.level-cell small,.trophy-item small,.daily-date,.backup-file,.backup-file input,.modal .backup-panel .backup-tip{color:var(--muted)}
+.icon-button,.timer,.timer svg,.muted,.board-label,.board-progress,.game-message,.eyebrow,.daily-overview-heading .eyebrow,.daily-footnote,.keyboard-badge,.identifier-options,.arrow-command label,.selection-status,.keyboard-help,.modal p,.stats-row small,.theme-option small,.level-cell small,.trophy-item small,.daily-date,.backup-file,.backup-file input,.modal .backup-panel .backup-tip{color:var(--muted)}
 .icon-button:hover,.tool-button:not(:disabled):hover,.secondary-button:hover,.puzzle-collection-nav a:hover{background:var(--accent-soft);color:var(--accent)}
 .top-actions #trophies-button svg,.welcome-kicker,.welcome-kicker svg{color:var(--accent)}
 .difficulty{background:var(--mint-soft);color:var(--mint-ink)}
@@ -40,8 +40,8 @@
 .daily-invitation strong,.daily-invitation p,.daily-invitation small{color:var(--citrus-ink)}
 .daily-invitation button{color:#35421d;background:#f5ffd6;border-color:#a7c747}
 .daily-invitation button:hover{background:#fff}
-.footer-motto svg{color:var(--coral)}
-.game-footer button.save-warning{color:var(--danger)}
+
+
 .puzzle-collection-nav a{color:var(--muted)}
 .puzzle-collection-nav a[aria-current]{background:var(--accent-soft);color:var(--accent)}
 .puzzle-collection-nav a:focus-visible{outline-color:var(--accent)}
