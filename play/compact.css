@@ -1,4 +1,4 @@
-@import url("./level-end.css");@import url("./compact-focus.css");@media (width<=650px),(height<=520px) and (orientation:landscape) and (width>=651px){.collection-header{height:56px}
+@media (width<=650px),(height<=520px) and (orientation:landscape) and (width>=651px){.collection-header{height:56px}
 .collection-header .brand .brand-symbol{width:32px;height:32px}
 .collection-header .brand .brand-wordmark{width:80px;height:27px}
 .collection-header .brand small{display:none}
@@ -460,7 +460,7 @@ dialog.level-end .le-close:focus-visible{outline:3px solid var(--accent);outline
 [data-tip]:first-child:focus-visible:after,[data-tip]:first-child:hover:after{left:0;transform:none}
 }
 body:has(>.collection-header){flex-direction:column;min-height:100dvh;margin:0;display:flex}
-body:has(>.collection-header)>:is(header,main,footer,section,nav,aside:not(.ad-slot)){box-sizing:border-box;flex:none;width:100%}
+body:has(>.collection-header)>:is(header,main,footer,section:not(.ziggle-hello),nav,aside:not(.ad-slot)){box-sizing:border-box;flex:none;width:100%}
 body:has(>.collection-header)>main{flex:1 0 auto;align-content:start}
 body:has(>.collection-header)>footer{margin-top:auto}
 .ad-banner.ad-grows{height:auto;width:100%;padding:28px 14px 14px}

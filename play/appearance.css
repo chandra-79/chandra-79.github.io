@@ -230,3 +230,8 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 .brand:is(:hover,:focus-visible,:active) .brand-love{opacity:1}
 .brand:is(:hover,:focus-visible) .brand-symbol{transform:rotate(3deg) scale(1.12)}
 .brand:active .brand-symbol{transform:scale(1.14,.86)}
+/* Non-text contrast (WCAG 1.4.11): form controls, off switches and completion rings keep a 3:1 edge in every look. */
+.settings-dialog :is(select,textarea,input:is([type=text],[type=email],[type=search],:not([type]))),.blog-tools select,.search-box input,#post-search,#puzzle-number{border-color:color-mix(in srgb,var(--ink) 55%,var(--surface))!important}
+.settings-dialog :is(.switches,.settings-more)>.setting input[type=checkbox]:not(:checked){box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink) 55%,var(--surface))}
+.today-list a:not(.done) .today-check{border-color:color-mix(in srgb,var(--ink) 55%,var(--surface))}
+::placeholder{color:var(--muted);opacity:1}

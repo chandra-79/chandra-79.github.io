@@ -1,4 +1,4 @@
-@import url("./desktop-read.css");html[data-play-focus]{--header-h:48px!important;--shell-pad:max(10px,var(--inline-safe))!important}
+html[data-play-focus]{--header-h:48px!important;--shell-pad:max(10px,var(--inline-safe))!important}
 html[data-play-focus] body .collection-header{height:48px!important;min-height:48px!important;box-shadow:0 3px 0 var(--relief-edge)!important;gap:4px!important;padding:4px var(--shell-pad)!important}
 html[data-play-focus] .collection-header .brand-symbol{width:30px!important;height:30px!important}
 html[data-play-focus] .collection-header .brand>span{display:none!important}
@@ -552,6 +552,8 @@ html[data-play-focus] .game-bar-items .focus-mode-picker select{width:100%;min-w
 html[data-play-focus] .game-bar-items .focus-mode-picker+.mode-switch{display:none!important}
 html[data-play-focus] .game-bar:has(.mode-switch) .drawer-button{width:36px!important;min-width:36px!important;padding:0!important}
 html[data-play-focus] .game-bar:has(.mode-switch) .drawer-button>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+html[data-play-focus] .game-bar:has(.mode-switch) .drawer-button{justify-content:center!important;flex:0 0 36px!important}
+html[data-play-focus] .game-bar:has(.mode-switch) .drawer-button:has(>span)::before{content:"\22EF";font-size:20px;line-height:1;font-weight:900}
 }
 html[data-play-focus] .word-shell .puzzle-tools #hint-button{min-width:48px!important}
 html[data-play-focus] .weave-tools #clear-guess{padding-inline:6px!important;flex:0 0 auto!important}
