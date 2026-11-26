@@ -1,5 +1,5 @@
 import { registerAssistance } from './play-assist.js';
-import { SUDOKU_VARIANTS, SUDOKU_DIFFICULTIES, SUDOKU_PRACTICE_V2, SUDOKU_LADDER_V2, SUDOKU_GEN2_DAY, generatePuzzle, getConflicts, isSolved, candidateMask, explainHint } from './sudoku-engine.js';
+import { SUDOKU_VARIANTS, SUDOKU_DIFFICULTIES, SUDOKU_PRACTICE_V2, SUDOKU_LADDER_V2, SUDOKU_GEN2_DAY, SUDOKU_PRACTICE_V3, SUDOKU_LADDER_V3, SUDOKU_TUNE_DAY, sudokuTunedStyle, generatePuzzle, getConflicts, isSolved, candidateMask, explainHint } from './sudoku-engine.js';
 import { loadSudokuProgress, saveSudokuProgress, sudokuKey, recordSudokuWin } from './sudoku-progress.js';
 import { pop, shake, wave, play, haptic, feedback } from './fx.js';
 import { showLevelEnd } from './level-end.js';
@@ -16,10 +16,14 @@ const VARIANTS = {
 const LEVELS_SHOWN = 1000;
 // Practice puzzles 1–1000 are levels 201000–201999 (generation 2, 27 Nov 2026: fresh grids, each difficulty its own).
 // Generation 1 practice (levels 1–50 and 200000–200949) still opens a half-played save; Next and Prev lead on to generation 2.
-const practiceAt=i=>SUDOKU_PRACTICE_V2+i;
-const practiceIndex=n=>n>=SUDOKU_PRACTICE_V2&&n<SUDOKU_PRACTICE_V2+LEVELS_SHOWN?n-SUDOKU_PRACTICE_V2:n>=1&&n<=50?n-1:n>=200000&&n<200950?n-199950:-1;
-/** The generation 2 practice puzzle at the same number (puzzle 1 for a daily or ladder grid). */
-const practiceLevel=n=>practiceAt(Math.max(0,practiceIndex(n)));
+// Tuning 3 (28 Nov 2026) changed Addoku, Even/Odd and Mini Expert only, so only those styles moved on to levels
+// 202000–202999; their earlier puzzles (201000–201999) still open a half-played save, and every other style stays put.
+const practiceAt=(i,style=progress.current)=>(sudokuTunedStyle(style.variant,style.difficulty)?SUDOKU_PRACTICE_V3:SUDOKU_PRACTICE_V2)+i;
+const practiceIndex=n=>n>=SUDOKU_PRACTICE_V3&&n<SUDOKU_PRACTICE_V3+LEVELS_SHOWN?n-SUDOKU_PRACTICE_V3:n>=SUDOKU_PRACTICE_V2&&n<SUDOKU_PRACTICE_V2+LEVELS_SHOWN?n-SUDOKU_PRACTICE_V2:n>=1&&n<=50?n-1:n>=200000&&n<200950?n-199950:-1;
+/** The current practice puzzle at the same number in a style (puzzle 1 for a daily or ladder grid). */
+const practiceLevel=(n,style=progress.current)=>practiceAt(Math.max(0,practiceIndex(n)),style);
+/** Ladder bonus grids: 700000 and up, and from daily #28 levels 210000–219999. */
+const ladderLevel=n=>n>=700_000||n>=SUDOKU_LADDER_V3&&n<SUDOKU_LADDER_V3+10_000;
 // What changes from level to level (2.6), shown when you hover or focus a difficulty. Easy and medium help more.
 const DIFFICULTY_TIPS = {
   easy: 'Most numbers given. Rule conflicts are marked when enabled. A number’s key switches off after all its copies are placed without a current conflict.',
@@ -48,7 +52,8 @@ const LADDER_STYLES = ['classic', 'addoku', 'diagonal', 'even-odd', 'classic', '
 function ladderPuzzle(place) {
   if (place.daily) return todayDaily(place.tier);
   const number = hub().dailyNumber();
-  const level = number >= SUDOKU_GEN2_DAY ? SUDOKU_LADDER_V2 + ((number * 53 + place.index) % 10_000) : 700_000 + ((number * 53 + place.index) % 290_000);
+  const slot = number * 53 + place.index;
+  const level = number >= SUDOKU_TUNE_DAY ? SUDOKU_LADDER_V3 + slot % 10_000 : number >= SUDOKU_GEN2_DAY ? SUDOKU_LADDER_V2 + slot % 10_000 : 700_000 + slot % 290_000;
   return { variant: LADDER_STYLES[(number + place.index) % LADDER_STYLES.length], difficulty: place.tier, level };
 }
 let onLadder = false;
@@ -67,9 +72,9 @@ if (!params.get('daily') && !archiveDate && !(resuming && dailyLevelOf(progress.
   const cur = progress.current, wins = new Set(progress.wins || []);
   const oldDaily = practiceIndex(cur.level)<0 && !DAILY_LEVELS.some(level => { const daily = todayDaily(level); return daily && sudokuKey(daily) === sudokuKey(cur); });
   if (oldDaily || wins.has(sudokuKey(cur))) {
-    const base = { ...cur, level: practiceLevel(cur.level) };
+    const base = { ...cur, level: practiceLevel(cur.level, cur) };
     let level = null;
-    for (let step = 0; step < LEVELS_SHOWN && level === null; step++) { const n = practiceAt((practiceIndex(base.level)+step)%LEVELS_SHOWN); if (!wins.has(sudokuKey({ ...base, level: n }))) level = n; }
+    for (let step = 0; step < LEVELS_SHOWN && level === null; step++) { const n = practiceAt((practiceIndex(base.level)+step)%LEVELS_SHOWN, base); if (!wins.has(sudokuKey({ ...base, level: n }))) level = n; }
     progress.current = { ...base, level: level ?? base.level };
   }
 }
@@ -305,14 +310,14 @@ function afterChange() {
     if (isDaily()) { hub()?.recordDaily?.('sudoku', { ...result, difficulty: dailyLevel() }); postDailyScore(); }
     const c = ladder();
     if (c && key === sudokuKey(ladderPuzzle(c.place))) { if (!c.place.daily) hub()?.earnLevel?.(); hub()?.climbDone?.('sudoku', c.place); }
-    onLadder = Boolean(ladder()) && (isDaily() || key.length > 0 && progress.current.level >= 700_000);
+    onLadder = Boolean(ladder()) && (isDaily() || key.length > 0 && ladderLevel(progress.current.level));
     $('completion-detail').textContent = `Solved in ${formatTime(session.elapsed)}${3 - session.hints ? ` with ${3 - session.hints} hint${3 - session.hints === 1 ? '' : 's'}` : ' with no hints'}.`;
     $('share-sudoku').hidden = !isDaily();
     $('share-sudoku').onclick = async () => { $('share-sudoku-status').textContent = await hub()?.share?.('sudoku', result) || ''; };
     $('game-message').textContent = 'Solved! A tidy little win.';
     // The end of a level (2.5).
     const info = VARIANTS[puzzle.variant], used = 3 - session.hints;
-    showLevelEnd({ outcome: 'win', symbol: '🔢', kicker: isDaily() ? `ZIGGLE #${hub().dailyNumber()} · TODAY’S ${dailyLevel().toUpperCase()} SUDOKU` : `${info.name.toUpperCase()} · ${progress.current.difficulty.toUpperCase()} · ${progress.current.level >= 700_000 ? 'LADDER BONUS' : `PUZZLE ${practiceIndex(progress.current.level)+1}`}`,
+    showLevelEnd({ outcome: 'win', symbol: '🔢', kicker: isDaily() ? `ZIGGLE #${hub().dailyNumber()} · TODAY’S ${dailyLevel().toUpperCase()} SUDOKU` : `${info.name.toUpperCase()} · ${progress.current.difficulty.toUpperCase()} · ${ladderLevel(progress.current.level) ? 'LADDER BONUS' : `PUZZLE ${practiceIndex(progress.current.level)+1}`}`,
       title: used ? 'Solved!' : 'Solved with no hints!', earn: !isDaily() && !isArchiveDaily(),
       stats: [['time', formatTime(session.elapsed)], ['hints used', used], ['size', `${puzzle.size}×${puzzle.size}`]],
       actions: [{ id: 'next', label: onLadder ? `Next: ${ladder().label} →` : 'Next puzzle →', primary: true, run: () => $('play-next').click() },
@@ -339,12 +344,14 @@ function loadPuzzle(changes = {}) {
   const info = VARIANTS[puzzle.variant];
   $('puzzle-title').textContent = info.name;
   paintDailyButtons();
-  $('puzzle-kicker').textContent = isDaily() ? `ZIGGLE #${hub().dailyNumber()} · TODAY’S ${dailyLevel().toUpperCase()} SUDOKU` : isArchiveDaily() ? `ZIGGLE #${hub().dailyNumber(archiveDate)} · FROM THE ARCHIVE` : `${progress.current.difficulty.toUpperCase()} · ${progress.current.level >= 700_000 ? 'LADDER BONUS' : `PUZZLE ${practiceIndex(progress.current.level)+1}`}`;
+  $('puzzle-kicker').textContent = isDaily() ? `ZIGGLE #${hub().dailyNumber()} · TODAY’S ${dailyLevel().toUpperCase()} SUDOKU` : isArchiveDaily() ? `ZIGGLE #${hub().dailyNumber(archiveDate)} · FROM THE ARCHIVE` : `${progress.current.difficulty.toUpperCase()} · ${ladderLevel(progress.current.level) ? 'LADDER BONUS' : `PUZZLE ${practiceIndex(progress.current.level)+1}`}`;
   $('variant-blurb').textContent = info.blurb;
   $('legend').hidden = puzzle.variant !== 'even-odd';
   document.querySelectorAll('[data-variant]').forEach(button => { const active = button.dataset.variant === puzzle.variant; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
   document.querySelectorAll('[data-difficulty]').forEach(button => { const active = button.dataset.difficulty === puzzle.difficulty; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
   const select = $('puzzle-number');
+  // The picker lists this style's practice levels (Addoku, Even/Odd and Mini Expert have their own since tuning 3).
+  if (select.options[0]?.value !== String(practiceAt(0))) select.replaceChildren(...Array.from({ length: LEVELS_SHOWN }, (_, i) => new Option(`${i + 1} / ${LEVELS_SHOWN}`, String(practiceAt(i)))));
   if (practiceIndex(progress.current.level)<0) { select.disabled = true; $('daily-note').textContent = 'Today’s daily puzzle'; }
   else { select.disabled = false; select.value = String(practiceLevel(progress.current.level)); $('daily-note').textContent = ''; }
   $('previous-puzzle').disabled = practiceIndex(progress.current.level)<=0;
@@ -375,17 +382,16 @@ $('variant-list').append(...SUDOKU_VARIANTS.map(variant => {
   const button = document.createElement('button');
   button.type = 'button'; button.className = 'variant-option'; button.dataset.variant = variant;
   button.innerHTML = `<span class="variant-icon" aria-hidden="true">${VARIANTS[variant].emoji}</span><span>${VARIANTS[variant].name}</span>`;
-  button.addEventListener('click', () => loadPuzzle({ variant, level: practiceLevel(progress.current.level) }));
+  button.addEventListener('click', () => loadPuzzle({ variant, level: practiceLevel(progress.current.level, { ...progress.current, variant }) }));
   return button;
 }));
 $('difficulty-tabs').append(...SUDOKU_DIFFICULTIES.map(difficulty => {
   const button = document.createElement('button');
   button.type = 'button'; button.dataset.difficulty = difficulty; button.textContent = difficulty[0].toUpperCase() + difficulty.slice(1);
   button.dataset.tip = DIFFICULTY_TIPS[difficulty]; button.setAttribute('aria-description', DIFFICULTY_TIPS[difficulty]);
-  button.addEventListener('click', () => loadPuzzle({ difficulty, level: practiceLevel(progress.current.level) }));
+  button.addEventListener('click', () => loadPuzzle({ difficulty, level: practiceLevel(progress.current.level, { ...progress.current, difficulty }) }));
   return button;
 }));
-$('puzzle-number').append(...Array.from({ length: LEVELS_SHOWN }, (_, i) => new Option(`${i + 1} / ${LEVELS_SHOWN}`, String(practiceAt(i)))));
 $('puzzle-number').addEventListener('change', event => loadPuzzle({ level: Number(event.target.value) }));
 $('previous-puzzle').addEventListener('click', () => loadPuzzle({ level: practiceAt(Math.max(0,practiceIndex(progress.current.level)-1)) }));
 $('next-puzzle').addEventListener('click', () => loadPuzzle({ level: practiceAt(Math.min(LEVELS_SHOWN-1,practiceIndex(progress.current.level)+1)) }));
@@ -429,7 +435,7 @@ function nextUnsolvedLevel() {
 }
 $('play-next').addEventListener('click', () => {
   const c = ladder();
-  if (c && complete && (isDaily() || progress.current.level >= 700_000)) {
+  if (c && complete && (isDaily() || ladderLevel(progress.current.level))) {
     loadPuzzle(ladderPuzzle(c.place));
     $('game-message').textContent = `Today’s ladder: ${c.label}${c.place.daily ? `, today’s ${hub().tierNames[c.place.tier]} daily` : ''}.`;
     return;

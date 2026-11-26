@@ -25,8 +25,8 @@ export const HOME_SECTIONS = Object.freeze([
   ['notes', 'About Ziggle', 'The welcome line and notes about how Ziggle works.'],
   ['training', 'Ziggle Training', 'Typing, emoji and flags, memory palace and cube trainers.'],
   ['trophies', 'Trophy shelf and season', 'Trophies you’ve earned and this season’s goals.'],
-  ['history', 'History and missed days', 'Your last 12 weeks, and replays of past dailies.'],
-  ['boards', 'Leaderboards and leagues', 'Today’s verified times and your friend leagues.'],
+  ['stickers', 'Surprises', 'Stickers for the surprises you’ve found, and one clue to the next. On unless you switch it off.', 'on'],
+  ['boards', 'Leaderboards and leagues', 'Today’s best times and your friend leagues.'],
   ['blog', 'From the blog', 'The three newest posts.'],
   ['yours', 'Your Ziggle shortcuts', 'Quick links to backup, sync and Play your way.'],
 ]);
@@ -77,12 +77,12 @@ function build() {
         <li><strong>Never colour alone.</strong> Letter Lock tiles carry ✓ and •, Word Cloud clues are labelled, and Sudoku conflicts are outlined.</li>
         <li><strong>Calmer motion</strong> above, and Ziggle follows your device’s reduced-motion setting too.</li>
         <li><strong>Share in words</strong> above writes results as sentences a screen reader can read.</li>
-        <li><strong>Every colour look</strong>, light and dark, is checked for readable contrast; text is never smaller than 11 px.</li>
+        <li><strong>Every colour look</strong>, light and dark, is checked so it stays easy to read, and text is never tiny.</li>
         <li><strong>No timers that pressure.</strong> Pause any game; the streak forgives a missed day with freezes.</li>
       </ul><p class="settings-note"><a href="/accessibility.html">Accessibility in full</a></p></details>
     </fieldset>
     <fieldset class="settings-group" data-tab="daily" data-needs-hub id="daily-games"><legend>Games in my daily set</legend>
-      <div class="daily-game-choices">${DAILY_GAMES.map(([id, name]) => check(`daily-game-${id}`, name, '')).join('')}</div>
+      <div class="daily-game-choices">${DAILY_GAMES.map(([id, name]) => check(`daily-game-${id}`, `<img class="setting-art" src="/play/art/still/${id}.svg" width="26" height="26" alt="">${name}`, '')).join('')}</div>
       <p id="daily-selection-note" class="settings-note" role="status"></p>
     </fieldset>
     <fieldset class="settings-group" data-tab="daily" data-needs-hub id="daily-levels"><legend>Starting level <small>Each game climbs from here as you play. A new choice starts with your next ladder.</small></legend>
@@ -96,15 +96,15 @@ function build() {
     <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend class="sr-only">Backup and other devices</legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>
     <fieldset class="settings-group switches" data-tab="progress" data-needs-hub><legend>Privacy</legend>
       ${check('kids-mode', 'Kids mode', 'Hides leaderboards, leagues, names and email signup, and sends nothing to the server.', KIDS_MODE_AVAILABLE ? '' : ' hidden')}
-      ${check('analytics-toggle', 'Share anonymous visit counts', 'Day totals only: no cookies, no identifiers. Off in kids mode or with Do Not Track.', ' data-online')}
+      ${check('analytics-toggle', 'Share anonymous visit counts', 'We only count how many people visit each day, never who. Off in kids mode, or if your browser asks sites not to track you.', ' data-online')}
       <p class="settings-note"><a href="/privacy.html">Privacy in full</a></p>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups><legend>Leaderboard name <small>Shown publicly. Not your real name.</small></legend>
       <form class="settings-name" id="settings-nickname-form"><label class="sr-only" for="settings-nickname">Leaderboard name</label><input id="settings-nickname" maxlength="20" autocomplete="off" placeholder="Puzzle Pal"><button type="submit">Save</button></form>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub><legend class="sr-only">Home page</legend>
-      <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Trophies, history, leaderboards, blog</small></span></summary>
-      <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak and the games. Switch on anything else you’d like to see there.</p>
+      <details class="settings-more" id="home-extras"><summary><span>Home page extras<small>Surprises, trophies, leaderboards, blog</small></span></summary>
+      <p class="settings-note">Home keeps to the essentials: today’s Ziggle, your streak and last 12 weeks, the games and your Surprises. Switch on anything else you’d like to see there, or switch Surprises off.</p>
       ${HOME_SECTIONS.map(([id, title, detail]) => check(`home-${id}`, title, detail, id === 'boards' ? ' data-online' : '')).join('')}</details>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups data-online><legend class="sr-only">Feedback</legend>
@@ -157,10 +157,12 @@ function build() {
     const next = event.key === 'Home' ? ids[0] : event.key === 'End' ? ids.at(-1) : ids[(ids.indexOf(current) + keys[event.key] + ids.length) % ids.length];
     showTab(next); dialog.querySelector(`[data-settings-tab="${next}"]`).focus();
   });
-  for (const [id, title] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).addEventListener('change', event => {
+  for (const [id, title, , on] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).addEventListener('change', event => {
     const Z = hub(); if (!Z) return;
     const profile = Z.profile();
-    profile.homeShow = event.target.checked ? [...new Set([...(profile.homeShow || []), id])] : (profile.homeShow || []).filter(item => item !== id);
+    // Most sections are extras (listed in homeShow when on); one that starts on is listed in homeHide when off.
+    const list = on ? 'homeHide' : 'homeShow', add = on ? !event.target.checked : event.target.checked;
+    profile[list] = add ? [...new Set([...(profile[list] || []), id])] : (profile[list] || []).filter(item => item !== id);
     Z.saveProfile(profile);
     say(`${title} ${event.target.checked ? 'now shows on' : 'is off'} your home page.`);
     changed('home');
@@ -271,7 +273,7 @@ function render() {
   dialog.querySelector('#kids-mode').checked = profile.kidsMode;
   dialog.querySelector('#analytics-toggle').checked = profile.analytics && !profile.kidsMode;
   dialog.querySelector('#analytics-toggle').disabled = profile.kidsMode;
-  for (const [id] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).checked = (profile.homeShow || []).includes(id);
+  for (const [id, , , on] of HOME_SECTIONS) dialog.querySelector(`#home-${id}`).checked = on ? !(profile.homeHide || []).includes(id) : (profile.homeShow || []).includes(id);
   for (const [id] of DAILY_GAMES) dialog.querySelector(`#daily-game-${id}`).checked = (profile.dailyGames || DAILY_GAMES.map(([game]) => game)).includes(id);
   dialog.querySelector('#daily-selection-note').textContent = (profile.dailyGames || DAILY_GAMES).length ? `${(profile.dailyGames || DAILY_GAMES).length} of ${DAILY_GAMES.length} in your set. Every game stays in the Games menu.` : 'No daily games selected. Choose any when you are ready.';
   renderLevels();

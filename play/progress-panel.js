@@ -9,7 +9,7 @@ const changed = () => document.dispatchEvent(new CustomEvent('ziggle:settings', 
 
 export function mountProgress(root) {
   root.innerHTML = `${backupMarkup()}
-    <details class="settings-more" id="other-devices" data-online><summary><span>Play on another device<small>Sync code, or sign in by email</small></span></summary>
+    <details class="settings-more" id="other-devices" data-online><summary><span>Play on another device<small>Use a code, or sign in by email</small></span></summary>
     <section class="sync-panel" aria-labelledby="sync-heading">
       <h3 id="sync-heading">Use a sync code</h3>
       <p>No email needed: get a private sync code, then enter it on your other phone or computer. Anyone with the code can load your progress, so keep it to yourself.</p>

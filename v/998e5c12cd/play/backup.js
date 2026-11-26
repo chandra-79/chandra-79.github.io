@@ -6,10 +6,10 @@ export function backupMarkup() {
   return `<section class="backup-panel" aria-labelledby="backup-heading">
     <h3 id="backup-heading">Keep your progress safe</h3>
     <p>Your progress saves in this browser. One backup file keeps every Ziggle game safe: word puzzles, Word Cloud, Letter Lock, arrows, Memory Mischief, Sudoku, your streak and trophies.</p>
-    <div class="backup-actions"><button type="button" id="export-backup" class="secondary-button">Download backup</button><button type="button" id="protect-storage" class="secondary-button">Protect browser save</button></div>
+    <div class="backup-actions"><button type="button" id="export-backup" class="secondary-button">Download backup</button><button type="button" id="protect-storage" class="secondary-button">Keep this save safe</button></div>
     <p class="backup-tip">Keep your backup on your computer, or move it to an iCloud Drive or OneDrive folder. Download a fresh copy after playing.</p>
     <label class="backup-file" for="restore-backup">Restore a backup<input id="restore-backup" type="file" accept=".json,application/json" aria-describedby="backup-status"></label>
-    <p id="backup-status" class="backup-status" role="status" aria-live="polite">Browser protection helps prevent automatic cleanup. Clearing site data still removes your save; a backup file lets you restore it.</p>
+    <p id="backup-status" class="backup-status" role="status" aria-live="polite">Browsers sometimes tidy away saved games. “Keep this save safe” asks yours not to. A backup file is still the safest copy.</p>
   </section>`;
 }
 

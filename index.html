@@ -13,18 +13,18 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/78ca25f1ea/play/hub.js"></script>
-  <script src="/v/78ca25f1ea/play/appearance.js"></script>
-  <script type="module" src="/v/78ca25f1ea/play/settings-boot.js"></script>
-  <script src="/v/78ca25f1ea/play/collection-shell.js"></script>
-  <!--modulepreload--><link rel="modulepreload" href="/v/78ca25f1ea/play/week-word.js"><link rel="modulepreload" href="/v/78ca25f1ea/play/week-words.js"><!--/modulepreload-->
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/appearance.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/home.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/week-card.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/level-end.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/78ca25f1ea/play/compact.css">
+  <script type="module" src="/v/998e5c12cd/play/hub.js"></script>
+  <script src="/v/998e5c12cd/play/appearance.js"></script>
+  <script type="module" src="/v/998e5c12cd/play/settings-boot.js"></script>
+  <script src="/v/998e5c12cd/play/collection-shell.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/v/998e5c12cd/play/week-word.js"><link rel="modulepreload" href="/v/998e5c12cd/play/week-words.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/v/998e5c12cd/play/appearance.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/home.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/week-card.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/level-end.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/998e5c12cd/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Ziggle — A little play. A lot of spark.">
   <meta property="og:description" content="Eight playful daily brain teasers: Word Search, Crossword, Word Cloud, Letter Lock, Arrow Escape, Memory Mischief, Sudoku and Sum Spark. Free, no sign-up.">
@@ -46,6 +46,16 @@
         <p class="home-sub">Eight quick puzzles a day. Free, no sign-up.</p>
         <p class="home-lede" data-home="notes">Eight little brain teasers for words, numbers, logic and memory. Finish any one each day to keep your streak glowing, or all eight for a perfect day.</p>
         <a class="home-cta" id="hero-cta" href="/play/index.html">Start today’s Ziggle <span aria-hidden="true">→</span></a>
+        <section class="look-back" id="look-back" aria-labelledby="activity-title">
+          <p class="look-streak"><svg class="stat-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg><strong id="streak-current">0</strong><span class="look-streak-label">day streak</span><small>Best so far: <b id="streak-best">0</b></small></p>
+          <div class="activity" id="activity" role="group" aria-labelledby="activity-title activity-summary"></div>
+          <div class="look-text">
+            <h2 class="look-kicker" id="activity-title">Your last 12 weeks</h2>
+            <p class="look-count" id="activity-summary"></p>
+            <p class="look-nudge" id="activity-nudge"></p>
+            <p class="activity-key" aria-hidden="true"><span>Fewer</span><i class="lvl-0"></i><i class="lvl-1"></i><i class="lvl-2"></i><i class="lvl-3"></i><i class="lvl-4"></i><span>All eight</span></p>
+          </div>
+        </section>
         <ul class="home-notes hero-notes" data-home="notes" aria-label="About Ziggle">
           <li><span class="note-icon" aria-hidden="true">✦</span><p><strong>Free, no account.</strong> Progress saves in this browser, with a backup copy kept on this device too.</p></li>
           <li><span class="note-icon" aria-hidden="true">☁</span><p><strong>Play online.</strong> Open fresh puzzles as you play. Your progress stays saved on this device.</p></li>
@@ -65,17 +75,14 @@
           <li><a href="/play/memory.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/memory.svg" width="32" height="32" alt="">Memory Mischief</a></li>
           <li><a href="/play/sudoku.html?daily=1"><span class="today-check" aria-hidden="true"></span><img class="today-art" src="/play/art/still/sudoku.svg" width="32" height="32" alt="">Sudoku</a></li>
         </ul>
-        <p class="today-edit"><a href="/?settings=daily-games" data-settings-tab-open="daily-games">Edit my daily set</a></p>
+        <p class="today-key" aria-hidden="true"><span><i data-tier="easy"></i>Easy</span><span><i data-tier="medium"></i>Medium</span><span><i data-tier="hard"></i>Expert</span></p>
+        <p class="today-edit"><a href="/?settings=daily-games" data-settings-tab-open="daily-games">Edit my daily set</a><a href="/#archive" id="earlier-open"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>Play earlier days</a></p>
         <div class="streak-row" id="streak-row">
-          <div><strong id="streak-current">0</strong><small>day streak</small></div>
-          <div><strong id="streak-best">0</strong><small>best streak</small></div>
-          <div><strong id="streak-freezes">0</strong><small>freezes banked</small></div>
-          <div><strong id="season-points">0</strong><small id="season-points-label">season points</small></div>
-        </div>
-        <div class="lives-strip" id="lives-strip">
-          <span class="lives-hearts" id="lives-hearts" aria-hidden="true">❤️❤️❤️</span>
-          <span class="lives-text" id="lives-text">3 free lives today</span>
-          <button type="button" class="lives-how" id="lives-how" aria-expanded="false" aria-controls="lives-help">How lives work</button>
+          <div class="stat" id="stat-freezes"><svg class="stat-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></svg><strong id="streak-freezes">0</strong><small id="freezes-word">freezes saved</small></div>
+          <div class="stat" id="stat-points"><svg class="stat-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><strong id="season-points">0</strong><small id="season-points-label">season points</small></div>
+          <div class="stat" id="lives-strip"><svg class="stat-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="stat-pair" id="lives-text"><strong id="lives-count">3</strong> <small id="lives-word">free lives today</small></span></div>
+          <div class="stat" id="stat-credits"><svg class="stat-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></svg><strong id="credits-count">0</strong><small>credits</small></div>
+          <button type="button" class="lives-how" id="lives-how" aria-expanded="false" aria-controls="lives-help" aria-label="How lives, freezes and points work"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 17v-6M12 7h.01"/></svg></button>
         </div>
         <p class="today-note lives-help" id="lives-help" hidden>Lose a level and a life lets you keep going: one more heart in the arrow games, one more guess in Letter Lock, or another go at a Sum Spark round. You get 3 free lives a day. After that, 50 ✦ credits buy one. Earn credits by playing: 20 for each daily, 50 for a perfect day, and 5 for each practice level (up to 50 a day). Credits can’t be bought. A daily finished with a life still counts for your streak, but it stays off the leaderboards.</p>
         <div class="perfect-day" id="perfect-day" hidden><strong>Perfect day!</strong> Every daily done. <button type="button" class="secondary-button" id="share-day">Share your day</button></div>
@@ -202,23 +209,13 @@
       <ul class="trophy-grid" id="egg-grid" role="list" aria-labelledby="egg-title"></ul>
     </section>
 
-    <section class="home-band band-history" data-home="history" aria-label="Your play history">
-      <p class="section-kicker">Look back</p>
-      <div class="history-section">
-      <div class="history-card">
-        <div class="section-head"><h2 id="activity-title" class="home-section-title">Your last 12 weeks</h2><span class="section-lede" id="activity-summary"></span></div>
-        <div class="activity" id="activity" role="img" aria-labelledby="activity-title activity-summary"></div>
-        <p class="activity-key" aria-hidden="true"><span>Fewer</span><i class="lvl-0"></i><i class="lvl-1"></i><i class="lvl-2"></i><i class="lvl-3"></i><i class="lvl-4"></i><span>All eight</span></p>
-      </div>
-      <div class="history-card" id="archive">
-        <div class="section-head"><h2 id="archive-title" class="home-section-title">Missed a day?</h2></div>
-        <p class="section-lede">Replay any past daily from the archive. Just for fun: archive games don’t change your streak or points.</p>
-        <label class="archive-pick" for="archive-day">Day <select id="archive-day"></select></label>
-        <ul class="archive-links" id="archive-links" role="list"></ul>
-        <p class="archive-empty" id="archive-empty" hidden>The archive opens tomorrow, once there’s a past day to play.</p>
-      </div>
-      </div>
-    </section>
+    <dialog class="earlier-dialog" id="archive" aria-labelledby="archive-title">
+      <div class="earlier-head"><h2 id="archive-title">Play an earlier day</h2><button type="button" class="earlier-close" id="archive-close" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+      <p class="section-lede">Just for fun. Earlier days don’t change your streak or points.</p>
+      <label class="archive-pick" for="archive-day">Day <select id="archive-day"></select></label>
+      <ul class="archive-links" id="archive-links" role="list"></ul>
+      <p class="archive-empty" id="archive-empty" hidden>Earlier days open tomorrow, once there’s a past day to play.</p>
+    </dialog>
 
     <section class="home-band band-boards board-section" data-home="boards" data-grownups aria-labelledby="leaderboard-title">
       <p class="section-kicker">Compete</p>
@@ -258,7 +255,7 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
 
-  <footer class="home-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v2.57.0</small></footer>
-  <script type="module" src="/v/78ca25f1ea/play/home.js"></script>
+  <footer class="home-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v2.58.0</small></footer>
+  <script type="module" src="/v/998e5c12cd/play/home.js"></script>
 </body>
 </html>
