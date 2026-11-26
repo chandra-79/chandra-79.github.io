@@ -318,3 +318,28 @@ html[data-play-focus]:not([data-motion=calm]):not([data-play-keyboard]) body #we
 html[data-play-focus] body .word-cloud .slots-wrap:focus-within{outline-width:2px;outline-offset:0;border-radius:12px}
 #weave-form:focus-visible{outline:none}
 #weave-form:focus-visible .slots-wrap{outline:2px solid var(--accent);outline-offset:0;border-radius:12px}
+
+/* 2.61: Ziggle letter keys. On touch screens the word is typed with these, and the Guess key replaces the button in the cloud. */
+.weave-keys{gap:6px;width:min(100%,520px);margin:8px auto 2px;display:grid}
+.weave-keys[hidden]{display:none}
+.weave-keys .key-row{justify-content:center;gap:5px;display:flex}
+.weave-keys .key{-webkit-tap-highlight-color:transparent;background:var(--surface-soft);max-width:46px;min-height:46px;color:var(--ink);touch-action:manipulation;-webkit-user-select:none;user-select:none;border-radius:9px;flex:1 1 0;padding:0;font-size:16px;font-weight:800}
+.weave-keys .key.wide{flex-grow:1.8;max-width:78px;font-size:13px}
+.weave-keys .key[data-key=BACK]{font-size:18px}
+.weave-keys .key[data-key=ENTER]{background:var(--accent);color:var(--surface)}
+.weave-keys .key:active{background:var(--accent-soft);color:var(--ink)}
+@media (hover:none){.weave-keys .key:hover:not(:active):not([data-key=ENTER]){background:var(--surface-soft)}}
+html[data-cloud-keys]:not([data-play-keyboard]) .word-cloud .weave-go{display:none!important}
+html[data-play-keyboard] .weave-keys{display:none}
+@media (height<=700px){.weave-keys{gap:4px;margin-top:6px}.weave-keys .key-row{gap:4px}.weave-keys .key{min-height:40px}}
+/* With the keys on a phone: no title row (the name is in the bar, the category sits with the letter count), tapping a cloud is the
+   way to open one, the ⌫ key clears, and the sparks sit at the end of the hint row. */
+@media (width<=650px) and (orientation:portrait){
+html[data-cloud-keys][data-focused][data-play-focus] body .weave-top{display:none!important}
+html[data-cloud-keys][data-play-focus] body .weave-tools :is(#reveal-clue,#clear-guess){display:none!important}
+html[data-cloud-keys][data-play-focus] body .weave-tools{justify-content:flex-start!important;margin:6px 96px 0 0!important}
+html[data-cloud-keys][data-play-focus] body .sparks-meter{width:max-content;margin:-42px 0 0 auto!important;padding:0 4px!important;background:none!important;align-items:center;gap:6px;min-height:40px}
+html[data-cloud-keys][data-play-focus] body .sparks-meter span{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
+html[data-cloud-keys][data-play-focus] body .sparks-meter:before{content:"✦";color:var(--accent);font-size:16px}
+}
+@media (width<=650px) and (orientation:portrait) and (height<=660px){.weave-keys{gap:3px;margin-top:4px}.weave-keys .key-row{gap:3px}.weave-keys .key{min-height:38px}html[data-cloud-keys][data-play-focus]:not([data-play-keyboard]) body #weave-sky{padding-block:6px!important;gap:6px 10px!important}html[data-cloud-keys][data-play-focus] body .weave-tools{margin-top:4px!important}}

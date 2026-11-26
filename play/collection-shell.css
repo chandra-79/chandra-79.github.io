@@ -26,7 +26,10 @@ html[data-play-focus] body .game-bar>:is(.focus-toggle,.assist-open,.drawer-butt
 html[data-play-focus] body .game-shell [data-game-name]:before{content:none}
 }
 @media(max-width:340px){html[data-play-focus] body .game-bar .mode-switch button{padding:3px 5px!important}html[data-play-focus] body .game-bar{gap:4px!important}}
-/* 2.60: the daily route line sits in the middle of its 44 px bar on phones (it used to hug the top). */
 @media(width<=650px)and (pointer:coarse){html body .daily-route>summary{padding-block:12px;line-height:20px}}
-/* 2.60: full-screen play keeps its last row of buttons clear of the phone's home bar and the browser's bottom bar. */
 html[data-play-focus] body>main{padding-bottom:max(6px,env(safe-area-inset-bottom))}
+html[data-play-focus] body .frame-drawer [data-stowed][data-stowed]{margin:0 0 14px!important;height:auto!important;flex-wrap:wrap!important;gap:8px!important;justify-content:flex-start!important}
+.frame-drawer .daily-route{border:0;background:none}
+.frame-drawer .daily-route>summary{padding-inline:0}
+.frame-drawer .daily-route>div{position:static;box-shadow:none;border:0;padding:0;max-height:none;background:none}
+@media(min-width:361px){html[data-play-focus] body .game-bar-items .focus-mode-picker{display:none!important}}

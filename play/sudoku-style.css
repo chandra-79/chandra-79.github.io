@@ -195,6 +195,9 @@ html[data-play-focus] .sudoku-shell .sudoku-main{display:grid!important;grid-tem
 html[data-play-focus] .sudoku-shell .sudoku-main>*{grid-column:1;min-width:0}
 html[data-play-focus] .sudoku-shell :is(.board-card,.board-main){display:contents!important}
 html[data-play-focus] .sudoku-shell .puzzle-head{grid-row:1;align-self:center;max-width:46%;pointer-events:none}
+html[data-focused][data-play-focus] .sudoku-shell .puzzle-head{display:none!important}
+html[data-focused][data-play-focus] .sudoku-shell .board-top{padding-left:4px!important;justify-content:space-between!important}
+html[data-focused][data-play-focus] .sudoku-shell .board-top .cell-status{text-align:left;font-size:13px;margin-right:auto}
 html[data-play-focus] .sudoku-shell .puzzle-head #puzzle-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html[data-play-focus] .sudoku-shell .puzzle-controls{grid-row:2}
 html[data-play-focus] .sudoku-shell .board-top{grid-row:1;grid-column:1;justify-content:flex-end!important;gap:8px;min-height:48px!important;margin:0 0 6px!important;padding:0 0 0 47%!important}

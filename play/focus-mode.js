@@ -17,6 +17,20 @@ if (bar) {
   mark.href = '/'; mark.className = 'bar-brand'; mark.setAttribute('aria-label', 'Ziggle home'); logo.src = '/play/logo.svg'; logo.alt = ''; logo.width = logo.height = 30; mark.append(logo);
   Object.assign(mark.style, { display: 'none', flex: 'none', alignItems: 'center', marginRight: '8px' }); bar.prepend(mark);
   let leftFullScreen = false;
+  // Less on screen while you play (2.61): maximised, the level and puzzle pickers and the daily route move into More (the drawer), and come
+  // back when the header is shown again. They are moved, not copied, so every button keeps working.
+  const STOW = '.word-shell .puzzle-settings,.sudoku-main .puzzle-controls,#daily-route';
+  const homes = new Map();
+  const stow = on => {
+    const drawer = document.getElementById('game-drawer'), head = drawer?.querySelector('.drawer-head');
+    if (!head) return;
+    for (const el of document.querySelectorAll(STOW)) {
+      if (on && !homes.has(el)) { const mark = document.createComment('stowed'); el.before(mark); homes.set(el, mark); head.after(el); el.dataset.stowed = ''; if (el.id === 'daily-route') el.open = true; }
+      else if (!on && homes.has(el)) { homes.get(el).replaceWith(el); homes.delete(el); delete el.dataset.stowed; if (el.id === 'daily-route') el.open = false; }
+    }
+  };
+  new MutationObserver(() => { if (root.hasAttribute('data-focused')) stow(true); }).observe(bar.parentElement, { childList: true });
+  new MutationObserver(() => { if (root.hasAttribute('data-focused')) set(true); }).observe(root, { attributes: true, attributeFilter: ['data-daily-run'] });
   const set = on => {
     on = on && compact.matches; mark.style.display = on ? 'flex' : 'none';
     // One standard bar on every game: logo, then the title (or the Today / Practice switch), then the corner button, Help and More, on a single row.
@@ -30,12 +44,13 @@ if (bar) {
     }
     // With the logo in the bar the title gives way: it shortens with … , and it is left to screen readers when the bar also holds the Today / Practice
     // switch (the row would be too crowded on a phone). The game's name is still the page's h1.
-    const title = bar.querySelector('h1'), crowded = Boolean(bar.querySelector('.mode-switch,[data-url-switch]'));
+    const title = bar.querySelector('h1'), crowded = [...bar.querySelectorAll('.mode-switch,[data-url-switch]')].some(el => el.getClientRects().length); // a hidden switch (the daily route) leaves room for the name
     if (title) { const look = !on ? {} : crowded ? { position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)', 'white-space': 'nowrap' } : { overflow: 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap', 'min-width': '0', flex: '1 1 0' };
       for (const key of ['position', 'width', 'height', 'overflow', 'clip', 'white-space', 'text-overflow', 'min-width', 'flex']) { if (key in look) title.style.setProperty(key, look[key], 'important'); else title.style.removeProperty(key); } } // "important": the compact title-bar rules are
     for (const el of hidden()) el.style.setProperty('display', on ? 'none' : '', on ? 'important' : '');
     root.style.setProperty('--header-h', on ? '0px' : '');
     root.toggleAttribute('data-focused', on);
+    stow(on);
     button.setAttribute('aria-pressed', String(on));
     button.setAttribute('aria-label', on ? 'Show the page header' : 'Focus: hide the page header while you play');
     button.title = button.getAttribute('aria-label'); button.innerHTML = icon(on);
