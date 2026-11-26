@@ -132,6 +132,16 @@ export function search(round, prefix = [], { limit = 300_000 } = {}) {
   return { exact, best, bestValue: best ? chainValue(round, best).value : null };
 }
 
+/** The next useful hint, or null once the target is reached or no chain exists. */
+export function nextHint(round, steps = []) {
+  if (chainValue(round, steps).value === round.target) return null;
+  const found = search(round, steps);
+  if (!found.exact) return null;
+  const keeps = steps.every((step, i) => found.exact[i]?.tile === step.tile && found.exact[i]?.op === step.op);
+  const next = found.exact[keeps ? steps.length : 0];
+  return next ? { next, keeps } : null;
+}
+
 /** Points for a round: 100 on target, then 60 / 40 / 20 for within 2 / 5 / 10. Hints cost 15 each. */
 export function roundScore(round, steps, hints = 0) {
   const result = steps.length ? chainValue(round, steps) : { ok: false };

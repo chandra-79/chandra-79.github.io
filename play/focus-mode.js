@@ -24,8 +24,9 @@ if (bar) {
     put(bar, { display: 'flex', 'flex-wrap': 'nowrap', 'align-items': 'center', gap: '6px', padding: sideways.matches ? '0 8px' : '5px 8px', 'min-height': sideways.matches ? '44px' : '56px', height: sideways.matches ? 'auto' : '', 'margin-bottom': sideways.matches ? '4px' : '', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
     for (const el of bar.children) {
       if (el === mark) put(el, { flex: 'none', margin: '0 2px 0 0' });
-      else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
-      else if (el.matches('.mode-switch,h1')) put(el, { flex: '1 1 0', 'min-width': '0', margin: '0' });
+      else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: innerWidth <= 340 ? '0 6px' : '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
+      else if (el.matches('.mode-switch')) put(el, { flex: '0 1 auto', 'min-width': '0', margin: '0 auto 0 0' }); // 2.59: its own width, not stretched across the bar (Arrow Escape)
+      else if (el.matches('h1')) put(el, { flex: '1 1 0', 'min-width': '0', margin: '0' });
     }
     // With the logo in the bar the title gives way: it shortens with … , and it is left to screen readers when the bar also holds the Today / Practice
     // switch (the row would be too crowded on a phone). The game's name is still the page's h1.

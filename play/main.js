@@ -52,7 +52,8 @@ function save() {
   updateDailyStats();
   return stored;
 }
-const state = { level:saved.current, mode:'levels', tour:null, board:null, remaining:[], history:[], lives:3, hints:3, elapsed:0, paused:false, ended:false, busy:false, generation:0, modal:null, highlighted:null, selected:null, identifiers:new Map() };
+const hintedIds=new Set();
+const state = { level:saved.current, mode:'levels', tour:null, board:null, remaining:[], history:[], lives:3, hints:3, hintsUsed:0, elapsed:0, paused:false, ended:false, busy:false, generation:0, modal:null, highlighted:null, selected:null, identifiers:new Map() };
 const dateKey = localDateKey;
 let activeDailyDate = dateKey();
 let activeTier = 'medium';
@@ -77,11 +78,13 @@ function updateCollected(){
   $('arrows-collected').textContent=collectedTotal(saved.collected).toLocaleString();$('arrows-week').textContent=collectedSince(saved.collected,monday).toLocaleString();
 }
 function saveSession(){
-  if(isPractice(state.mode)&&state.board){if(state.remaining.length&&!state.ended)saved.activeLevel=levelSnapshot(state);else delete saved.activeLevel;}
+  if(isPractice(state.mode)&&state.board){if(state.remaining.length&&!state.ended)saved.activeLevel={...levelSnapshot(state),hintsUsed:state.hintsUsed,attempt:state.attempt};else delete saved.activeLevel;}
   if(state.mode==='daily'&&state.board){
-    saved.activeDaily={date:activeDailyDate,tier:activeTier,remaining:state.remaining.map(p=>p.id),history:state.history.map(p=>p.id),lives:state.lives,hints:state.hints,elapsed:state.elapsed,ended:state.ended,...(state.lifeUsed?{life:true}:{})};
+    saved.activeDaily={date:activeDailyDate,tier:activeTier,remaining:state.remaining.map(p=>p.id),history:state.history.map(p=>p.id),lives:state.lives,hints:state.hints,hintsUsed:state.hintsUsed,attempt:state.attempt,elapsed:state.elapsed,ended:state.ended,...(state.lifeUsed?{life:true}:{})};
   }
   save();
+  const s=state.mode==='daily'?saved.activeDaily:saved.activeLevel;
+  if(s&&s.attempt===state.attempt)state.hintsUsed=s.hintsUsed;
 }
 function restoreSession(session){
   if(!session||(state.mode==='daily'?session.date!==activeDailyDate:session.mode!==state.mode||session.level!==state.level))return false;
@@ -91,7 +94,7 @@ function restoreSession(session){
   let remaining=[...state.board.paths];
   for(let i=0;i<session.history.length;i++){const path=paths.get(session.history[i]);if(!path||!canLeave(state.board,remaining,path).ok)return false;const gone=new Set([path.id]);if(path.link!==undefined){if(session.history[i+1]!==path.link)return false;gone.add(path.link);i++;}remaining=remaining.filter(p=>!gone.has(p.id));}
   state.remaining=session.remaining.map(id=>paths.get(id));state.history=session.history.map(id=>paths.get(id));
-  state.lives=session.lives;state.hints=session.hints;state.elapsed=session.elapsed;state.lifeUsed=session.life===true;
+  state.lives=session.lives;state.hints=session.hints;state.hintsUsed=session.hintsUsed;state.attempt=session.attempt;state.elapsed=session.elapsed;state.lifeUsed=session.life===true;
   state.ended=!state.remaining.length||state.lives===0;
   return true;
 }
@@ -103,7 +106,7 @@ function startLevel(level=state.level, mode=state.mode, resume=false, tour=state
   else if(mode==='archive')activeTier=ziggle()?.tier?.('arrows',archiveDate)||'medium';
   else if(mode==='climb'){activeDailyDate=dateKey();state.climb=ladder()?.place||{tier:'medium',index:1,count:Infinity,daily:false};activeTier=state.climb.tier;}
   state.board=mode==='climb'?(state.climb.daily?generateDaily(activeDailyDate,activeTier):generateClimb(activeDailyDate,activeTier,state.climb.index,state.climb.count)):mode==='daily'?generateDaily(activeDailyDate,activeTier):mode==='archive'?generateDaily(archiveDate,activeTier):mode==='tour'?generateTourBoard(tour):generateLevel(level);
-  state.remaining=[...state.board.paths];state.history=[];state.lives=3;state.hints=3;state.elapsed=0;state.ended=false;state.busy=false;state.highlighted=null;state.lifeUsed=false;
+  state.remaining=[...state.board.paths];state.history=[];state.lives=3;state.hints=3;state.hintsUsed=0;hintedIds.clear();state.attempt=`${Date.now()}-${Math.random()}`;state.elapsed=0;state.ended=false;state.busy=false;state.highlighted=null;state.lifeUsed=false;
   state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,saved.identifierMode);
   const restored=resume&&(mode==='daily'?restoreSession(saved.activeDaily):isPractice(mode)&&restoreSession(saved.activeLevel));
   $('arrow-address').value='';setSelectionStatus('Type an ID to highlight its arrow. Enter fires it.');
@@ -170,7 +173,7 @@ function renderBoard() {
   const paths=state.remaining.map(path=>{
     const points=geometry(path),d=lineD(points),head=points.at(-1),stroke=`url(#color-${path.id})`,direction=path.direction[0]===1?'right':path.direction[0]===-1?'left':path.direction[1]===1?'down':'up';
     const label=state.identifiers.get(path.id),labelWidth=Math.min(step-1,label.length*7.1+7);
-    return `<g class="arrow-group${state.highlighted===path.id?' hinted':''}${state.selected===path.id?' selected':''}" data-id="${path.id}" data-label="${label}" role="button" tabindex="${path.id===tabId?0:-1}" aria-label="Arrow ${label}, pointing ${direction}${pieceWords(path)}" aria-describedby="keyboard-help" style="color:${palette[path.color][0]}"><path class="arrow-hit" d="${d}"/><path class="arrow-selection" d="${d}"/><path class="arrow-ink" stroke="${stroke}" d="${inkD(points,path.direction)}"/>${saved.theme==='border'?`<path class="arrow-inner" d="${inkD(points,path.direction)}"/>`:''}<path class="arrow-head" stroke="${stroke}" d="${headD(head,path.direction)}"/>${saved.theme==='snakes'?`<circle class="snake-eye" cx="${head[0]-path.direction[0]*3+path.direction[1]*1.5}" cy="${head[1]-path.direction[1]*3-path.direction[0]*1.5}" r="1.2"/>`:''}${pieceBadges(path,points,step)}<g class="arrow-label" aria-hidden="true" transform="translate(${head[0]},${head[1]-16})"><rect x="${-labelWidth/2}" y="-8" width="${labelWidth}" height="16" rx="4"/><text y="4" textLength="${labelWidth-5}" lengthAdjust="spacingAndGlyphs">${label}</text></g></g>`;
+    return `<g class="arrow-group${state.highlighted===path.id?' hinted':''}${state.selected===path.id?' selected':''}" data-id="${path.id}" data-label="${label}" role="button" tabindex="${path.id===tabId?0:-1}" aria-label="Arrow ${label}, pointing ${direction}${pieceWords(path)}${state.highlighted===path.id?', hint':''}" aria-describedby="keyboard-help" style="color:${palette[path.color][0]}"><path class="arrow-hit" d="${d}"/><path class="arrow-selection" d="${d}"/><path class="arrow-ink" stroke="${stroke}" d="${inkD(points,path.direction)}"/>${saved.theme==='border'?`<path class="arrow-inner" d="${inkD(points,path.direction)}"/>`:''}<path class="arrow-head" stroke="${stroke}" d="${headD(head,path.direction)}"/>${saved.theme==='snakes'?`<circle class="snake-eye" cx="${head[0]-path.direction[0]*3+path.direction[1]*1.5}" cy="${head[1]-path.direction[1]*3-path.direction[0]*1.5}" r="1.2"/>`:''}${pieceBadges(path,points,step)}<g class="arrow-label" aria-hidden="true" transform="translate(${head[0]},${head[1]-16})"><rect x="${-labelWidth/2}" y="-8" width="${labelWidth}" height="16" rx="4"/><text y="4" textLength="${labelWidth-5}" lengthAdjust="spacingAndGlyphs">${label}</text></g></g>`;
   }).join('');
   const edge=v=>v>0?575:25,laneD=path=>{const head=geometry(path).at(-1),[dx,dy]=path.direction;return `M${head[0].toFixed(1)},${head[1].toFixed(1)} L${(dx?edge(dx):head[0]).toFixed(1)},${(dy?edge(dy):head[1]).toFixed(1)}`;};
   const lanes=state.remaining.filter(path=>saved.lanes||state.highlighted===path.id).map(path=>`<path class="arrow-lane${state.highlighted===path.id?' hinted':''}" data-lane="${path.id}" d="${laneD(path)}"/>`).join('');
@@ -186,7 +189,7 @@ function updateHud(){
   $('cleared-count').textContent=cleared;$('total-count').textContent=state.board.paths.length;$('progress-fill').style.width=`${percent}%`;$('progress-percent').textContent=`${percent}%`;
   $('hint-count').textContent=state.hints;$('hint-button').disabled=state.hints===0||state.ended||state.busy;
   $('hint-top-count').textContent=state.hints;$('hint-top').disabled=$('hint-button').disabled;$('lanes-button').setAttribute('aria-pressed',String(saved.lanes));$('grid-button').setAttribute('aria-pressed',String(saved.gridMarks));
-  $('theme-button').hidden=state.history.length>0||state.ended; // the style is chosen before play, not in the middle of it
+  $('theme-button').hidden=state.history.length>0||state.ended;
   $('hearts').dataset.lives=state.lives;
   for(const id of ['levels-button','help-button','theme-button','settings-button','trophies-button','daily-button','email-button','save-status']) $(id).disabled=state.busy;
   $('pause-button').disabled=state.busy||state.ended;
@@ -298,7 +301,7 @@ function escapeAnimation(path,group,done) {
   if(!calmNow)playSound('glide',{dur:duration/1000});
   const lane=$('board').querySelector(`[data-lane="${path.id}"]`);lane?.classList.add('used');
   let sparked=false;
-  const room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),ease=u=>(1-Math.cos(Math.PI*u))/2; // a smooth glide: gentle start, gentle finish
+  const room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),ease=u=>(1-Math.cos(Math.PI*u))/2;
   const trace=s=>{const m=[at(s)];for(let i=1;i<points.length;i++)if(lengths[i]>s&&lengths[i]<s+bodyLength)m.push(points[i]);m.push(at(s+bodyLength));return m;};
   function frame(now){
     if(generation!==state.generation)return;
@@ -406,7 +409,7 @@ $('hint-top').onclick=()=>$('hint-button').onclick();
 {const vm=$('view-more');if(vm)vm.onclick=()=>{const bar=document.querySelector('.board-view-controls'),on=bar?.toggleAttribute?.('data-view-open');vm.setAttribute?.('aria-expanded',String(Boolean(on)));};}
 $('grid-button').onclick=()=>{saved.gridMarks=!saved.gridMarks;save();renderBoard();updateHud();message(saved.gridMarks?'Grid markers on.':'Grid markers off.');};
 $('lanes-button').onclick=()=>{saved.lanes=!saved.lanes;save();renderBoard();updateHud();message(saved.lanes?'Exit lanes on: each arrow shows the way it would go.':'Exit lanes off.');};
-$('hint-button').onclick=()=>{if(state.paused||state.ended||state.busy||!state.hints)return;const available=state.remaining.filter(p=>free(p).ok);const path=available.find(p=>p.id!==state.highlighted)||available[0];if(path){state.hints--;state.highlighted=path.id;renderBoard();$('board').querySelector(`[data-id="${path.id}"]`)?.scrollIntoView?.({block:'nearest',inline:'nearest'});updateHud();message('Follow the glowing arrow: its lane is clear all the way out.','success');saveSession();}};
+$('hint-button').onclick=()=>{if(state.paused||state.ended||state.busy||!state.hints)return;const available=state.remaining.filter(p=>free(p).ok);const fresh=available.find(p=>!hintedIds.has(p.id)),path=fresh||available.find(p=>p.id!==state.highlighted)||available[0];if(path){if(fresh){state.hints--;state.hintsUsed++;hintedIds.add(path.id);}state.highlighted=path.id;renderBoard();$('board').querySelector(`[data-id="${path.id}"]`)?.scrollIntoView?.({block:'nearest',inline:'nearest'});updateHud();message(`The glowing arrow (${state.identifiers.get(path.id)}) can leave: its way out is clear.`,'success');saveSession();}};
 $('restart-button').onclick=()=>startLevel();
 let modalReturnFocus, modalBackgroundStates=[];
 function showModal(content,type,center=false){
@@ -441,13 +444,12 @@ function showFailure(){
     stats:[['arrows cleared',state.board.paths.length-state.remaining.length],['time spent',formatTime(state.elapsed)]],
     life:{label:'Use a life: one more heart, same board',run:()=>{state.lives=1;state.ended=false;state.lifeUsed=true;updateHud();saveSession();message('One more heart. You’ve got this.');}},
     actions:[{id:'retry',label:'Try again',primary:true,run:()=>startLevel()}],onDismiss:()=>{}}).then(endResult);}
-// After the shared popup closes (any way), hand the keyboard back, unless something else already opened.
 function endResult(){if(state.modal!=='win'&&state.modal!=='failure')return;state.modal=null;state.paused=false;updateKeyboardControls();if(state.ended&&!state.remaining.length)$('continue-arrow')?.focus();}
 function win(){
-  state.ended=true;
+  saveSession();state.ended=true;
   fxConfetti();playSound('win');haptic([20,60,20,60,40]);
   const previousPoints=dailyStats(saved).points;
-  const dailyResult={time:state.elapsed,hearts:state.lives,hints:state.hints,tier:activeTier,...(state.lifeUsed?{life:true}:{})};
+  const dailyResult={time:state.elapsed,hearts:state.lives,hints:Math.max(0,3-state.hintsUsed),tier:activeTier,...(state.lifeUsed?{life:true}:{})};
   if(state.mode==='daily'){if(!ziggle()?.helped?.('arrows',activeDailyDate))recordDailyResult(saved,activeDailyDate,{won:true,lives:state.lives,elapsed:state.elapsed});ziggle()?.recordDaily?.('arrows',dailyResult,activeDailyDate);}
   else if(state.mode==='climb'){if(state.climb.daily)ziggle()?.recordDaily?.('arrows',dailyResult,activeDailyDate);ziggle()?.climbDone?.('arrows',state.climb);}
   else if(state.mode==='endless'){saved.endless=Math.max(saved.endless||0,state.level-11);}
@@ -469,8 +471,7 @@ function win(){
   const nextRun=()=>{if(state.mode==='archive')location.href='/play/index.html';else if((state.mode==='daily'||state.mode==='climb')&&ladder())startLevel(0,'climb');else if(state.mode==='daily')startLevel(saved.current,'levels');else if(final||state.mode==='tour')showLevels();else startLevel(state.level+1,state.mode);};
   $('piece-guide').hidden=true;document.querySelector('.game-panel').hidden=true;$('arrow-result-detail').textContent=`${state.board.paths.length} arrows freed · ${formatTime(state.elapsed)} · ${state.lives} of 3 hearts kept`;$('repeat-arrow').onclick=()=>startLevel();
   $('arrow-completion').hidden=false;$('continue-arrow').textContent=nextLabel;$('continue-arrow').onclick=nextRun;
-  // The result is the shared popup every game uses (2.25); Arrow keeps its paused state so the keyboard stays quiet behind it.
-  state.paused=true;state.modal='win';updateKeyboardControls();
+    state.paused=true;state.modal='win';updateKeyboardControls();
   showLevelEnd({outcome:'win',symbol:'✦',
     kicker:state.mode==='climb'?`LADDER · ${ziggle()?.ladderLabel?.(state.climb)?.toUpperCase()||''} DONE`:state.mode==='daily'?'DAILY CHALLENGE COMPLETE':state.mode==='archive'?'FROM THE ARCHIVE · JUST FOR FUN':final?'EVERY PATH, FOUND':'PUZZLE COMPLETE',
     title:'You found your flow.',
@@ -507,7 +508,6 @@ function trophies(){return [
   {title:'Every way out',description:'Complete all twelve puzzles.',earned:saved.completed.length===12},
 ];}
 $('trophies-button').onclick=()=>showModal(`<span class="eyebrow">LITTLE WINS, WELL EARNED</span><h2 id="modal-title">Your trophy shelf.</h2><p>${trophies().filter(t=>t.earned).length} of 5 milestones collected. Keep finding your way.</p>${trophies().map(t=>`<div class="trophy-item${t.earned?' earned':''}"><span>${icon('trophy')}</span><div><strong>${t.title}${t.earned?' ✓':''}</strong><small>${t.description}</small></div></div>`).join('')}`,'trophies');
-// Today / Practice in the title bar, the same pair every daily game has (2.26). Today is the daily and its ladder; everything else is practice.
 const isToday=()=>state.mode==='daily'||(state.mode==='climb'&&Boolean(state.climb?.daily));
 function syncModeSwitch(){$('mode-daily')?.setAttribute('aria-pressed',String(isToday()));$('mode-practice')?.setAttribute('aria-pressed',String(!isToday()));}
 $('mode-daily')&&($('mode-daily').onclick=()=>{if(isToday()||state.busy)return;startLevel(8,'daily',!saved.daily.includes(dateKey()));});
@@ -570,7 +570,7 @@ document.addEventListener('keydown',event=>{
   if(event.key==='Tab'&&state.modal){const buttons=[...$('modal-root').querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),a[href]')].filter(el=>!el.hidden),first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
 });
 setInterval(()=>{updateDayNotice();if(!state.paused&&!state.ended&&!document.hidden){state.elapsed++;$('timer').textContent=formatTime(state.elapsed);if(state.elapsed%5===0)saveSession();}},1000);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&!state.ended&&!state.busy&&!state.modal)showPause();saveSession();updateDayNotice();}); // leaving the app or the tab pauses the game
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&!state.ended&&!state.busy&&!state.modal)showPause();saveSession();updateDayNotice();});
 window.addEventListener('pagehide',()=>{if(!state.ended&&!state.busy&&!state.modal)showPause();saveSession();});
 { const half=menuResume(saved,dateKey(),archiveDate);
   if(half)startLevel(half.level,half.mode,true);

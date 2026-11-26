@@ -252,3 +252,6 @@ html[data-play-focus] .memory-shell .game-bar .bar-chip{display:none!important}
 @media (height<=820px) and (width>=901px){.adventure-topline{margin-bottom:8px}.memory-hud{padding-top:10px;padding-bottom:10px}.stage-heading{padding-top:10px}.stage-heading h3{margin-top:6px}.recall-trail{padding-top:6px}.game-actions{padding-bottom:8px}.game-bottom{padding-top:6px;padding-bottom:6px}.memory-shell .memory-card .memory-board{max-width:min(540px,max(300px,calc((var(--room) - 176px) * 1.8)))}}
 .assist-actions button,[data-demo-replay]{border:1px solid var(--stroke);border-radius:12px;font-weight:700}
 [data-demo-replay]{margin:8px 8px 0 0;padding:8px 14px;font-size:15px}
+
+/* 2.59: a touch phone has no number keys, so the "or use keys 1–6" tip only shows where a keyboard is likely. */
+@media(hover:none) and (pointer:coarse){.keys-note{display:none}}

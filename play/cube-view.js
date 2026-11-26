@@ -26,6 +26,9 @@ export function mountCube(host, { onMove = () => {}, label = 'Virtual cube' } = 
   wrap.setAttribute('aria-describedby', said.id);
   wrap.append(scene, net, live, said);
   host.replaceChildren(wrap);
+  // 2.59: the cube is a fixed size, so a short stage (phones, landscape) cut its top and bottom off. Shrink it to fit.
+  const fitScene = () => { const h = wrap.clientHeight; if (h) scene.style.scale = String(Math.min(1, Math.round(h / 2.8) / 100)); };
+  if (globalThis.ResizeObserver) new ResizeObserver(fitScene).observe(wrap); fitScene();
   let els = [];
   const calm = () => globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
   const camera = () => { body.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`; };

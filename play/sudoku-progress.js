@@ -29,6 +29,8 @@ function normalizeSession(value) {
     ? value.notes.map(mask => Number.isInteger(mask) && mask >= 0 && mask < (1 << size) ? mask : 0) : values.map(() => 0);
   return {
     values, notes,
+    ...(typeof value.attempt === 'string' ? { attempt: value.attempt } : {}),
+    hintsUsed: Number.isSafeInteger(value.hintsUsed) && value.hintsUsed >= 0 ? value.hintsUsed : 3 - (Number.isInteger(value.hints) && value.hints >= 0 && value.hints <= 3 ? value.hints : 3),
     elapsed: Number.isFinite(value.elapsed) && value.elapsed >= 0 ? Math.min(31_536_000, Math.floor(value.elapsed)) : 0,
     hints: Number.isInteger(value.hints) && value.hints >= 0 && value.hints <= 3 ? value.hints : 3,
   };
@@ -55,7 +57,13 @@ export function saveSudokuProgress(data, storage = globalThis.localStorage) {
   try {
     if (!storage?.setItem) return false;
     const normalized = normalizeSudokuProgress(data);
-    normalized.wins = [...new Set([...loadSudokuProgress(storage).wins, ...normalized.wins])].slice(-2000);
+    const latest = loadSudokuProgress(storage);
+    normalized.wins = [...new Set([...latest.wins, ...normalized.wins])].slice(-2000);
+    for (const [key, session] of Object.entries(normalized.sessions)) {
+      const other = latest.sessions[key];
+      if (other && session.attempt === other.attempt) session.hintsUsed = Math.max(session.hintsUsed, other.hintsUsed);
+      if (data.sessions[key]) data.sessions[key].hintsUsed = session.hintsUsed;
+    }
     storage.setItem(SUDOKU_STORAGE_KEY, JSON.stringify(normalized));
     data.wins = [...normalized.wins];
     return true;

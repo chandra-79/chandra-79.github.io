@@ -1,4 +1,3 @@
-// Board-only zoom keeps the controls readable and game coordinates unchanged.
 const viewport = document.getElementById('board-viewport');
 const canvas = document.getElementById('board-canvas');
 const board = document.getElementById('board');
@@ -12,8 +11,6 @@ let zoom = 1, boardSize = 0, viewWidth = 0, viewHeight = 0, maximized = false;
 let backgroundStates = [];
 
 function resizeBoard(center = true) {
-  // A fitted board is horizontally centered. Account for that margin and use
-  // the previous viewport dimensions when resizing or entering fullscreen.
   const previousLeft = Math.max(12, (viewWidth - boardSize) / 2);
   const x = boardSize ? (viewport.scrollLeft + viewWidth / 2 - previousLeft) / boardSize : .5;
   const y = boardSize ? (viewport.scrollTop + viewHeight / 2 - 12) / boardSize : .5;
@@ -31,7 +28,6 @@ function resizeBoard(center = true) {
   zoomOut.disabled = zoom <= 1;
 }
 
-// Big boards (2.10, up to 250 arrows) can zoom further, so every cell can be made comfortably tappable.
 let MAX_ZOOM = 3;
 function setZoom(value) {
   zoom = Math.min(MAX_ZOOM, Math.max(1, value));
@@ -65,8 +61,6 @@ function setMaximized(value) {
 }
 maximize.addEventListener('click', () => setMaximized(!maximized));
 
-// Escape restores the normal page before the game's pause shortcut handles it.
-// The game's own dialogs retain their existing Escape and focus behavior.
 document.addEventListener('keydown', event => {
   if (!maximized || !document.getElementById('modal-root').hidden || event.isComposing) return;
   if (event.key === 'Escape') {
@@ -80,8 +74,6 @@ document.addEventListener('keydown', event => {
   }
 }, true);
 
-// Reveal the arrow's head without moving the surrounding page or taking focus
-// away from the ID field. scrollIntoView would also scroll the page on phones.
 function revealArrow(arrow) {
   if (!arrow || zoom <= 1) return;
   const marker = arrow.querySelector('.arrow-head') || arrow;
@@ -104,7 +96,6 @@ viewport.addEventListener('focusin', event => {
   revealArrow(event.target.closest('[data-id]'));
 });
 
-// Typing an ID updates selection while focus stays in the command field.
 let previousSelection = null;
 new MutationObserver(() => {
   fitNewBoard();
@@ -128,20 +119,14 @@ function fitNewBoard() {
   lastAcross = across;
   const available = Math.max(1, Math.min(viewport.clientWidth, viewport.clientHeight) - 24);
   MAX_ZOOM = Math.max(3, Math.min(8, (40 * across) / available));
-  // Arrows big enough to see and tap (2.11): a board opens zoomed in so each
-  // cell is at least 14 px on a touch screen and 18 px with a mouse. Drag to move around; Fit shows the whole picture.
   const coarse = window.matchMedia?.('(pointer: coarse)').matches;
-  // 2.11.11: phones open at 14 px a cell (was 26), so a whole Easy board fits the screen and bigger ones need little
-  // panning; pinch or + zooms in further.
   const start = Math.max(1, Math.min(MAX_ZOOM, ((coarse ? 14 : 18) * across) / available));
   if (start > 1) { setZoom(start); viewport.scrollLeft = (viewport.scrollWidth - viewport.clientWidth) / 2; viewport.scrollTop = (viewport.scrollHeight - viewport.clientHeight) / 2; }
   else { zoom = 1; resizeBoard(false); }
 }
-// When a new board is drawn: allow zoom up to a cell of about 40 px.
 
 resizeBoard(false);
 
-// Pinch to zoom on touch screens (two fingers on the board), on top of the + and − buttons.
 const pinch = new Map();
 let pinchStart = 0, pinchZoom = 1, pinchClick = false;
 const spread = () => { const [a, b] = [...pinch.values()]; return Math.hypot(a.x - b.x, a.y - b.y); };
@@ -158,11 +143,8 @@ viewport.addEventListener('pointermove', event => {
 });
 for (const type of ['pointerup', 'pointercancel', 'pointerleave']) viewport.addEventListener(type, event => { pinch.delete(event.pointerId); if (pinch.size < 2) pinchStart = 0; });
 
-// A trailing compatibility click after a two-finger gesture must never play an arrow.
 viewport.addEventListener('click', event => { if (pinchClick && event.detail !== 0) { pinchClick = false; event.preventDefault(); event.stopImmediatePropagation(); } }, true);
 
-// Drag to move a zoomed board with a mouse too (2.11): press and drag on the board; a plain click still fires an
-// arrow. A drag past a few pixels moves the view and the click at its end is ignored.
 let dragFrom = null, dragged = false;
 viewport.addEventListener('pointerdown', event => {
   if (event.pointerType !== 'mouse' || event.button !== 0 || zoom <= 1) return;

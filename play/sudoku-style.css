@@ -186,3 +186,6 @@ html body :is(#cell-status,#selection-status){font-size:14px}
 }
 /* Wide screens: the puzzle column is capped and centred, so the card is as wide as the board and its tools, not the window. */
 @media (width>=1100px){.sudoku-shell .sudoku-layout .sudoku-main{max-width:1000px;margin-inline:auto}.sudoku-shell .sudoku-layout .sudoku-main .board-side{max-width:none}}
+
+/* 2.59: on tall phones keep two lines free for the hint message, so the number pad no longer jumps down when a hint arrives. */
+@media(min-height:780px) and (orientation:portrait){html[data-play-focus] .sudoku-main .board-side .game-message{min-height:40px}html[data-play-focus] #main-content .sudoku-main .board-side .game-message:empty{display:block!important}}

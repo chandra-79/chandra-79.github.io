@@ -93,7 +93,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) chec
 setInterval(checkNewDay, 60_000);
 
 const formatTime = value => `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(value % 60).padStart(2, '0')}`;
-const blankSession = () => ({ values: [...puzzle.givens], notes: puzzle.givens.map(() => 0), elapsed: 0, hints: 3 });
+const blankSession = () => ({ values: [...puzzle.givens], notes: puzzle.givens.map(() => 0), elapsed: 0, hints: 3, hintsUsed: 0, attempt: `${Date.now()}-${Math.random()}` });
 function persist() {
   if (session && key) progress.sessions[key] = session;
   const saved = saveSudokuProgress(progress);
@@ -277,7 +277,7 @@ function hint() {
   const start = (Date.now() >>> 0) % pool.length, pick = explained.map((_, i) => (i + start) % pool.length).find(i => explained[i].kind !== 'direct') ?? start;
   const target = pool[pick], was = session.values[target];
   remember();
-  session.values[target] = puzzle.solution[target]; session.notes[target] = 0; session.hints--;
+  session.values[target] = puzzle.solution[target]; session.notes[target] = 0; session.hints--; session.hintsUsed++;
   selected = target;
   $('game-message').textContent = `${was ? 'That digit was not right. ' : ''}${explained[pick].text}`;
   afterChange();
@@ -305,18 +305,19 @@ function afterChange() {
   }
   if (complete && !wasComplete) { wave(cells, { lift: 6, step: 6 }); feedback.win(); }
   if (complete && !wasComplete) {
+    persist();
     if (!isDaily() || !hub()?.helped?.('sudoku')) recordSudokuWin(progress, key);
-    const result = { time: session.elapsed, hints: session.hints };
+    const result = { time: session.elapsed, hints: Math.max(0, 3 - session.hintsUsed) };
     if (isDaily()) { hub()?.recordDaily?.('sudoku', { ...result, difficulty: dailyLevel() }); postDailyScore(); }
     const c = ladder();
     if (c && key === sudokuKey(ladderPuzzle(c.place))) { if (!c.place.daily) hub()?.earnLevel?.(); hub()?.climbDone?.('sudoku', c.place); }
     onLadder = Boolean(ladder()) && (isDaily() || key.length > 0 && ladderLevel(progress.current.level));
-    $('completion-detail').textContent = `Solved in ${formatTime(session.elapsed)}${3 - session.hints ? ` with ${3 - session.hints} hint${3 - session.hints === 1 ? '' : 's'}` : ' with no hints'}.`;
+    $('completion-detail').textContent = `Solved in ${formatTime(session.elapsed)}${session.hintsUsed ? ` with ${session.hintsUsed} hint${session.hintsUsed === 1 ? '' : 's'}` : ' with no hints'}.`;
     $('share-sudoku').hidden = !isDaily();
     $('share-sudoku').onclick = async () => { $('share-sudoku-status').textContent = await hub()?.share?.('sudoku', result) || ''; };
     $('game-message').textContent = 'Solved! A tidy little win.';
     // The end of a level (2.5).
-    const info = VARIANTS[puzzle.variant], used = 3 - session.hints;
+    const info = VARIANTS[puzzle.variant], used = session.hintsUsed;
     showLevelEnd({ outcome: 'win', symbol: '🔢', kicker: isDaily() ? `ZIGGLE #${hub().dailyNumber()} · TODAY’S ${dailyLevel().toUpperCase()} SUDOKU` : `${info.name.toUpperCase()} · ${progress.current.difficulty.toUpperCase()} · ${ladderLevel(progress.current.level) ? 'LADDER BONUS' : `PUZZLE ${practiceIndex(progress.current.level)+1}`}`,
       title: used ? 'Solved!' : 'Solved with no hints!', earn: !isDaily() && !isArchiveDaily(),
       stats: [['time', formatTime(session.elapsed)], ['hints used', used], ['size', `${puzzle.size}×${puzzle.size}`]],
@@ -420,7 +421,7 @@ async function postDailyScore() {
   const profile = Z.profile();
   if (!profile.nickname) { status.textContent = 'Choose a leaderboard name in Settings to join today’s Sudoku board.'; return; }
   status.textContent = 'Checking your solution…';
-  const response = await Z.api('/api/scores/sudoku', { method: 'POST', queue: true, body: { date: Z.today(), difficulty: level, values: [...session.values], elapsed: session.elapsed, hints: 3 - session.hints, playerId: Z.playerId(), nickname: profile.nickname } });
+  const response = await Z.api('/api/scores/sudoku', { method: 'POST', queue: true, body: { date: Z.today(), difficulty: level, values: [...session.values], elapsed: session.elapsed, hints: Math.min(3, session.hintsUsed), playerId: Z.playerId(), nickname: profile.nickname } });
   status.textContent = response.ok ? `Verified! You’re #${response.rank} of ${response.total} on today’s ${level} board.` : response.message || 'The leaderboard is unavailable right now.';
 }
 // Next puzzle (2.4.1): the next one in this style and difficulty you haven't solved (opening a finished one

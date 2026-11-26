@@ -13,18 +13,18 @@ function close() { dialog.close(); resume?.(); resume = null; opener?.focus({ pr
 function result() {
   if (!resultCard) {
     resultCard = document.createElement('section'); resultCard.className = 'guided-completion';
-    resultCard.innerHTML = '<h2>Finished with help</h2><p>You followed a guided finish. Your earlier moves are unchanged. This is separate from an unassisted win, points and leaderboards.</p><div></div>';
+    resultCard.innerHTML = '<h2>Finished with help</h2><p>You saw the answer. Your own moves are still here. This does not count as a win, so there are no points and no leaderboard place.</p><div></div>';
     document.querySelector('.game-bar').after(resultCard);
   }
   for (const el of document.querySelector('main').children) if (el !== resultCard && !el.matches('.game-bar,.daily-route,#game-drawer,.drawer-backdrop')) el.setAttribute('data-guided-hidden', '');
   const actions = resultCard.querySelector('div'); actions.replaceChildren();
   const next = journeyActive() ? continueAction() : { label: 'Choose another puzzle →', run: () => { location.href = '/#today'; } };
-  for (const [label, run] of [[next.label, next.run], ['Review my puzzle', review], ['Read the guided finish', () => open(true)]]) {
+  for (const [label, run] of [[next.label, next.run], ['Review my puzzle', review], ['Read the answer again', () => open(true)]]) {
     const button = document.createElement('button'); button.type = 'button'; button.className = 'secondary-button'; button.textContent = label; button.onclick = run; actions.append(button);
   }
 }
 function review() { resultCard?.remove(); resultCard = null; document.querySelectorAll('[data-guided-hidden]').forEach(el => el.removeAttribute('data-guided-hidden')); }
-async function open(worked = false) {
+async function open(worked = false, lead = '') {
   opener = document.activeElement;
   if (!dialog) {
     dialog = document.createElement('dialog'); dialog.className = 'assist-dialog'; dialog.setAttribute('aria-labelledby', 'assist-title');
@@ -34,21 +34,21 @@ async function open(worked = false) {
     dialog.addEventListener('keydown', event => event.stopPropagation());
     document.body.append(dialog);
   }
-  dialog.querySelector('h2').textContent = `${name()} · a way forward`;
-  dialog.querySelector('.assist-note').textContent = 'Stuck? Try a hint, or see the answer. Seeing the answer is always free and keeps your streak going, with no points or leaderboard entry. Extra hints bought with a life count as played with help too.';
+  dialog.querySelector('h2').textContent = `${name()} · Help`;
+  dialog.querySelector('.assist-note').textContent = 'Stuck? Try a hint, or see the answer. Seeing the answer is free and keeps your streak, but gives no points and no leaderboard place. A hint bought with a life counts as help too.';
   const list = dialog.querySelector('ol'); list.hidden = true; list.replaceChildren();
   const status = dialog.querySelector('.assist-status'); status.textContent = '';
   const actions = dialog.querySelector('.assist-actions'); actions.replaceChildren();
   const button = (label, run) => { const el = document.createElement('button'); el.type = 'button'; el.className = 'secondary-button'; el.textContent = label; el.onclick = run; actions.append(el); return el; };
   const rules = { search: 'bar-help', crossword: 'bar-help', weaver: 'weaver-help', lock: 'lock-help', sudoku: 'sudoku-help', memory: 'mm-help', sums: 'sum-help', arrows: 'help-button', twists: 'twist-help' };
   if (document.getElementById(rules[gameId()])) button('How to play', () => { close(); document.getElementById(rules[gameId()]).click(); });
-  if (coach) button('Show how to play', () => coach.replay(close));
-  if (config.hint) { const hint = button('Try a hint', () => { close(); config.hint(); }); hint.disabled = Boolean(config.canHint && !config.canHint()); if (hint.disabled) hint.textContent = 'No hint available now. The answer is free'; }
+  if (coach) button('Watch a demo', () => coach.replay(close));
+  let hintButton; if (config.hint) { const hint = hintButton = button(config.hintLabel?.() || 'Try a hint', () => { close(); config.hint(); }); hint.disabled = Boolean(config.canHint && !config.canHint()); if (hint.disabled) hint.textContent = 'No hint to give right now'; else if (lead === 'hint') { hint.className = 'primary-button'; actions.prepend(hint); } }
   if (config.refill) {
     const wallet = Z()?.wallet?.(), affordable = wallet?.canUse;
     const refill = button(wallet?.freeLeft ? `Use a free life: refill hints (${wallet.freeLeft} left)` : `Refill hints for ${wallet?.cost || 50} earned credits`, () => {
       if (config.refillAvailable && !config.refillAvailable()) { status.textContent = 'Use your existing hints first.'; return; }
-      const spent = Z()?.useLife?.(); if (!spent?.ok) { status.textContent = spent?.message || 'No life available. Guided finish is always free.'; return; }
+      const spent = Z()?.useLife?.(); if (!spent?.ok) { status.textContent = spent?.message || 'No life left. Seeing the answer is always free.'; return; }
       if (config.isDaily?.()) Z()?.markGuided?.(gameId(), false, date());
       close(); config.refill();
     });
@@ -68,13 +68,13 @@ async function open(worked = false) {
         showLevelEnd({ outcome: 'win', title: 'Finished with help', symbol: '✦', praise: 'Here it is. Good luck with the next one: it is a fresh start.', note: 'Answer shown · your streak is safe · no points or leaderboard entry.', focus: () => resultCard?.querySelector('button'), actions: [journeyActive() ? continueAction() : { id: 'home', label: 'Choose another puzzle →', primary: true, run: () => { location.href = '/#today'; } }, { id: 'review', label: 'Review my puzzle', run: review }] });
       }); finish.dataset.finishGuided = ''; finish.className = 'primary-button'; finish.focus();
     }
-  } catch { status.textContent = 'Could not prepare this guide. Your moves are unchanged; try again or return to the games.'; }
+  } catch { status.textContent = 'Could not show the answer. Your moves are safe. Try again, or go back to the games.'; }
   });
-  if (config.canFinish && !config.canFinish()) { reveal.disabled = true; reveal.textContent = 'Start the puzzle to unlock its guided finish'; }
-  button('Keep my progress and return to the games', () => { location.href = '/#today'; });
+  if (config.canFinish && !config.canFinish()) { reveal.disabled = true; reveal.textContent = 'Make a move first to see the answer'; }
+  button('Back to today’s games (progress saved)', () => { location.href = '/#today'; });
   if (!dialog.open) { resume = config.suspend?.(); dialog.showModal(); }
   if (worked) actions.querySelectorAll('button')[actions.querySelectorAll('button').length - 2].click();
-  else dialog.querySelector('button').focus();
+  else if (lead === 'hint' && hintButton && !hintButton.disabled) hintButton.focus(); else dialog.querySelector('button').focus();
 }
 export function registerAssistance(options) {
   config = options;
@@ -82,10 +82,10 @@ export function registerAssistance(options) {
   if (options.howto) coach = registerHowTo({ id: options.id, snapshot: options.howto, suspend: options.suspend, defer: options.deferDemo, help: options.demoHelp });
   const bar = document.querySelector('.game-bar'); if (!bar) return;
   if (!document.querySelector('[data-assist-open]')) {
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'secondary-button assist-open'; button.dataset.assistOpen = ''; button.textContent = 'Help'; button.setAttribute('aria-label', 'Help: rules, demo, hints and guided finish');
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'secondary-button assist-open'; button.dataset.assistOpen = ''; button.textContent = 'Help'; button.setAttribute('aria-label', 'Help: rules, demo, hints and the answer');
     button.onclick = () => open(); const drawerButton = bar.querySelector('[data-drawer-open]'); if (drawerButton) drawerButton.before(button); else bar.append(button);
   }
   if (config.isDaily?.() && (Z()?.profile().guidedDays[date()] || []).includes(gameId())) result();
   document.addEventListener('click', event => { if (event.target.closest('#mode-practice,#mode-daily,[data-difficulty],.theme-button,#play-next,#lock-next,#sum-next,#next-level,#mm-start')) review(); }, true);
-  return { open: () => open(), beforeStart: () => coach?.beforeStart() };
+  return { open: lead => open(false, typeof lead === 'string' ? lead : ''), beforeStart: () => coach?.beforeStart() };
 }

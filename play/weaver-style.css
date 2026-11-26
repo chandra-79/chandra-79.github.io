@@ -282,3 +282,6 @@ html body #weave-sky .cloud-text{font-size:calc(16px + var(--sky-t) * .021)}
 html body #weave-sky .cloud-q{font-size:calc(22px + var(--sky-t) * .05)}
 html body #weave-sky .type-hint{font-size:calc(13px + var(--sky-t) * .017)}
 }
+
+/* 2.59: on tall phones keep a line free for the hint message, so the buttons below it do not jump when a letter is revealed. */
+@media(min-height:780px) and (orientation:portrait){html[data-play-focus] body .weave-card>.weave-message{min-height:22px!important}}

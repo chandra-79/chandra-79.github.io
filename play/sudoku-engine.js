@@ -106,14 +106,14 @@ export function explainHint(e, t, o) {
     if (candidateMask(e, u, o) === c) return {
         kind: "only",
         digit: i,
-        text: `${f} can only be ${i}: every other digit is ruled out by its row, column, box or special rules.`
+        text: `${f} must be ${i}. No other number fits there.`
     };
     for (const t of n.cellGroups[o]) {
         const s = n.groups[t];
         if (s.length === r && s.every(t => t === o || u[t] || !(candidateMask(e, u, t) & c))) return {
             kind: "hidden",
             digit: i,
-            text: `In this ${t < r ? "row" : t < 2 * r ? "column" : t < 3 * r ? "box" : "diagonal"}, ${i} has nowhere else to go, so ${f} is ${i}.`
+            text: `${f} is ${i}: the only spot for ${i} in this ${t < r ? "row" : t < 2 * r ? "column" : t < 3 * r ? "box" : "diagonal"}.`
         };
     }
     return {
