@@ -18,7 +18,6 @@ async function fill() {
   const slots = [...document.querySelectorAll('[data-ad-slot]')];
   const off = mode() === 'off' || kids();
   const path = here(), day = dayIndex();
-  // Each slot is a landmark, so each needs its own name.
   const seen = new Map();
   for (const slot of slots) { const base = slot.getAttribute('aria-label') || 'From Ziggle'; const root = base.replace(/ · \d+$/, ''); const n = (seen.get(root) || 0) + 1; seen.set(root, n); slot.setAttribute('aria-label', n > 1 ? `${root} · ${n}` : root); }
   slots.forEach((slot, index) => {
@@ -30,8 +29,7 @@ async function fill() {
     slot.dataset.size = size;
     const label = document.createElement('span');
     label.className = 'ad-label';
-    // Under a game on a computer the banner grows into the room left above the footer (2.6.1): up to three rows
-    // of two cards, half of them posts about this game, the rest other Ziggle games. Elsewhere it stays one card.
+    // Under a game on a computer the banner grows into the spare room (see CLIENT-CODE-NOTES.md).
     let promos;
     const grows = kind === 'banner' && size === '728x90' && Boolean(document.querySelector('.game-bar')) && !slot.closest('#post-grid');
     if (grows) {
@@ -52,7 +50,6 @@ async function fill() {
     slot.append(label, holder);
     slot.dataset.filled = 'house';
   });
-  // The rail needs a wide screen; the page makes room for it only when one exists.
   document.querySelector('main')?.classList.toggle('has-ad-rail', !off && Boolean(document.querySelector('[data-ad-slot="rail"]')));
 }
 
@@ -61,7 +58,6 @@ if (typeof document !== 'undefined') {
   addEventListener('ziggle:settings', () => setTimeout(fill));
   // Kids mode switched on or off anywhere (Settings, a sync, another tab) shows or hides every slot.
   if (typeof MutationObserver === 'function') new MutationObserver(fill).observe(document.documentElement, { attributes: true, attributeFilter: ['data-kids'] });
-  // The room under a game changes with the window: refill when it does (and once more after fonts and boards settle).
   let resizeTimer = 0, lastHeight = innerHeight, lastWidth = innerWidth;
   addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (Math.abs(innerHeight - lastHeight) > 40 || Math.abs(innerWidth - lastWidth) > 80) { lastHeight = innerHeight; lastWidth = innerWidth; fill(); } }, 250); });
   addEventListener('load', () => setTimeout(fill, 150));

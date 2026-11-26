@@ -88,6 +88,7 @@ body{background:var(--paper)}
 .collection-menu-panel button[hidden]{display:none}
 .collection-menu-panel button:hover,.collection-menu-panel .menu-link:hover{background:var(--surface-soft)}
 .collection-menu-panel .menu-link[aria-current=page]{color:var(--accent);font-weight:800}
+html[data-kids="true"] [data-tip-link],html[data-app="true"] [data-tip-link]{display:none}
 .collection-menu-panel svg{width:17px;height:17px}
 .collection-menu-panel #trophy-count{color:var(--accent);margin-left:auto}
 .collection-nav{scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;border-bottom:1px solid var(--stroke);align-items:center;gap:4px;margin-bottom:6px;padding-top:10px;padding-bottom:10px;display:flex;overflow-x:auto}
