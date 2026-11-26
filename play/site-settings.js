@@ -33,6 +33,8 @@ export const HOME_SECTIONS = Object.freeze([
 let tab = 'look';
 const DAILY_GAMES = Object.freeze([['search', 'Word Search'], ['crossword', 'Crossword'], ['weaver', 'Word Cloud'], ['lock', 'Letter Lock'], ['arrows', 'Arrow Escape'], ['memory', 'Memory Mischief'], ['sudoku', 'Sudoku'], ['sums', 'Sum Spark']]);
 const PLANS = Object.freeze([['easy', 'Start at Easy'], ['medium', 'Start at Medium'], ['hard', 'Start at Expert']]);
+// Visit counts need somewhere to go: the Ziggle server, or on the public website a named counter (counter/worker.mjs). With neither, the switch is not shown.
+const COUNTS_OFF = document.querySelector('meta[name="ziggle-server"]')?.content?.trim() === 'none' && !document.querySelector('meta[name="ziggle-counter"]');
 let dialog = null, opener = null;
 
 const changed = key => document.dispatchEvent(new CustomEvent('ziggle:settings', { detail: { key } }));
@@ -96,7 +98,7 @@ function build() {
     <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend class="sr-only">Backup and other devices</legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>
     <fieldset class="settings-group switches" data-tab="progress" data-needs-hub><legend>Privacy</legend>
       ${check('kids-mode', 'Kids mode', 'Hides leaderboards, leagues, names and email signup, and sends nothing to the server.', KIDS_MODE_AVAILABLE ? '' : ' hidden')}
-      ${check('analytics-toggle', 'Share anonymous visit counts', 'We only count how many people visit each day and how many come back, never who. Off in kids mode, or if your browser asks sites not to track you.', ' data-online')}
+      ${check('analytics-toggle', 'Share anonymous visit counts', 'We only count how many people visit each day and how many come back, never who. Off in kids mode, or if your browser asks sites not to track you.', COUNTS_OFF ? ' hidden' : '')}
       <p class="settings-note"><a href="/privacy.html">Privacy in full</a></p>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups><legend>Leaderboard name <small>Shown publicly. Not your real name.</small></legend>
