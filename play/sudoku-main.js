@@ -7,11 +7,11 @@ import { showLevelEnd } from './level-end.js';
 const $ = id => document.getElementById(id);
 const hub = () => globalThis.Ziggle;
 const VARIANTS = {
-  classic: { name: 'Classic', emoji: '9', blurb: 'Fill every row, column and 3×3 box with 1–9.' },
-  addoku: { name: 'Addoku', emoji: '+', blurb: 'Classic rules, and each dashed cage adds up to its number with no repeats.' },
-  diagonal: { name: 'Diagonal', emoji: '╳', blurb: 'Classic rules, and both long diagonals hold 1–9 too.' },
-  mini: { name: 'Mini 6×6', emoji: '6', blurb: 'A quick warm-up: rows, columns and 2×3 boxes hold 1–6.' },
-  'even-odd': { name: 'Even / Odd', emoji: 'e/o', blurb: 'Classic rules. Round markers hold even digits; square markers hold odd.' },
+  classic: { name: 'Classic', emoji: '9', blurb: 'Every row, column and 3×3 box has the numbers 1 to 9, once each.' },
+  addoku: { name: 'Addoku', emoji: '+', blurb: 'Classic rules. The numbers in each dashed cage also add up to its small number, with no repeats.' },
+  diagonal: { name: 'Diagonal', emoji: '╳', blurb: 'Classic rules. Each long diagonal also has 1 to 9, once each.' },
+  mini: { name: 'Mini 6×6', emoji: '6', blurb: 'A quick warm-up: every row, column and 2×3 box has 1 to 6, once each.' },
+  'even-odd': { name: 'Even / Odd', emoji: 'e/o', blurb: 'Classic rules. A round marker takes an even number; a square marker takes an odd number.' },
 };
 const LEVELS_SHOWN = 1000;
 // Practice puzzles 1–1000 are levels 201000–201999 (generation 2, 27 Nov 2026: fresh grids, each difficulty its own).
@@ -26,10 +26,10 @@ const practiceLevel=(n,style=progress.current)=>practiceAt(Math.max(0,practiceIn
 const ladderLevel=n=>n>=700_000||n>=SUDOKU_LADDER_V3&&n<SUDOKU_LADDER_V3+10_000;
 // What changes from level to level (2.6), shown when you hover or focus a difficulty. Easy and medium help more.
 const DIFFICULTY_TIPS = {
-  easy: 'Most numbers given. Rule conflicts are marked when enabled. A number’s key switches off after all its copies are placed without a current conflict.',
-  medium: 'Fewer numbers given. Rule-conflict feedback and finished-number keys work as on Easy.',
-  hard: 'Fewer numbers again, and no marking of wrong entries or finished numbers: just rule clashes (if switched on) and 3 hints.',
-  expert: 'The fewest numbers given and the same light help as Hard. Expect to use notes.',
+  easy: 'Most numbers are given. A number that breaks a rule is marked (you can switch this off). A number’s key switches off once all of that number are placed.',
+  medium: 'Fewer numbers are given. The same help as Easy.',
+  hard: 'Fewer numbers again. A number that breaks a rule is still marked (unless you switch it off), but number keys stay on. 3 hints.',
+  expert: 'The fewest numbers given, with the same help as Hard. Expect to use notes.',
 };
 const progress = loadSudokuProgress();
 let puzzle, session, key, selected = 0, notesMode = false, paused = false, complete = false, lastTick = Date.now();
@@ -101,6 +101,26 @@ function persist() {
   $('wins-count').textContent = progress.wins.length;
 }
 const rowOf = index => Math.floor(index / puzzle.size), colOf = index => index % puzzle.size;
+// Why the number in a square breaks a rule, in plain words (2.60). Rows, columns and boxes first, then the style's own rule.
+function clashReason(index) {
+  const value = session.values[index], n = puzzle.size, row = rowOf(index), col = colOf(index);
+  const twin = test => session.values.some((other, i) => i !== index && other === value && test(i));
+  if (!value) return '';
+  if (twin(i => rowOf(i) === row)) return `Two ${value}s in this row`;
+  if (twin(i => colOf(i) === col)) return `Two ${value}s in this column`;
+  if (twin(i => boxOf(i) === boxOf(index))) return `Two ${value}s in this box`;
+  if (puzzle.variant === 'diagonal' && ((row === col && twin(i => rowOf(i) === colOf(i))) || (row + col === n - 1 && twin(i => rowOf(i) + colOf(i) === n - 1)))) return `Two ${value}s on this diagonal`;
+  const parity = puzzle.parity?.[index];
+  if (parity && (value % 2 === 0) !== (parity === 'even')) return `This square needs an ${parity} number`;
+  const cage = (puzzle.cages || []).find(item => item.cells.includes(index));
+  if (cage) {
+    const placed = cage.cells.map(cell => session.values[cell]).filter(Boolean), total = placed.reduce((sum, digit) => sum + digit, 0);
+    if (new Set(placed).size !== placed.length) return `Two ${value}s in this cage`;
+    if (total > cage.sum) return `This cage adds up to more than ${cage.sum}`;
+    return placed.length === cage.cells.length ? `This cage must add up to ${cage.sum}` : `This cage cannot add up to ${cage.sum} this way`;
+  }
+  return 'Breaks a rule';
+}
 const boxOf = index => Math.floor(rowOf(index) / puzzle.boxRows) * (puzzle.size / puzzle.boxCols) + Math.floor(colOf(index) / puzzle.boxCols);
 const onDiagonal = index => puzzle.variant === 'diagonal' && (rowOf(index) === colOf(index) || rowOf(index) + colOf(index) === puzzle.size - 1);
 
@@ -170,7 +190,7 @@ function paint() {
     const state=given?'fixed':!value?'empty':!progress.showMistakes?'entered':conflicts.has(index)?'conflict':'valid';
     cell.dataset.entryState=state;cell.classList.toggle('valid-entry',state==='valid');cell.setAttribute('aria-current',index===selected?'true':'false');
     cell.tabIndex = index === selected ? 0 : -1;
-    const extras = [puzzle.parity[index] ? `${puzzle.parity[index]} cell` : '', given ? 'fixed clue, cannot edit' : 'editable', index===selected?'current cell':'', progress.showMistakes&&value&&!given?(conflicts.has(index)?'rule conflict':'no current rule conflict'):''].filter(Boolean).join(', ');
+    const extras = [puzzle.parity[index] ? `${puzzle.parity[index]} cell` : '', given ? 'came with the puzzle, cannot be changed' : 'yours to fill', index===selected?'current cell':'', progress.showMistakes&&value&&!given?(conflicts.has(index)?'breaks a rule':'fits so far'):''].filter(Boolean).join(', ');
     cell.setAttribute('aria-label', `Row ${rowOf(index) + 1}, column ${colOf(index) + 1}: ${value || 'empty'}${extras ? `, ${extras}` : ''}`);
   });
   const filled = session.values.filter(Boolean).length;
@@ -190,7 +210,7 @@ function paint() {
   $('cell-status').dataset.state=state;
   if(paused||complete)$('cell-status').textContent=paused?'Paused':'Puzzle complete';
   else{ // The row and column are for screen readers; sighted players see the cell itself, so only a state worth a word is shown.
-    const words={fixed:'Fixed clue',empty:'Empty · editable',conflict:'Rule conflict',valid:'Valid so far',entered:'Your entry'}[state],plain=state==='empty'||state==='entered';
+    const words={fixed:'Came with the puzzle',empty:'Empty',conflict:clashReason(selected),valid:'Fits so far',entered:'Your number'}[state],plain=state==='empty'||state==='entered';
     const where=document.createElement('span');where.className='visually-hidden';where.textContent=`R${rowOf(selected)+1} C${colOf(selected)+1} · ${plain?words:''}`;
     $('cell-status').replaceChildren(where,...(plain?[]:[words]));
   }
@@ -225,7 +245,7 @@ function select(index, focus = true) {
 
 function enter(digit) {
   if(paused||complete)return;
-  if(puzzle.givens[selected]){$('game-message').textContent='That is a fixed clue. Choose an editable cell.';return;}
+  if(puzzle.givens[selected]){$('game-message').textContent='That number came with the puzzle. Pick an empty square.';return;}
   if (digit && doneDigits().has(digit)) { $('game-message').textContent = `Every ${digit} is already in place.`; return; }
   if (notesMode && digit) {
     if (session.values[selected]) return;
@@ -262,10 +282,10 @@ const undo = () => travel(history, future, 'Undid'), redo = () => travel(future,
 function fillNotes() {
   if (paused || complete) return;
   const targets = session.values.map((value, index) => index).filter(index => !puzzle.givens[index] && !session.values[index] && !session.notes[index]);
-  if (!targets.length) { $('game-message').textContent = 'Every empty cell already has notes.'; return; }
+  if (!targets.length) { $('game-message').textContent = 'Every empty square already has notes.'; return; }
   remember();
   targets.forEach(index => { session.notes[index] = candidateMask(puzzle, session.values, index); });
-  $('game-message').textContent = `Notes added to ${targets.length} cells from the rules. If a digit you placed is wrong, they can be off.`;
+  $('game-message').textContent = `Notes added to ${targets.length} ${targets.length === 1 ? 'square' : 'squares'}. They follow the numbers on the grid, so a wrong number of yours can throw them off.`;
   afterChange();
 }
 function hint() {
@@ -279,7 +299,7 @@ function hint() {
   remember();
   session.values[target] = puzzle.solution[target]; session.notes[target] = 0; session.hints--; session.hintsUsed++;
   selected = target;
-  $('game-message').textContent = `${was ? 'That digit was not right. ' : ''}${explained[pick].text}`;
+  $('game-message').textContent = `${was ? 'That number was not right. ' : ''}${explained[pick].text}`;
   afterChange();
 }
 let placed = null;
@@ -469,7 +489,7 @@ $('sudoku-board').addEventListener('keydown', event => {
   const moves={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   if(moves[event.key]){event.preventDefault();const [dr,dc]=moves[event.key];select(((rowOf(selected)+dr+puzzle.size)%puzzle.size)*puzzle.size+(colOf(selected)+dc+puzzle.size)%puzzle.size);}
   else if(['Home','End'].includes(event.key)){event.preventDefault();select(rowOf(selected)*puzzle.size+(event.key==='End'?puzzle.size-1:0));}
-  else if(/^[1-9]$/.test(event.key)){event.preventDefault();if(!event.repeat){const digit=Number(event.key);if(digit<=puzzle.size)enter(digit);else $('game-message').textContent=`This grid uses 1–${puzzle.size}.`;}}
+  else if(/^[1-9]$/.test(event.key)){event.preventDefault();if(!event.repeat){const digit=Number(event.key);if(digit<=puzzle.size)enter(digit);else $('game-message').textContent=`This grid only uses 1 to ${puzzle.size}.`;}}
   else if(['Backspace','Delete','0'].includes(event.key)){event.preventDefault();erase();}
   else if(event.key.toLowerCase()==='f'&&!event.repeat){event.preventDefault();fillNotes();}
   else if(event.key.toLowerCase()==='n'&&!event.repeat){event.preventDefault();if(!puzzle.givens[selected]){notesMode=!notesMode;paint();}}

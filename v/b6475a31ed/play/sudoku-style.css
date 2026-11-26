@@ -1,0 +1,210 @@
+*{box-sizing:border-box}
+body{font-synthesis:none;-webkit-font-smoothing:antialiased;margin:0;font-family:Avenir Next,Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;background:0 0;border:0}
+button:disabled{cursor:default;opacity:.5}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.visually-hidden{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
+.sudoku-shell{width:100%;max-width:1240px;margin:0 auto;padding:0 24px}
+.sudoku-layout{grid-template-columns:220px minmax(0,1fr);align-items:start;gap:28px;display:grid}
+.side-title{letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-size:13px}
+.variant-list{gap:6px;display:grid}
+.variant-option{text-align:left;border-radius:12px;align-items:center;gap:10px;min-height:46px;padding:8px 12px;font-size:15px;font-weight:700;display:flex}
+.variant-option:hover{background:var(--surface-soft)}
+.variant-option.active{background:var(--accent-soft);color:var(--accent)}
+.variant-icon{background:var(--surface);border:1px solid var(--stroke);width:28px;height:28px;color:var(--ink);border-radius:8px;place-items:center;font-size:13px;font-weight:800;display:grid}
+.daily-button{background:var(--citrus);width:100%;min-height:46px;color:var(--citrus-ink);border-radius:12px;margin-top:16px;padding:10px 12px;font-size:14px;font-weight:800}
+.side-stat{background:var(--accent-soft);border-radius:16px;gap:2px;margin-top:16px;padding:16px;display:grid}
+.side-stat strong{color:var(--accent);font-size:24px}
+.side-stat span{color:var(--muted);font-size:13px}
+.puzzle-head{justify-content:space-between;align-items:flex-start;gap:12px;display:flex}
+.puzzle-kicker{letter-spacing:1.2px;color:var(--accent);font-size:12px;font-weight:800}
+.puzzle-head h2{letter-spacing:-.6px;margin:4px 0;font-size:28px}
+.variant-blurb{color:var(--muted);margin:0;font-size:15px;line-height:1.5}
+.circle-button{border:1px solid var(--stroke);background:var(--surface);border-radius:50%;flex:0 0 40px;width:40px;height:40px;font-size:16px;font-weight:800}
+.puzzle-controls{flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 14px;display:flex}
+.difficulty-tabs{background:var(--surface-soft);border-radius:12px;gap:2px;padding:4px;display:inline-flex}
+.difficulty-tabs button{min-height:36px;color:var(--muted);border-radius:9px;padding:6px 12px;font-size:14px;font-weight:700}
+.difficulty-tabs button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--stroke)}
+.puzzle-picker{align-items:center;gap:6px;font-size:14px;display:flex}
+.puzzle-picker button{border-radius:9px;width:34px;height:34px;font-size:20px}
+.puzzle-picker button:hover:not(:disabled){background:var(--surface-soft)}
+.puzzle-picker select{border:1px solid var(--stroke);background:var(--surface);border-radius:9px;min-height:36px;padding:4px 8px}
+.daily-note{color:var(--accent);font-weight:700}
+.board-card{border:1px solid var(--stroke);background:var(--surface);max-width:560px;box-shadow:0 4px 0 var(--stroke);border-radius:22px;padding:16px}
+.board-top{color:var(--muted);justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;display:flex}
+.timer-chip{background:var(--surface-soft);color:var(--ink);font-variant-numeric:tabular-nums;border-radius:10px;align-items:center;gap:6px;padding:4px 10px 4px 4px;font-weight:800;display:inline-flex}
+.timer-chip button{border-radius:7px;width:28px;height:28px;font-size:13px}
+.board-wrap{position:relative}
+.sudoku-board{--size:9;isolation:isolate;grid-template-columns:repeat(var(--size), minmax(0, 1fr));border:2px solid var(--ink);aspect-ratio:1;background:var(--surface);touch-action:manipulation;border-radius:10px;display:grid;overflow:hidden}
+.cell{aspect-ratio:1;border-right:1px solid var(--stroke);border-bottom:1px solid var(--stroke);min-width:0;color:var(--accent);background:var(--surface);font-variant-numeric:tabular-nums;border-radius:0;place-items:center;padding:0;font-size:clamp(18px,4.4vw,26px);font-weight:650;display:grid;position:relative}
+.cell.box-left{border-left:2px solid var(--ink)}
+.cell.box-top{border-top:2px solid var(--ink)}
+.cell.diagonal{background:color-mix(in srgb, var(--citrus) 22%, var(--surface))}
+.cell.related{background:var(--surface-soft)}
+.cell.same{background:var(--accent-soft)}
+.cell.selected{background:var(--accent-soft);box-shadow:inset 0 0 0 3px var(--accent);z-index:1}
+.cell.given{color:var(--ink);font-weight:800}
+.cell.conflict{color:var(--danger);background:var(--danger-soft)}
+.cell:focus-visible{box-shadow:inset 0 0 0 3px var(--accent);outline:none}
+.cell[data-parity]:before{content:"";border:2px solid color-mix(in srgb, var(--muted) 45%, transparent);pointer-events:none;position:absolute;inset:18%}
+.cell[data-parity=even]:before{border-radius:50%}
+.cell[data-parity=odd]:before{border-radius:4px}
+.cage{border:1.5px dashed color-mix(in srgb, var(--ink) 55%, transparent);pointer-events:none;position:absolute}
+.cage-sum{color:var(--ink);background:var(--surface);pointer-events:none;padding:0 1px;font-size:11px;font-weight:800;line-height:1;position:absolute;top:2px;left:4px}
+.value{z-index:1;position:relative}
+.notes{color:var(--muted);pointer-events:none;grid-template-columns:repeat(3,1fr);font-size:11px;font-weight:700;line-height:1;display:grid;position:absolute;inset:3px}
+.notes i{visibility:hidden;place-items:center;font-style:normal;display:grid}
+.notes i.on{visibility:visible}
+.pause-overlay{z-index:10;padding:16px;justify-content:stretch;justify-items:center;text-align:center;background:var(--surface);border-radius:10px;place-content:center;gap:12px;font-size:16px;display:grid;position:absolute;inset:0}
+.pause-overlay[hidden],.legend[hidden]{display:none}
+.legend{color:var(--muted);align-items:center;gap:6px;margin:10px 0 0;font-size:13px;display:flex}
+.legend-even,.legend-odd{border:2px solid var(--muted);width:14px;height:14px;display:inline-block}
+.legend-even{border-radius:50%}
+.legend-odd{border-radius:3px}
+.number-pad{grid-template-columns:repeat(var(--pad,9), minmax(0, 1fr));gap:6px;margin-top:14px;display:grid}
+.pad-key{background:var(--surface-soft);min-height:46px;color:var(--ink);border-radius:10px;font-size:20px;font-weight:800}
+.pad-key:hover:not(:disabled){background:var(--accent-soft);color:var(--accent)}
+.tool-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px;display:grid}
+.tool{border:1px solid var(--stroke);border-radius:10px;min-height:42px;font-size:14px;font-weight:700}
+.tool[aria-pressed=true]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.tool.hint{background:var(--citrus);color:var(--citrus-ink);border-color:#0000}
+.progress-track{background:var(--surface-soft);border-radius:6px;height:6px;margin-top:14px;overflow:hidden}
+.progress-track span{background:var(--accent);width:0;height:100%;transition:width .2s;display:block}
+.mistakes-toggle{color:var(--muted);align-items:center;gap:8px;margin-top:12px;font-size:14px;display:flex;min-height:28px;cursor:pointer}
+.mistakes-toggle input{flex:none;width:20px;height:20px;margin:0}
+.game-message{min-height:22px;color:var(--ink);margin:10px 0 0;font-size:14px}
+.completion{background:var(--mint-soft);border-radius:16px;grid-template-columns:auto 1fr;align-items:center;gap:10px 14px;margin-top:12px;padding:16px;display:grid}
+.completion[hidden]{display:none}
+.completion>span{color:var(--mint-ink);font-size:24px}
+.completion h3{margin:0;font-size:18px}
+.completion p{color:var(--muted);margin:2px 0 0;font-size:14px}
+.completion-actions{flex-wrap:wrap;grid-column:1/-1;gap:8px;display:flex}
+.share-status{color:var(--muted);white-space:pre-line;grid-column:1/-1;margin:0;font-size:13px}
+.primary-button,.secondary-button{border-radius:12px;min-height:44px;padding:10px 16px;font-size:14px;font-weight:800}
+.primary-button{background:var(--accent);color:var(--paper)}
+.secondary-button{background:var(--surface);border:1px solid var(--stroke)}
+.play-instructions{max-width:560px;color:var(--muted);margin:12px 0 0;font-size:13px}
+.sudoku-footer{border-top:1px solid var(--stroke);width:100%;max-width:1240px;color:var(--muted);flex-wrap:wrap;justify-content:space-between;gap:12px;margin:36px auto 0;padding:18px 24px 28px;font-size:12px;display:flex}
+dialog{border:1px solid var(--stroke);background:var(--surface);width:calc(100% - 32px);max-width:520px;color:var(--ink);border-radius:22px;padding:28px}
+dialog::backdrop{backdrop-filter:blur(6px);background:#392a5860}
+dialog h2{margin:6px 0 10px}
+dialog li,dialog p{font-size:15px;line-height:1.5}
+.dialog-close{float:right}
+@media (width<=900px){.sudoku-layout{grid-template-columns:minmax(0,1fr);gap:18px}
+.variant-list{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.side-stat{display:none}
+}
+@media (width<=650px){.sudoku-shell{padding:0 16px}
+.board-card{border-radius:16px;padding:10px}
+.number-pad{gap:4px}
+.pad-key{min-height:44px;font-size:18px}
+.tool{font-size:13px}
+.cage-sum{font-size:9px;top:1px;left:2px}
+.notes{font-size:9px;inset:2px}
+.sudoku-footer{padding:18px 16px 24px}
+}
+@media (prefers-reduced-motion:reduce){.progress-track span{transition:none}
+}
+.pad-key.done{color:var(--muted);border:1px dashed var(--stroke);opacity:.75;cursor:default;background:0 0;position:relative}
+.pad-key.done:after{content:"✓";color:var(--mint-ink,#1d7a4c);font-size:12px;position:absolute;top:4px;right:7px}
+.cell.wrong .value{color:var(--danger,#c0392b)}
+.cell.wrong{background:color-mix(in srgb, var(--danger,#c0392b) 12%, var(--surface))}
+.cell.wrong:after{content:"";border:2px solid color-mix(in srgb, var(--danger,#c0392b) 55%, transparent);pointer-events:none;border-radius:6px;position:absolute;inset:3px}
+@media (width<=520px){.sudoku-main .puzzle-head{align-items:center;margin:0 0 6px}
+.sudoku-main .puzzle-head h2{margin:0;font-size:20px}
+.sudoku-main .puzzle-head .variant-blurb{display:none}
+.sudoku-main .puzzle-head .circle-button{width:36px;height:36px}
+.sudoku-main .puzzle-controls{flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px;display:flex}
+.sudoku-main .difficulty-tabs{padding:3px}
+.sudoku-main .puzzle-picker{margin:0}
+.sudoku-main .puzzle-picker select{padding-block:6px}
+.sudoku-main .board-top{margin-bottom:8px}
+.sudoku-main .number-pad button{min-height:48px;font-size:20px}
+.sudoku-main .puzzle-controls{flex-wrap:nowrap;justify-content:space-between;scroll-margin-top:78px}
+.sudoku-main .difficulty-tabs button{padding:6px 7px;font-size:12.5px}
+.sudoku-main .puzzle-picker{flex-shrink:0;align-items:center;gap:2px;display:flex}
+.sudoku-main .puzzle-picker>button{width:26px;padding:0}
+.sudoku-main .puzzle-picker select{padding-inline:6px 18px;font-size:13px}
+.sudoku-main .board-card{padding:8px 8px 10px}
+.sudoku-main .board-top{margin:0 0 6px;padding:0;font-size:13px}
+.sudoku-main .board-top .timer-chip{padding:4px 10px}
+.sudoku-main .number-pad,.sudoku-main .tool-row{margin-top:8px}
+}
+@media (width<=380px){.sudoku-main .puzzle-controls{flex-wrap:wrap}
+}
+@media (height<=700px) and (orientation:portrait){.sudoku-shell .puzzle-head{margin-bottom:2px}
+.sudoku-shell .puzzle-head h2{font-size:16px}
+.sudoku-shell .puzzle-head .circle-button{width:30px;height:30px}
+.sudoku-shell .puzzle-controls{margin-bottom:4px}
+.sudoku-shell .board-card{padding-top:4px;padding-bottom:6px}
+.sudoku-shell .board-top{margin-bottom:4px;padding-top:2px;padding-bottom:2px;font-size:12px}
+.sudoku-shell .board-card .board-main .board-wrap{max-width:max(200px, calc(var(--room) - 120px));margin-left:auto;margin-right:auto}
+.sudoku-shell .board-card:has(#legend:not([hidden])) .board-main .board-wrap{max-width:max(180px, calc(var(--room) - 144px))}
+.sudoku-shell .board-card .board-main .legend{margin:4px 0 0;padding:0;font-size:12px;line-height:1.3}
+.sudoku-shell [aria-label=Number\ pad]{gap:4px;margin-top:6px}
+.sudoku-shell .board-card [aria-label=Number\ pad] button{height:36px;min-height:36px;font-size:17px}
+.sudoku-shell .tool-row{gap:6px;margin-top:6px}
+.sudoku-shell .board-card .tool-row .tool{height:36px;min-height:36px;padding-block:4px;font-size:13px}
+}
+/* Cage lines remain legible where a cage crosses the heavy box boundary. */
+.cage{border:1.5px dashed color-mix(in srgb,var(--ink) 58%,var(--surface));z-index:2}
+.cell:has(.cage){overflow:visible}
+.cage-sum{z-index:3}
+.cell.selected:has(.cage) .cage{border-color:var(--accent)}
+@media(width<=650px){
+html[data-play-focus] .sudoku-main .puzzle-head{min-height:0!important;margin:0!important}
+html[data-play-focus] .sudoku-main :is(.puzzle-kicker,.variant-blurb,#sudoku-help,.play-instructions,.board-side .progress-track,.board-side .game-message:empty,.puzzle-picker :is(#previous-puzzle,#next-puzzle)){display:none!important}
+html[data-play-focus] .sudoku-main #puzzle-title{margin:0!important;font-size:15px!important;line-height:1.2!important}
+html[data-play-focus] .sudoku-main .puzzle-controls{gap:6px!important;margin:0!important}
+}
+@media(width<=650px){html[data-focused][data-play-focus]{--shell-pad:4px!important}html[data-focused] .sudoku-main .board-card{padding:6px 0!important;background:none!important;border:0!important;box-shadow:none!important}html[data-focused] .sudoku-main #number-pad button{min-height:54px!important}html[data-focused] .sudoku-main .tool{min-height:50px!important}}
+
+@media (min-width:1100px) and (hover:hover) and (pointer:fine){
+html body :is(#cell-status,#selection-status){font-size:14px}
+}
+/* Given clues, valid entries and conflict marks (moved from compact.css to keep it inside its size budget). */
+.sudoku-shell .cell.given{background-color:color-mix(in srgb,var(--ink) 5%,var(--surface))}
+.sudoku-shell .cell.valid-entry .value{color:var(--mint-ink)}
+.sudoku-shell .cell.conflict:after{content:"!";color:var(--danger);font-size:11px;font-weight:800;line-height:1;position:absolute;bottom:2px;right:3px}
+/* 2.41.3: Addoku on phones. Cage lines stay softer and thinner than the box lines, sums sit in a cut-out in the
+   cell's own colour and scale with the board, and dark mode keeps its highlight and starting-number shading. */
+.sudoku-board{--cage-inset:3px;container-type:inline-size}
+.cage-sum{background:inherit;border-radius:0 0 3px 0;padding:0 2px 1px 1px;top:1px;left:1px}
+:root[data-appearance=dark] .cell.related{background:color-mix(in srgb,var(--ink) 11%,var(--surface))}
+:root[data-appearance=dark] .sudoku-shell .cell.given{background-color:color-mix(in srgb,var(--ink) 7%,var(--surface))}
+/* Diagonal: starting numbers on the two long diagonals keep the diagonal tint, over their own shading (both themes). */
+.sudoku-shell .sudoku-board .cell.diagonal.given{background-color:color-mix(in srgb,var(--citrus) 22%,color-mix(in srgb,var(--ink) 6%,var(--surface)))}
+@media (width<=650px){
+.sudoku-board{--cage-inset:2px;border-width:3px}
+.cell.box-left{border-left-width:3px}
+.cell.box-top{border-top-width:3px}
+.cage{border-width:1px}
+.cage-sum{font-size:max(9px,3cqw);top:0;left:0}
+.cell:has(.cage-sum) .value{font-size:min(5.6cqw,22px);translate:0 .14em}
+}
+/* Wide screens: the puzzle column is capped and centred, so the card is as wide as the board and its tools, not the window. */
+@media (width>=1100px){.sudoku-shell .sudoku-layout .sudoku-main{max-width:1000px;margin-inline:auto}.sudoku-shell .sudoku-layout .sudoku-main .board-side{max-width:none}}
+
+/* 2.59: on tall phones keep two lines free for the hint message, so the number pad no longer jumps down when a hint arrives. */
+@media(min-height:780px) and (orientation:portrait){html[data-play-focus] .sudoku-main .board-side .game-message{min-height:40px}html[data-play-focus] #main-content .sudoku-main .board-side .game-message:empty{display:block!important}}
+/* 2.60: on upright phones the puzzle's name and the timer share one line, so the grid gets that row back. */
+@media (width<=650px) and (orientation:portrait){
+html[data-play-focus] .sudoku-shell .sudoku-main{display:grid!important;grid-template-columns:minmax(0,1fr)}
+html[data-play-focus] .sudoku-shell .sudoku-main>*{grid-column:1;min-width:0}
+html[data-play-focus] .sudoku-shell :is(.board-card,.board-main){display:contents!important}
+html[data-play-focus] .sudoku-shell .puzzle-head{grid-row:1;align-self:center;max-width:46%;pointer-events:none}
+html[data-play-focus] .sudoku-shell .puzzle-head #puzzle-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-play-focus] .sudoku-shell .puzzle-controls{grid-row:2}
+html[data-play-focus] .sudoku-shell .board-top{grid-row:1;grid-column:1;justify-content:flex-end!important;gap:8px;min-height:48px!important;margin:0 0 6px!important;padding:0 0 0 47%!important}
+html[data-play-focus] .sudoku-shell .board-top .cell-status{margin:0;text-align:right;font-size:12px;line-height:1.2}
+html[data-play-focus] .sudoku-shell .board-top #progress-label{display:none}
+html[data-play-focus] .sudoku-shell .board-top .timer-chip{padding:0 10px 0 0!important}
+html[data-play-focus] body .sudoku-shell .board-side{margin-top:8px!important;gap:6px!important}
+html[data-play-focus] body .sudoku-shell .board-side :is(.number-pad,.tool-row,.mistakes-toggle){margin-block:0!important}
+html[data-play-focus] .sudoku-shell .board-wrap{grid-row:3;margin-inline:auto!important}
+html[data-play-focus] .sudoku-shell #legend{grid-row:4}
+html[data-play-focus] .sudoku-shell .board-side{grid-row:5}
+html[data-play-focus] .sudoku-shell .play-instructions{grid-row:6}
+}

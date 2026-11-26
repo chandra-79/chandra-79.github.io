@@ -45,6 +45,20 @@ if (bar) {
   button.addEventListener('click', () => { leftFullScreen = root.hasAttribute('data-focused'); set(!leftFullScreen); });
   addEventListener('keydown', event => { if (event.key === 'Escape' && root.hasAttribute('data-focused') && !document.querySelector('dialog[open]') && !document.getElementById('game-drawer')?.classList.contains('open')) { leftFullScreen = true; set(false); } });
   compact.addEventListener('change', sync); sideways.addEventListener('change', sync);
+  // Real full screen (2.60): on touch phones whose browser allows it (Android; iPhones do not for web pages), the first tap on the
+  // puzzle also hides the browser's own bars. The corner button, the Back button or Escape leave it, and after that it is not asked again
+  // on this visit. The installed app has no browser bars, so it is left alone.
+  const canFill = typeof root.requestFullscreen === 'function' && matchMedia('(pointer:coarse) and (hover:none)').matches && !matchMedia('(display-mode:standalone),(display-mode:fullscreen)').matches;
+  let declined = false, filled = false;
+  if (canFill) {
+    addEventListener('pointerup', event => {
+      if (declined || document.fullscreenElement || !root.hasAttribute('data-focused') || !compact.matches) return;
+      if (!(event.target instanceof Element) || !event.target.closest('main') || event.target.closest('.game-bar,#game-drawer,dialog,a[href]')) return;
+      root.requestFullscreen({ navigationUI: 'hide' }).then(() => { filled = true; }, () => { declined = true; });
+    }, true);
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && filled) { filled = false; declined = true; } dispatchEvent(new Event('resize')); });
+    button.addEventListener('click', () => { if (!root.hasAttribute('data-focused') && document.fullscreenElement) document.exitFullscreen().catch(() => {}); else if (root.hasAttribute('data-focused')) declined = false; });
+  }
   bar.insertBefore(button, bar.querySelector('.drawer-button'));
   sync();
 }

@@ -285,3 +285,36 @@ html body #weave-sky .type-hint{font-size:calc(13px + var(--sky-t) * .017)}
 
 /* 2.59: on tall phones keep a line free for the hint message, so the buttons below it do not jump when a letter is revealed. */
 @media(min-height:780px) and (orientation:portrait){html[data-play-focus] body .weave-card>.weave-message{min-height:22px!important}}
+
+/* 2.60: on upright phones the word cloud sits in the middle of the sky with the clue clouds floating around it
+   (one wide cloud and a pair above, two pairs below), the way it does on a big screen. Clouds bob gently in place;
+   Calmer motion and reduce motion keep them still. */
+@media (width<=650px) and (orientation:portrait){
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky{grid-template-columns:1fr 1fr!important;align-items:center!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-0{grid-area:1/1/auto/-1!important;justify-self:center!important;width:86%!important}
+html[data-play-focus] body #weave-sky .cloud-face{padding:15px 12px 5px!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-1{grid-area:2/1!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-2{grid-area:2/2!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky #weave-form{grid-area:3/1/auto/-1!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-3{grid-area:4/1!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-4{grid-area:4/2!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-5{grid-area:5/1!important}
+html[data-play-focus]:not([data-play-keyboard]):not([data-play-clues]) body #weave-sky .cloud.slot-6{grid-area:5/2!important}
+}
+/* Shorter phones: a closed cloud shows its "?" and its cost on one line, and the sky tightens, so more of the page fits. */
+@media (width<=650px) and (orientation:portrait) and (height<=720px){
+html[data-play-focus]:not([data-play-keyboard]) body #weave-sky{gap:8px 10px!important;padding-block:8px!important}
+html[data-play-focus] body #weave-sky .cloud-front{grid-template-columns:auto auto!important;justify-content:center!important;column-gap:6px!important;min-height:54px!important}
+html[data-play-focus] body #weave-sky .cloud-front .cloud-kind{grid-column:1/-1!important}
+html[data-play-focus] body #weave-sky .cloud-front .cloud-cost{align-self:center!important}
+html[data-play-focus] body #weave-sky .cloud-back{min-height:54px!important}
+html[data-play-focus][data-daily-run] body .weave-card{padding-top:6px!important}
+}
+@keyframes cloud-bob{0%{transform:translate(0)}to{transform:translate(clamp(-3px, var(--dx,2px), 3px), clamp(-4px, var(--dy,-3px), 4px))}}
+@media (width<=650px) and (orientation:portrait) and (prefers-reduced-motion:no-preference){
+html[data-play-focus]:not([data-motion=calm]):not([data-play-keyboard]) body #weave-sky .cloud{animation:cloud-bob var(--dur,7s) ease-in-out var(--delay,0s) infinite alternate!important}
+}
+/* The typing ring hugs the letter blanks instead of boxing the whole cloud. */
+html[data-play-focus] body .word-cloud .slots-wrap:focus-within{outline-width:2px;outline-offset:0;border-radius:12px}
+#weave-form:focus-visible{outline:none}
+#weave-form:focus-visible .slots-wrap{outline:2px solid var(--accent);outline-offset:0;border-radius:12px}

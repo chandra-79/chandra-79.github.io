@@ -189,3 +189,22 @@ html body :is(#cell-status,#selection-status){font-size:14px}
 
 /* 2.59: on tall phones keep two lines free for the hint message, so the number pad no longer jumps down when a hint arrives. */
 @media(min-height:780px) and (orientation:portrait){html[data-play-focus] .sudoku-main .board-side .game-message{min-height:40px}html[data-play-focus] #main-content .sudoku-main .board-side .game-message:empty{display:block!important}}
+/* 2.60: on upright phones the puzzle's name and the timer share one line, so the grid gets that row back. */
+@media (width<=650px) and (orientation:portrait){
+html[data-play-focus] .sudoku-shell .sudoku-main{display:grid!important;grid-template-columns:minmax(0,1fr)}
+html[data-play-focus] .sudoku-shell .sudoku-main>*{grid-column:1;min-width:0}
+html[data-play-focus] .sudoku-shell :is(.board-card,.board-main){display:contents!important}
+html[data-play-focus] .sudoku-shell .puzzle-head{grid-row:1;align-self:center;max-width:46%;pointer-events:none}
+html[data-play-focus] .sudoku-shell .puzzle-head #puzzle-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-play-focus] .sudoku-shell .puzzle-controls{grid-row:2}
+html[data-play-focus] .sudoku-shell .board-top{grid-row:1;grid-column:1;justify-content:flex-end!important;gap:8px;min-height:48px!important;margin:0 0 6px!important;padding:0 0 0 47%!important}
+html[data-play-focus] .sudoku-shell .board-top .cell-status{margin:0;text-align:right;font-size:12px;line-height:1.2}
+html[data-play-focus] .sudoku-shell .board-top #progress-label{display:none}
+html[data-play-focus] .sudoku-shell .board-top .timer-chip{padding:0 10px 0 0!important}
+html[data-play-focus] body .sudoku-shell .board-side{margin-top:8px!important;gap:6px!important}
+html[data-play-focus] body .sudoku-shell .board-side :is(.number-pad,.tool-row,.mistakes-toggle){margin-block:0!important}
+html[data-play-focus] .sudoku-shell .board-wrap{grid-row:3;margin-inline:auto!important}
+html[data-play-focus] .sudoku-shell #legend{grid-row:4}
+html[data-play-focus] .sudoku-shell .board-side{grid-row:5}
+html[data-play-focus] .sudoku-shell .play-instructions{grid-row:6}
+}
