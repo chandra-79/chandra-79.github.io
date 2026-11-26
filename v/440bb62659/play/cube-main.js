@@ -309,12 +309,12 @@ function nextCase() {
   r.peeked = false;
   const box = roundBox();
   const algLine = h('p', { class: 'alg', id: 'case-alg', hidden: true }, item.alg);
-  const startCube = clone(setup.cube); let ticks = null;
+  const startCube = clone(setup.cube); let ticks = null, demonstrating = false;
   const showTicks = () => { if (ticks) return; ticks = mountTicks(startCube, `${setup.lineUp} ${item.alg}`); algLine.after(ticks.el); ticks.update(); };
   fill(box, h('p', { class: 'round-count' }, `Case ${r.at + 1} of ${r.queue.length} · ${r.right} solved`), h('p', { class: 'case-name' }, item.name), h('p', { class: 'note' }, goalText(item.goal)), algLine,
     h('div', { class: 'round-actions' },
       h('button', { type: 'button', class: 'secondary-button', onclick: () => { r.peeked = true; algLine.hidden = false; showTicks(); } }, 'Show the algorithm'),
-      h('button', { type: 'button', class: 'secondary-button', onclick: () => { r.peeked = true; algLine.hidden = false; showTicks(); view.playAll(`${setup.lineUp} ${item.alg}`); } }, 'Show me'),
+      h('button', { type: 'button', class: 'secondary-button', onclick: async () => { if (demonstrating) return; demonstrating = true; r.peeked = true; try { await view.busy; algLine.hidden = false; showTicks(); view.set(startCube); ticks.update(); await view.playAll(`${setup.lineUp} ${item.alg}`); } finally { demonstrating = false; } } }, 'Show me'),
       h('button', { type: 'button', class: 'secondary-button', onclick: () => { cardResult(item.id, false); r.at += 1; nextCase(); } }, 'Skip')));
   onCubeMove = name => {
     ticks?.update(name);
@@ -362,9 +362,10 @@ function nextPicture() {
 function singleCase(item, n, goal, onDone) {
   setSize(n); const setup = algorithmSetup(item.alg, n); view.set(setup.cube);
   round = { kind: 'single' };
+  let demonstrating = false;
   const box = roundBox();
   const ticks = mountTicks(clone(setup.cube), `${setup.lineUp} ${item.alg}`);
-  fill(box, h('p', { class: 'round-count' }, item.name), h('p', { class: 'alg' }, item.alg), ticks.el, h('p', { class: 'note', id: 'single-status', 'aria-live': 'polite' }, 'Do the algorithm (or solve it your way).'), h('div', { class: 'round-actions' }, h('button', { type: 'button', class: 'secondary-button', onclick: () => view.playAll(`${setup.lineUp} ${item.alg}`) }, 'Show me')));
+  fill(box, h('p', { class: 'round-count' }, item.name), h('p', { class: 'alg' }, item.alg), ticks.el, h('p', { class: 'note', id: 'single-status', 'aria-live': 'polite' }, 'Do the algorithm (or solve it your way).'), h('div', { class: 'round-actions' }, h('button', { type: 'button', class: 'secondary-button', onclick: async () => { if (demonstrating) return; demonstrating = true; try { await view.busy; view.set(setup.cube); ticks.update(); await view.playAll(`${setup.lineUp} ${item.alg}`); } finally { demonstrating = false; } } }, 'Show me')));
   onCubeMove = name => {
     ticks.update(name); if (goalReached(goal === 'solved' ? 'solved-auf' : goal, view.cube)) { $('single-status').textContent = '✓ Done.'; flash(true); onDone(); onCubeMove = () => {}; renderLearn(); } };
   view.focus();

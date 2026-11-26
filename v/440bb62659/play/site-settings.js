@@ -96,7 +96,7 @@ function build() {
     <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend class="sr-only">Backup and other devices</legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>
     <fieldset class="settings-group switches" data-tab="progress" data-needs-hub><legend>Privacy</legend>
       ${check('kids-mode', 'Kids mode', 'Hides leaderboards, leagues, names and email signup, and sends nothing to the server.', KIDS_MODE_AVAILABLE ? '' : ' hidden')}
-      ${check('analytics-toggle', 'Share anonymous visit counts', 'We only count how many people visit each day, never who. Off in kids mode, or if your browser asks sites not to track you.', ' data-online')}
+      ${check('analytics-toggle', 'Share anonymous visit counts', 'We only count how many people visit each day and how many come back, never who. Off in kids mode, or if your browser asks sites not to track you.', ' data-online')}
       <p class="settings-note"><a href="/privacy.html">Privacy in full</a></p>
     </fieldset>
     <fieldset class="settings-group" data-tab="more" data-needs-hub data-grownups><legend>Leaderboard name <small>Shown publicly. Not your real name.</small></legend>

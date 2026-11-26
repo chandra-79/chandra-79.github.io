@@ -341,7 +341,7 @@ html[data-play-focus] .pal-card .study-foot{margin:6px 0!important}
 html[data-play-focus] .pal-card .big-emoji{font-size:28px!important}
 html[data-play-focus] .cube-main .round{padding:8px!important;margin:4px 0!important}
 html[data-play-focus] .cube-main .round p{font-size:12px!important;line-height:1.4!important;margin:3px 0!important}
-html[data-play-focus] .cube-main .cube-wrap{height:clamp(130px,calc(var(--play-height,740px) - 520px),200px)!important;min-height:0!important}
+html[data-play-focus] .cube-main .cube-wrap{height:clamp(130px,calc(var(--play-height,740px) - 520px),290px)!important;min-height:0!important}
 html[data-play-focus] .cube-main:has(#play-panel:not([hidden]))>#play-panel{order:2!important}
 html[data-play-focus] .cube-main:has(#play-panel:not([hidden]))>.cube-card{order:3!important;margin-top:4px!important}
 html[data-play-focus] .cube-main:has(#play-panel:not([hidden]))>.cube-blurb{display:none!important}

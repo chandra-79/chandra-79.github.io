@@ -24,8 +24,9 @@ if (bar) {
     put(bar, { display: 'flex', 'flex-wrap': 'nowrap', 'align-items': 'center', gap: '6px', padding: sideways.matches ? '0 8px' : '5px 8px', 'min-height': sideways.matches ? '44px' : '56px', height: sideways.matches ? 'auto' : '', 'margin-bottom': sideways.matches ? '4px' : '', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
     for (const el of bar.children) {
       if (el === mark) put(el, { flex: 'none', margin: '0 2px 0 0' });
-      else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
-      else if (el.matches('.mode-switch,h1')) put(el, { flex: '1 1 0', 'min-width': '0', margin: '0' });
+      else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: innerWidth <= 340 ? '0 6px' : '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
+      else if (el.matches('.mode-switch')) put(el, { flex: '0 1 auto', 'min-width': '0', margin: '0 auto 0 0' }); // 2.59: its own width, not stretched across the bar (Arrow Escape)
+      else if (el.matches('h1')) put(el, { flex: '1 1 0', 'min-width': '0', margin: '0' });
     }
     // With the logo in the bar the title gives way: it shortens with … , and it is left to screen readers when the bar also holds the Today / Practice
     // switch (the row would be too crowded on a phone). The game's name is still the page's h1.
@@ -44,6 +45,20 @@ if (bar) {
   button.addEventListener('click', () => { leftFullScreen = root.hasAttribute('data-focused'); set(!leftFullScreen); });
   addEventListener('keydown', event => { if (event.key === 'Escape' && root.hasAttribute('data-focused') && !document.querySelector('dialog[open]') && !document.getElementById('game-drawer')?.classList.contains('open')) { leftFullScreen = true; set(false); } });
   compact.addEventListener('change', sync); sideways.addEventListener('change', sync);
+  // Real full screen (2.60): on touch phones whose browser allows it (Android; iPhones do not for web pages), the first tap on the
+  // puzzle also hides the browser's own bars. The corner button, the Back button or Escape leave it, and after that it is not asked again
+  // on this visit. The installed app has no browser bars, so it is left alone.
+  const canFill = typeof root.requestFullscreen === 'function' && matchMedia('(pointer:coarse) and (hover:none)').matches && !matchMedia('(display-mode:standalone),(display-mode:fullscreen)').matches;
+  let declined = false, filled = false;
+  if (canFill) {
+    addEventListener('pointerup', event => {
+      if (declined || document.fullscreenElement || !root.hasAttribute('data-focused') || !compact.matches) return;
+      if (!(event.target instanceof Element) || !event.target.closest('main') || event.target.closest('.game-bar,#game-drawer,dialog,a[href]')) return;
+      root.requestFullscreen({ navigationUI: 'hide' }).then(() => { filled = true; }, () => { declined = true; });
+    }, true);
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && filled) { filled = false; declined = true; } dispatchEvent(new Event('resize')); });
+    button.addEventListener('click', () => { if (!root.hasAttribute('data-focused') && document.fullscreenElement) document.exitFullscreen().catch(() => {}); else if (root.hasAttribute('data-focused')) declined = false; });
+  }
   bar.insertBefore(button, bar.querySelector('.drawer-button'));
   sync();
 }
