@@ -23,6 +23,9 @@
 .week-card .week-entry input{flex:1;width:0;min-width:0;min-height:52px;border:2px solid var(--stroke);background:var(--surface);color:var(--ink);border-radius:14px;padding:6px 14px;font:inherit;font-size:24px;font-weight:800;letter-spacing:.35em;text-transform:uppercase}
 .week-card .week-entry input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .week-card .week-go{min-height:52px;min-width:104px;border:0;background:var(--accent);color:var(--surface);border-radius:14px;padding:0 20px;font:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.week-card .week-form[data-locked] .week-label{color:var(--muted)}
+.week-card .week-form[data-locked] .week-entry input{border-style:dashed;background:var(--surface-soft)}
+.week-card .week-form[data-locked] .week-go{background:var(--surface-soft);color:var(--muted);box-shadow:0 4px 0 var(--stroke);cursor:default}
 .week-card .week-go:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 .week-card .week-tiles{justify-self:start;border:1px solid var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:12px;min-height:44px;padding:0 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
 .week-card .week-keys{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
