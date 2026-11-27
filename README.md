@@ -2,7 +2,7 @@
 
 A little play. A lot of spark.
 
-This repository holds only the built Ziggle website (version 2.79.0), so that it can be served by GitHub Pages.
+This repository holds only the built Ziggle website (version 2.80.0), so that it can be served by GitHub Pages.
 It is not the source code and it is not open source: see [LICENSE](LICENSE) and [CREDITS.md](CREDITS.md).
 
 Please do not open pull requests here; this repository is replaced on every release.
