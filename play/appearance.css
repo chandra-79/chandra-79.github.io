@@ -96,7 +96,7 @@ html[data-kids="true"] [data-tip-link],html[data-app="true"] [data-tip-link]{dis
 .collection-nav>:is(a,button):focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 .nav-sep{background:var(--stroke);flex:0 0 1px;align-self:stretch;margin:6px 3px}
 .collection-page-heading{align-items:center;height:54px;display:flex}
-.collection-page-heading h1{letter-spacing:-.7px;margin:0;font-size:25px;font-weight:800;line-height:1.2}
+.collection-page-heading h1{letter-spacing:-.7px;margin:0;font-size:25px;font-weight:700;line-height:1.2}
 .collection-welcome{border:1px solid var(--stroke);background:var(--hero);border-radius:12px;justify-content:space-between;align-items:center;gap:12px;min-height:52px;margin:0 0 22px;padding:7px 9px 7px 16px;display:flex}
 .collection-welcome p{color:var(--muted);margin:0;font-size:12px;line-height:1.5}
 .collection-welcome strong{color:var(--ink);font-weight:700}

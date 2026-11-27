@@ -54,7 +54,7 @@ h1 em{color:var(--accent);font-style:normal}
 .little-wins div>span{color:#806d94;margin-top:4px;font-size:12px;display:block}
 .little-wins p{color:#806d94;border-top:1px solid #e2d7ee;grid-column:1/-1;margin:3px 0 0;padding-top:11px;font-size:12px}
 .puzzle-heading{justify-content:space-between;align-items:center;gap:10px;min-height:51px;margin-bottom:16px;display:flex}
-.puzzle-heading h2{letter-spacing:-.7px;margin:4px 0 0;font-size:25px;font-weight:800;line-height:1.2}
+.puzzle-heading h2{letter-spacing:-.7px;margin:4px 0 0;font-size:25px;font-weight:700;line-height:1.2}
 .game-type-badge{color:#327767;letter-spacing:1px;background:#e5f3ed;border-radius:20px;flex-shrink:0;padding:7px 9px;font-size:11px;font-weight:800}
 .puzzle-settings{justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;display:flex}
 .difficulty-control{background:#f0eaf6;border-radius:10px;gap:2px;padding:4px;display:flex}
@@ -125,7 +125,7 @@ h1 em{color:var(--accent);font-style:normal}
 .words-sidebar{flex-direction:column;gap:18px;padding-top:82px;display:flex}
 .word-list-card{background:#fff;border:1px solid #e7deed;border-radius:19px;padding:20px}
 .word-list-heading{justify-content:space-between;align-items:center;gap:8px;display:flex}
-.word-list-heading h2{letter-spacing:-.3px;margin:0;font-size:16px;font-weight:800}
+.word-list-heading h2{letter-spacing:-.3px;margin:0;font-size:16px;font-weight:700}
 .word-list-heading>span{color:#9a78ba;white-space:nowrap;background:#f2ebfb;border-radius:6px;padding:5px 6px;font-size:12px;font-weight:700}
 #word-list-subtitle{color:#82728f;margin:11px 0 15px;font-size:12px;line-height:1.7}
 .word-list{flex-direction:column;gap:5px;display:flex}

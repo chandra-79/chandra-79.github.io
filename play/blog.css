@@ -40,7 +40,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:0 0;border:0}
 .post-card{position:relative}
 .post-thumb{width:100%;height:auto;aspect-ratio:1200/630;border-radius:14px;display:block;background:#fff3df url(/play/blog/art/stage.svg) center/100% 100%}
 .post-icon{font-size:22px;position:absolute;top:28px;left:28px;width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center;box-shadow:0 2px 0 var(--stroke)}
-.post-card-title{letter-spacing:-.3px;font-size:20px;font-weight:800;line-height:1.25}
+.post-card-title{letter-spacing:-.3px;font-size:20px;font-weight:700;line-height:1.25}
 .post-card-dek{color:var(--muted);font-size:15px;line-height:1.5}
 .post-card-meta{color:var(--accent);margin-top:auto;padding-top:6px;font-size:13px;font-weight:700}
 .blog-hero{max-width:none}
