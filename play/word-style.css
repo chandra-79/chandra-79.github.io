@@ -62,7 +62,7 @@ h1 em{color:var(--accent);font-style:normal}
 .difficulty-control button.active{color:var(--accent);background:#fff;box-shadow:0 1px 4px #3220390d}
 .difficulty-control button:hover{color:var(--accent)}
 .puzzle-stepper{color:#776784;align-items:center;gap:6px;font-size:12px;display:flex}
-.puzzle-stepper button{color:#8e79a2;border-radius:7px;width:25px;height:32px;font-size:21px}
+.puzzle-stepper button{color:#8e79a2;border-radius:9px;width:34px;height:34px;font-size:20px}
 .puzzle-stepper button:not(:disabled):hover{background:#eee6fa}
 .puzzle-stepper select{color:#644c7c;cursor:pointer;background:#fff;border:1px solid #e0d5e9;border-radius:7px;min-width:43px;padding:6px 3px 6px 6px;font-size:12px}
 .puzzle-card{background:#fff;border:1px solid #e5ddec;border-radius:22px;overflow:hidden;box-shadow:0 8px 25px #4d37610a,0 3px #eae2f160}
@@ -106,7 +106,7 @@ h1 em{color:var(--accent);font-style:normal}
 #progress-fill{background:#a58ae6;border-radius:8px;width:0;height:100%;transition:width .3s}
 #progress-percent{font-variant-numeric:tabular-nums;text-align:right;min-width:28px;font-size:12px;font-weight:650}
 .puzzle-tools{background:#fbf9fe;border-top:1px solid #eee7f4;flex-wrap:wrap;justify-content:center;align-items:center;gap:9px;padding:13px 10px;display:flex}
-.puzzle-tools button{color:#7e6c8f;border-radius:10px;justify-content:center;align-items:center;gap:7px;min-height:37px;padding:10px 12px;font-size:12px;font-weight:650;display:flex}
+.puzzle-tools button{color:#7e6c8f;border-radius:12px;justify-content:center;align-items:center;gap:7px;min-height:42px;padding:10px 14px;font-size:14px;font-weight:700;display:flex}
 .puzzle-tools button:not(:disabled):hover{color:var(--accent);background:#f0e6fc}
 .puzzle-tools button>span:first-child{font-size:17px;line-height:1}
 .puzzle-tools .hint-button{color:#80601c;background:#fff0b8}

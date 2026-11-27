@@ -253,7 +253,7 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 #ziggle-home [data-home][hidden]{display:none!important}
 #ziggle-home .home-band{--band:transparent;border-image:linear-gradient(var(--band) 0 0) fill 0 / 0 / 0 100vmax;margin:0;padding:40px 0;position:relative}
 #ziggle-home .home-band+.ad-slot,#ziggle-home .ad-slot+.home-band{margin-top:0}
-#ziggle-home .section-kicker{letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);align-items:center;gap:10px;margin:0 0 6px;font-size:12px;font-weight:900;display:flex}
+#ziggle-home .section-kicker{letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);align-items:center;gap:10px;margin:0 0 6px;font-size:12px;font-weight:800;display:flex}
 #ziggle-home .section-kicker:after{content:"";opacity:.6;background:currentColor;border-radius:2px;flex:0 0 36px;height:2px}
 #ziggle-home .home-band .home-section-title{letter-spacing:-.7px;font-size:clamp(22px,2.4vw,28px)}
 #ziggle-home .band-games{padding-top:34px}
