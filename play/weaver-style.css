@@ -68,7 +68,7 @@ to{opacity:1;scale:1}
 .cloud-face{isolation:isolate;width:100%;min-height:106px;color:var(--ink);text-align:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:0 0;border:0;grid-area:1/1;align-content:center;justify-items:center;gap:3px;margin:0;padding:26px 28px 24px;display:grid;position:relative}
 .cloud-face svg{z-index:-1;width:100%;height:100%;filter:drop-shadow(0 4px 0 var(--cloud-shadow));position:absolute;inset:0;overflow:visible}
 .cloud-face path{stroke-width:2px}
-.cloud-front path{fill:var(--cloud-shut);stroke:var(--cloud-edge);stroke-dasharray:5 5}
+.cloud-front path{fill:var(--cloud-shut);stroke:var(--cloud-edge)}
 .cloud-front{cursor:pointer}
 .cloud-front:disabled{cursor:default;opacity:1}
 @media (hover:hover){.cloud:not(.open) .cloud-front:not(:disabled):hover{transition:scale .2s;scale:1.05}
@@ -223,7 +223,7 @@ to{scale:1}
 .cloud.kind-meaning{--tint:var(--accent-soft);--kind-ink:var(--accent)}
 .cloud.kind-synonym{--tint:var(--mint-soft);--kind-ink:var(--mint-ink)}
 .cloud.kind-antonym{--tint:var(--danger-soft);--kind-ink:var(--danger)}
-.cloud .cloud-front path{fill:color-mix(in srgb, var(--tint) 45%, var(--cloud-shut));stroke:color-mix(in srgb, var(--kind-ink) 55%, var(--cloud-edge));stroke-dasharray:5 5}
+.cloud .cloud-front path{fill:color-mix(in srgb, var(--tint) 45%, var(--cloud-shut));stroke:color-mix(in srgb, var(--kind-ink) 38%, var(--cloud-edge));stroke-dasharray:none}
 [data-appearance=dark] .cloud .cloud-front path{fill:color-mix(in srgb, var(--tint) 18%, var(--cloud-shut))}
 .cloud .cloud-front .cloud-kind{color:var(--kind-ink)}
 .cloud .cloud-back path{fill:color-mix(in srgb, var(--tint) 60%, var(--cloud));stroke:var(--kind-ink);stroke-dasharray:none}

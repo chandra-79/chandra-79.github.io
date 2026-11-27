@@ -13,20 +13,20 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/7a2b98a99e/play/hub.js"></script>
-  <script src="/v/7a2b98a99e/play/appearance.js"></script>
-  <script type="module" src="/v/7a2b98a99e/play/settings-boot.js"></script>
-  <!--modulepreload--><link rel="modulepreload" href="/v/7a2b98a99e/play/daily-journey.js"><link rel="modulepreload" href="/v/7a2b98a99e/play/howto-boot.js"><link rel="modulepreload" href="/v/7a2b98a99e/play/howto-store.js"><link rel="modulepreload" href="/v/7a2b98a99e/play/play-assist.js"><!--/modulepreload-->
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/style.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/appearance.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/arrow-appearance.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/arrow-view.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/level-end.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/compact-focus.css">
-  <link rel="stylesheet" href="/v/7a2b98a99e/play/compact.css">
-  <script src="/v/7a2b98a99e/play/collection-shell.js"></script>
+  <script type="module" src="/v/3f9538d83c/play/hub.js"></script>
+  <script src="/v/3f9538d83c/play/appearance.js"></script>
+  <script type="module" src="/v/3f9538d83c/play/settings-boot.js"></script>
+  <!--modulepreload--><link rel="modulepreload" href="/v/3f9538d83c/play/daily-journey.js"><link rel="modulepreload" href="/v/3f9538d83c/play/howto-boot.js"><link rel="modulepreload" href="/v/3f9538d83c/play/howto-store.js"><link rel="modulepreload" href="/v/3f9538d83c/play/play-assist.js"><!--/modulepreload-->
+  <link rel="stylesheet" href="/v/3f9538d83c/play/style.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/appearance.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/arrow-appearance.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/arrow-view.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/level-end.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/compact-focus.css">
+  <link rel="stylesheet" href="/v/3f9538d83c/play/compact.css">
+  <script src="/v/3f9538d83c/play/collection-shell.js"></script>
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Arrow Escape — Ziggle">
   <meta property="og:description" content="Ziggle your brain. Untangle colourful arrows and make a little room for a daily brain teaser. Free to play, no account needed.">
@@ -79,7 +79,7 @@
             </div>
             <div class="board-label"><span id="shape-label">A LITTLE HEART, A CLEAR MIND</span></div>
           </div>
-          <p id="board-view-help" class="board-view-help">Zoom in for larger arrows and IDs. Scroll or swipe to move around.</p>
+          <p id="board-view-help" class="board-view-help">Zoom in for larger arrows. Scroll or swipe to move around.</p>
           <div class="board-progress"><span><strong id="cleared-count">0</strong> <span class="muted">/ <span id="total-count">0</span> arrows free</span></span><div class="progress-track"><div id="progress-fill"></div></div><span id="progress-percent">0%</span></div>
           <div class="tools" aria-label="Puzzle tools">
             <button id="hint-button" class="tool-button hint-tool"><span class="tool-icon" data-icon="bulb"></span><span class="tool-word">Hint</span><span class="tool-count" id="hint-count">3</span><span class="sr-only"> left</span></button>
@@ -89,10 +89,9 @@
           </div>
           <section class="keyboard-panel" aria-label="Keyboard controls">
           <div class="keyboard-heading"><span class="keyboard-title"><span data-icon="keyboard"></span>Play your way</span><span class="keyboard-badge">TAP OR TYPE</span></div>
-          <div class="identifier-options"><label for="identifier-mode">Arrow IDs</label><select id="identifier-mode"><option value="coordinates">A1 · Coordinates</option><option value="numbers">123 · Numbers</option><option value="letters">ABC · Letters</option></select><button id="labels-button" class="labels-button" aria-pressed="true">IDs on</button></div>
           <form id="arrow-command" class="arrow-command" autocomplete="off">
             <label for="arrow-address">Select an arrow</label>
-            <div class="command-entry"><input id="arrow-address" type="text" placeholder="e.g. A1" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="selection-status keyboard-help" aria-keyshortcuts="/"><button id="fire-button" type="submit">Go <span aria-hidden="true">↗</span></button></div>
+            <div class="command-entry"><input id="arrow-address" type="text" placeholder="e.g. 1" maxlength="8" autocomplete="off" inputmode="numeric" spellcheck="false" aria-describedby="selection-status keyboard-help" aria-keyshortcuts="/"><button id="fire-button" type="submit">Go <span aria-hidden="true">↗</span></button></div>
           </form>
           <p id="selection-status" class="selection-status" role="status" aria-live="polite">Type an ID to highlight its arrow. Enter fires it.</p>
           <p id="keyboard-help" class="keyboard-help"><span><kbd>/</kbd> select</span><span><kbd>↑ ↓ ← →</kbd> move</span><span><kbd>Enter</kbd> go</span><span><kbd>Esc</kbd> cancel</span></p>
@@ -120,9 +119,9 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
     <aside class="ad-slot ad-rail" data-ad-slot="rail" aria-label="More from Ziggle"></aside>
   </main>
-  <footer class="game-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><button id="save-status">Progress saves in this browser</button></span><small>© 2026 AjnaCS · v2.67.0</small></footer>
+  <footer class="game-footer"><a class="footer-motto" href="/"><img src="/play/logo.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><button id="save-status">Progress saves in this browser</button></span><small>© 2026 AjnaCS · v2.68.0</small></footer>
   <div id="modal-root" class="modal-root" hidden></div>
-  <script type="module" src="/v/7a2b98a99e/play/main.js"></script>
-  <script type="module" src="/v/7a2b98a99e/play/arrow-view.js"></script>
+  <script type="module" src="/v/3f9538d83c/play/main.js"></script>
+  <script type="module" src="/v/3f9538d83c/play/arrow-view.js"></script>
 </body>
 </html>

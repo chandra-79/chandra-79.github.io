@@ -110,3 +110,6 @@ html body #lock-level-note{font-size:18px;line-height:1.4}
 .howto-lock [data-mark=present]{background:var(--citrus);color:var(--citrus-ink)}
 .howto-lock [data-mark=absent]{background:var(--stroke);color:var(--ink)}
 @media(width<320px){html body .key{min-width:0!important;padding-inline:0!important}}
+.lock-shell .done-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:440px;margin-inline:auto;display:grid}
+.lock-shell .done-actions>button{width:100%;min-height:48px;margin:0}
+.lock-shell .done-actions>button[hidden]+button{grid-column:1/-1}

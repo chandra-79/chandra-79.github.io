@@ -64,9 +64,6 @@ body .game-shell .game-panel>.keyboard-panel #fire-button{min-height:36px}
 body .game-shell .game-panel>.keyboard-panel .selection-status{flex:200px;margin:0;font-size:13px}
 body .game-shell .game-panel>.keyboard-panel .keyboard-help{gap:10px;margin:0;font-size:12px;display:flex}
 }
-.side-panel .id-options-card{border:1px solid var(--stroke);background:var(--surface);border-radius:16px;padding:16px}
-.side-panel .id-options-card h3{margin:0 0 8px;font-size:15px}
-.side-panel .id-options-card .identifier-options{flex-wrap:wrap;align-items:center;gap:8px;display:flex}
 @media (width>=1000px) and (height>=600px){body .game-shell .game-panel>.board-hud{justify-content:flex-start}
 body .game-shell .game-panel>.board-hud .hearts{margin:0;position:static;transform:none}
 body .game-shell .game-panel>.board-hud .timer{margin-left:auto}

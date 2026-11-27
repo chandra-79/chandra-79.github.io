@@ -1,6 +1,6 @@
 import { attachArrowHelp } from './arrow-flow.js';
 import { showLevelEnd } from './level-end.js';
-import { ringFx, clickFx, contactFx } from './arrow-fx.js';
+import { ringFx, clickFx, contactFx, escapeDuration } from './arrow-fx.js';
 import { levelSnapshot, isPractice, menuResume } from './arrow-resume.js';
 import { LEVELS, WORLD_TOUR, generateLevel, generateDaily, inferDailyTier, generateTourBoard, canLeave, generateClimb, buildAhead } from './engine.js';
 import { COLOUR_NAMES as colourNames, piecesHelp as helpFor, whyBlocked as whyFor, pieceWords as wordsFor, pieceBadges as badgesFor, piecesSvg, gatesOpenedBy as openedFor, refuse as refuseFor, boardFrame, helpBody, SHAPE_LABELS as shapeLabels } from './arrow-pieces.js';
@@ -11,6 +11,7 @@ import { subscribeToDaily } from './reminders.js';
 import { play as playSound, haptic, burst, isTouch, soundOn, confetti as fxConfetti } from './fx.js';
 
 const $ = (id) => document.getElementById(id);
+const canShowArrowIds = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
 const icons = {
   flame:'<path d="M13 3c1 5-5 5-3 10 1-2 3-2 4-4 4 3 5 5 4 8a6 6 0 0 1-12-1c0-5 5-7 7-13Z"/>',
   keyboard:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/>',
@@ -107,7 +108,7 @@ function startLevel(level=state.level, mode=state.mode, resume=false, tour=state
   else if(mode==='climb'){activeDailyDate=dateKey();state.climb=ladder()?.place||{tier:'medium',index:1,count:Infinity,daily:false};activeTier=state.climb.tier;}
   state.board=mode==='climb'?(state.climb.daily?generateDaily(activeDailyDate,activeTier):generateClimb(activeDailyDate,activeTier,state.climb.index,state.climb.count)):mode==='daily'?generateDaily(activeDailyDate,activeTier):mode==='archive'?generateDaily(archiveDate,activeTier):mode==='tour'?generateTourBoard(tour):generateLevel(level);
   state.remaining=[...state.board.paths];state.history=[];state.lives=3;state.hints=3;state.hintsUsed=0;hintedIds.clear();state.attempt=`${Date.now()}-${Math.random()}`;state.elapsed=0;state.ended=false;state.busy=false;state.highlighted=null;state.lifeUsed=false;
-  state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,saved.identifierMode);
+  state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,'numbers');
   const restored=resume&&(mode==='daily'?restoreSession(saved.activeDaily):isPractice(mode)&&restoreSession(saved.activeLevel));
   $('arrow-address').value='';setSelectionStatus('Type an ID to highlight its arrow. Enter fires it.');
   closeModal();
@@ -163,11 +164,11 @@ function headD(point,direction) {
 }
 function renderBoard() {
   const board=$('board'),focusedId=board.contains(document.activeElement)?Number(document.activeElement.dataset.id):null;
-  board.className.baseVal=`theme-${saved.theme}${saved.showLabels&&!isTouch()?' show-labels':''}`;
+  board.className.baseVal=`theme-${saved.theme}${saved.showLabels&&canShowArrowIds()?' show-labels':''}`;
   const defs=state.board.paths.map(path=>{const p=geometry(path),[a,b]=palette[path.color];return `<linearGradient id="color-${path.id}" gradientUnits="userSpaceOnUse" x1="${p[0][0]}" y1="${p[0][1]}" x2="${p.at(-1)[0]+.1}" y2="${p.at(-1)[1]+.1}"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;}).join('');
   const step=460/state.board.size,offset=(600-step*(state.board.size-1))/2;
   const dots=!saved.gridMarks?'':state.board.paths.flatMap(p=>p.cells).map(([x,y])=>`<circle class="board-dot" cx="${offset+x*step}" cy="${offset+y*step}" r="1.15"/>`).join('');
-  const frame=boardFrame(state.board,{offset,step,coordinates:saved.gridMarks,labels:saved.showLabels&&!isTouch(),columnName});
+  const frame=boardFrame(state.board,{offset,step,coordinates:saved.gridMarks,labels:saved.showLabels&&canShowArrowIds(),columnName});
   board.setAttribute('viewBox',frame.viewBox);const axes=frame.axes;board.dataset.across=frame.across;document.querySelector('.play-layout')?.toggleAttribute?.('data-big',state.board.paths.length>=90);if(state.board.paths.length<90)document.documentElement?.removeAttribute?.('data-immersive');
   const tabId=state.selected??findDirectionalNeighbor(state.remaining,null,'ArrowRight');
   const paths=state.remaining.map(path=>{
@@ -207,17 +208,13 @@ function updateKeyboardControls(){
   const locked=state.busy||state.paused||state.ended;
   $('arrow-address').readOnly=locked;
   $('fire-button').disabled=locked||state.selected===null;
-  $('identifier-mode').disabled=locked;$('labels-button').disabled=locked;
-  $('identifier-mode').value=saved.identifierMode;
-  for(const id of ['labels-button','board-labels-button']) {
-    const button=$(id);
-    button.setAttribute('aria-pressed',String(saved.showLabels));
-    button.textContent=saved.showLabels?'IDs on':'IDs off';
-    button.setAttribute('aria-label',saved.showLabels?'IDs on: hide arrow IDs':'IDs off: show arrow IDs');
-    button.disabled=locked;
-  }
-  $('arrow-address').inputMode=saved.identifierMode==='numbers'?'numeric':'text';
-  const example=state.identifiers.values().next().value||'A1';
+  const button=$('board-labels-button');
+  button.setAttribute('aria-pressed',String(saved.showLabels));
+  button.textContent=saved.showLabels?'IDs on':'IDs off';
+  button.setAttribute('aria-label',saved.showLabels?'IDs on: hide arrow IDs':'IDs off: show arrow IDs');
+  button.disabled=locked;
+  $('arrow-address').inputMode='numeric';
+  const example=state.identifiers.values().next().value||'1';
   $('arrow-address').placeholder=`e.g. ${example}`;
   $('board').setAttribute('aria-busy',String(state.busy));
   $('board').querySelectorAll('[data-id]').forEach(group=>group.setAttribute('aria-disabled',String(locked)));
@@ -276,17 +273,10 @@ $('arrow-address').addEventListener('keydown',event=>{
     event.preventDefault();event.stopPropagation();clearAddress();
   }
 });
-$('identifier-mode').addEventListener('change',()=>{
-  if(state.paused||state.ended||state.busy)return;
-  saved.identifierMode=$('identifier-mode').value;save();
-  state.identifiers=createIdentifiers(state.board.paths,state.board.size,saved.identifierMode);
-  $('arrow-address').value=state.identifiers.get(state.selected)||'';
-  renderBoard();updateKeyboardControls();previewAddress();
-});
-$('board-labels-button').onclick=$('labels-button').onclick=()=>{
+$('board-labels-button').onclick=()=>{
   if(state.paused||state.ended||state.busy)return;
   saved.showLabels=!saved.showLabels;save();
-  $('board').classList.toggle('show-labels',saved.showLabels);updateKeyboardControls();
+  $('board').classList.toggle('show-labels',saved.showLabels&&canShowArrowIds());updateKeyboardControls();
 };
 
 function escapeAnimation(path,group,done) {
@@ -296,12 +286,12 @@ function escapeAnimation(path,group,done) {
   points.push([last[0]+dx*travel,last[1]+dy*travel]);lengths.push(bodyLength+travel);
   function at(distance){let i=1;while(i<lengths.length-1&&lengths[i]<distance)i++;const t=(distance-lengths[i-1])/(lengths[i]-lengths[i-1]);return [points[i-1][0]+(points[i][0]-points[i-1][0])*t,points[i-1][1]+(points[i][1]-points[i-1][1])*t];}
   const calmNow=globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const duration=calmNow?0:Math.min(1100,720+bodyLength*0.5),start=performance.now(),generation=state.generation,step=460/state.board.size;
+  const duration=calmNow?0:escapeDuration(bodyLength),start=performance.now(),generation=state.generation,step=460/state.board.size;
   group.classList.add('escaping');group.querySelector('.arrow-label')?.remove();
   if(!calmNow)playSound('glide',{dur:duration/1000});
   const lane=$('board').querySelector(`[data-lane="${path.id}"]`);lane?.classList.add('used');
   let sparked=false;
-  const room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),ease=u=>(1-Math.cos(Math.PI*u))/2;
+  const room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),ease=u=>u*u;
   const trace=s=>{const m=[at(s)];for(let i=1;i<points.length;i++)if(lengths[i]>s&&lengths[i]<s+bodyLength)m.push(points[i]);m.push(at(s+bodyLength));return m;};
   function frame(now){
     if(generation!==state.generation)return;
@@ -386,7 +376,6 @@ function tapArrow(id){
     const next=tapQueue.shift();if(next!==undefined&&!state.ended)tapArrow(next);
   });
 }
-{const options=document.querySelector('.keyboard-panel .identifier-options'),drawer=$('game-drawer');if(options&&drawer){const card=document.createElement('section');card.className='id-options-card';card.setAttribute('aria-labelledby','id-options-title');card.innerHTML='<h3 id="id-options-title">Arrow IDs</h3><p class="muted">How arrows are named when you type them, and whether names show on the board.</p>';card.append(options);drawer.querySelector('.daily-overview')?.after(card);}}
 let lastPointer='mouse';
 $('board').addEventListener('pointerdown',event=>{lastPointer=event.pointerType||'mouse';});
 $('board').addEventListener('keydown',()=>{lastPointer='keyboard';},true);
@@ -495,7 +484,7 @@ function showThemes(){
   const choices=[['gradient','Gradient arrows','Soft colors. Clear directions.'],['border','Gradient borders','A lighter line through the maze.'],['snakes','Snakes','A playful twist on every turn.']];
   showModal(`<span class="eyebrow">MAKE IT YOUR KIND OF CALM</span><h2 id="modal-title">A change of scenery.</h2><p>Same puzzle. A fresh way to see it.</p><div class="theme-options">${choices.map(([id,title,description])=>`<button class="theme-option${saved.theme===id?' active':''}" data-theme="${id}" aria-pressed="${saved.theme===id}"><span class="theme-preview"><svg viewBox="0 0 40 40"><path d="M6 32V10h14v21h14V10m-5 5 5-5 5 5" style="stroke-width:${id==='snakes'?5:id==='border'?4:2.5}"/>${id==='border'?'<path d="M6 32V10h14v21h14V10" style="stroke:#ffffff;stroke-width:1.5"/>':''}</svg></span><span><strong>${title}</strong><small>${description}</small></span>${saved.theme===id?`<span class="theme-check">${icon('check')}</span>`:''}</button>`).join('')}</div><div class="setting-row"><span>Soft sound effects</span><button id="sound-toggle" class="toggle${soundOn()?' on':''}" role="switch" aria-checked="${soundOn()}" aria-label="Sound effects"></button></div>${backupMarkup()}<p class="modal-note">Ziggle · Your happy little brain break.<br>Made for small moments of play.</p>`,'settings');
   document.querySelectorAll('[data-theme]').forEach(el=>el.onclick=()=>{saved.theme=el.dataset.theme;save();renderBoard();showThemes();});
-  attachBackupControls({getSaved:()=>saved,setSaved:value=>{saved=value;},save,onRestore:()=>{if(state.mode==='daily')restoreSession(saved.activeDaily);state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,saved.identifierMode);$('arrow-address').value='';$('timer').textContent=formatTime(state.elapsed);renderBoard();updateHud();updateDailyStats();showThemes();}});
+  attachBackupControls({getSaved:()=>saved,setSaved:value=>{saved=value;},save,onRestore:()=>{if(state.mode==='daily')restoreSession(saved.activeDaily);state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,'numbers');$('arrow-address').value='';$('timer').textContent=formatTime(state.elapsed);renderBoard();updateHud();updateDailyStats();showThemes();}});
   $('sound-toggle').onclick=()=>{const on=!soundOn();setSound(on);$('sound-toggle').classList.toggle('on',on);$('sound-toggle').setAttribute('aria-checked',on);if(on)playSound('pop');};
 }
 $('settings-button').onclick=showThemes;$('theme-button').onclick=showThemes;$('save-status').onclick=showThemes;

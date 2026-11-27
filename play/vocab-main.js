@@ -11,6 +11,8 @@ const load = () => { try { const saved = JSON.parse(localStorage.getItem(KEY) ||
 let save = load(), tab = 'today', round = null;
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(save)); $('save-status').textContent = 'Progress saves in this browser'; } catch { $('save-status').textContent = 'Browser saving is off: this list will not be kept'; } };
 const today = () => dateKey();
+// One wording for when a word comes back (2.65): “tomorrow”, never “in 1 day”.
+const seeAgain = box => box >= GAPS_DAYS.length - 1 ? 'in a couple of months' : GAPS_DAYS[box] <= 1 ? 'tomorrow' : `in ${GAPS_DAYS[box]} days`;
 const dueNow = () => dueCards(Object.values(save.cards).map(card => ({ ...card, id: card.id })), Date.now(), 999);
 const entryFor = word => { const row = VOCAB.find(item => item[0] === word); return row ? asEntry(row) : null; };
 
@@ -53,7 +55,7 @@ function renderPractice() {
     round.results.push({ word: q.word, right, wasNew: !save.cards[q.word] });
     const card = review(save.cards[q.word] || newCard(q.word), right); save.cards[q.word] = card; persist();
     buttons.forEach((b, j) => { b.disabled = true; if (j === q.answer) b.classList.add('right'); else if (j === i) b.classList.add('wrong'); });
-    feedback.replaceChildren(el('strong', { text: right ? 'Yes! ' : 'Not quite. ' }), `${q.entry.word} (${POS_NAMES[q.entry.pos]}): ${q.entry.def}.`, q.entry.example ? el('em', { text: ` “${sentence(q.entry.example)}”` }) : null, el('br'), el('small', { text: right ? `You’ll see it again ${card.box >= GAPS_DAYS.length - 1 ? 'in a couple of months' : `in ${GAPS_DAYS[card.box]} ${GAPS_DAYS[card.box] === 1 ? 'day' : 'days'}`}.` : 'You’ll see it again tomorrow.' }));
+    feedback.replaceChildren(el('strong', { text: right ? 'Yes! ' : 'Not quite. ' }), `${q.entry.word} (${POS_NAMES[q.entry.pos]}): ${q.entry.def}.`, ...(q.entry.example ? [el('em', { text: ` “${sentence(q.entry.example)}”` })] : []), el('br'), el('small', { text: `You’ll see it again ${right ? seeAgain(card.box) : 'tomorrow'}.` }));
     feedback.hidden = false; next.hidden = false; next.focus();
   }
   $('stage').replaceChildren(el('p', { class: 'progress', text: `Question ${round.index + 1} of ${round.questions.length} · ${round.right} right so far` }), el('p', { class: 'q-prompt', text: prompt.toUpperCase() }), text, el('div', { class: 'choices', role: 'group', 'aria-label': 'Choices' }, buttons), feedback, next);
@@ -66,7 +68,7 @@ function finishRound() {
     stats: [['right', `${right}/${total}`], ['new words', fresh], ['in My words', Object.keys(save.cards).length]],
     actions: [{ id: 'next', label: 'Next: five more words →', primary: true, run: () => { go('practice'); startRound(); renderPractice(); } },
       { id: 'share', label: 'Share result', keepOpen: true, run: async () => { const text = `I knew ${right} of ${total} words on Ziggle Word Builder. ${location.origin}/play/vocab.html`; try { if (navigator.share) { await navigator.share({ text }); return 'Shared.'; } await navigator.clipboard.writeText(text); return 'Copied to your clipboard.'; } catch { return 'Sharing didn’t work here.'; } } },
-      { id: 'stay', label: 'Look at the board' }], onDismiss: () => {} });
+      { id: 'stay', label: 'Look at the board', run: () => go('words') }], onDismiss: () => {} }); // Word Builder's board is My words: the round's words, each with when it comes back
 }
 function renderWords() {
   $('vocab-kicker').textContent = 'MY WORDS'; $('vocab-title').textContent = 'Your word list';

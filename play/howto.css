@@ -20,3 +20,5 @@
 
 @media(max-height:600px){.howto-dialog{padding:12px 14px}.howto-dialog h2{margin:0 0 4px;font-size:17px}.howto-scene{min-height:84px;margin:6px 0}#howto-caption{min-height:36px}.howto-controls,.howto-finish{margin:6px 0}.howto-never{font-size:13px;line-height:1.3}}
 button:where(.howto-controls *,.howto-finish *){border:1px solid var(--stroke);background:var(--surface-soft);color:var(--ink);cursor:pointer;border-radius:12px;font-family:inherit;font-weight:800}
+.howto-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.howto-controls button:disabled{opacity:.45;cursor:default;box-shadow:none}

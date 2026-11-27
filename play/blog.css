@@ -157,3 +157,10 @@ ul.try-links li{margin:0}
 .saved-posts ul{list-style:none;margin:8px 0 2px;padding:0;display:grid;gap:4px}
 .saved-posts li{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .saved-posts li button{flex:none;width:32px;height:32px;border:1px solid var(--stroke);border-radius:50%;background:none;color:inherit;font-size:18px;line-height:1;cursor:pointer}
+@media (width>=1100px){body>main.blog-shell:not(.wide){max-width:var(--shell)!important}
+.post{grid-template-columns:minmax(0,1fr) 320px;column-gap:56px;align-items:start;display:grid}
+.post>*{grid-column:1;min-width:0}
+.post>.post-tools{grid-area:1/2/span 30;flex-direction:column;align-items:stretch;margin:44px 0 0;position:sticky;top:calc(var(--header-h,64px) + 20px)}
+.post>.post-tools .toc{flex:none}
+.post>.post-tools .share-btn{width:100%}
+}

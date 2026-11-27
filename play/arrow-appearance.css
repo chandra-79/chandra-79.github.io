@@ -4,12 +4,12 @@
 .daily-button,.new-day-button,.level-title [data-icon],.section-icon,.modal-symbol,.instruction>span{background:var(--accent-soft);color:var(--accent)}
 .daily-button:hover,.new-day-button:hover{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
 .nav-divider,.tool-divider{background:var(--stroke)}
-.icon-button,.timer,.timer svg,.muted,.board-label,.board-progress,.game-message,.eyebrow,.daily-overview-heading .eyebrow,.daily-footnote,.keyboard-badge,.identifier-options,.arrow-command label,.selection-status,.keyboard-help,.modal p,.stats-row small,.theme-option small,.level-cell small,.trophy-item small,.daily-date,.backup-file,.backup-file input,.modal .backup-panel .backup-tip{color:var(--muted)}
+.icon-button,.timer,.timer svg,.muted,.board-label,.board-progress,.game-message,.eyebrow,.daily-overview-heading .eyebrow,.daily-footnote,.keyboard-badge,.arrow-command label,.selection-status,.keyboard-help,.modal p,.stats-row small,.theme-option small,.level-cell small,.trophy-item small,.daily-date,.backup-file,.backup-file input,.modal .backup-panel .backup-tip{color:var(--muted)}
 .icon-button:hover,.tool-button:not(:disabled):hover,.secondary-button:hover,.puzzle-collection-nav a:hover{background:var(--accent-soft);color:var(--accent)}
 .top-actions #trophies-button svg,.welcome-kicker,.welcome-kicker svg{color:var(--accent)}
 .difficulty{background:var(--mint-soft);color:var(--mint-ink)}
 .difficulty i,.daily-button i,.live-dot{background:var(--mint-ink)}
-.pause-button,.tools,.identifier-options select,.labels-button,.arrow-command input,kbd,.secondary-button,.level-cell{background:var(--surface-soft);border-color:var(--stroke);color:var(--ink)}
+.pause-button,.tools,.arrow-command input,kbd,.secondary-button,.level-cell{background:var(--surface-soft);border-color:var(--stroke);color:var(--ink)}
 .heart{color:var(--coral)}
 .heart.lost{color:var(--stroke)}
 .progress-track{background:var(--surface-soft)}
@@ -28,7 +28,7 @@
 .stat-points span:not(.stat-icon){color:var(--citrus-ink)}
 .stat-wins{background:var(--mint-soft);color:var(--mint-ink)}
 .keyboard-title svg{color:var(--accent)}
-.labels-button[aria-pressed=true],.theme-option.active,.level-cell.current{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.theme-option.active,.level-cell.current{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .arrow-command input::placeholder,.email-signup input::placeholder{color:var(--muted)}
 .arrow-command input[aria-invalid=true]{border-color:var(--danger)}
 .arrow-command button,.primary-button{background:var(--accent);color:#fff}
@@ -99,7 +99,8 @@
 .arrow-group.blocked,:root[data-motion=calm] .arrow-group.bumped{animation:none}
 @media (prefers-reduced-motion:reduce){.arrow-group.bumped{animation:none}
 }
-@media (hover:none) and (pointer:coarse){#board-labels-button,#board-maximize,.keyboard-panel,.board-view-help{display:none!important}
+@media not ((hover:hover) and (pointer:fine)){#board-labels-button{display:none!important}}
+@media (hover:none) and (pointer:coarse){#board-maximize,.keyboard-panel,.board-view-help{display:none!important}
 .board-view-controls{justify-content:flex-start}
 }
 @keyframes arrow-draw{0%{stroke-dashoffset:100px}

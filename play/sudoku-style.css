@@ -211,3 +211,5 @@ html[data-play-focus] .sudoku-shell #legend{grid-row:4}
 html[data-play-focus] .sudoku-shell .board-side{grid-row:5}
 html[data-play-focus] .sudoku-shell .play-instructions{grid-row:6}
 }
+@media (width>=1100px){html:not([data-play-focus]) .sudoku-shell .sudoku-layout .sudoku-main{max-width:none}
+html:not([data-play-focus]) .sudoku-shell .board-card{grid-template-columns:auto minmax(230px,460px)!important;justify-content:center;column-gap:40px}}

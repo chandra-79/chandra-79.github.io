@@ -1,14 +1,15 @@
 // Arrow Escape click effects (2.29.1): one soft ring that grows from a point, where the arrow was clicked or reached the edge.
 // (The screen-edge flash, board pulse, afterimages and glow of 2.27.5 were too much and are gone.) Nothing here runs with Calmer motion or reduced motion.
 const calm = () => globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
+export const escapeDuration = bodyLength => Math.round(Math.min(1100, 720 + bodyLength * 0.5) * 1.7);
 export function ringFx(x, y, color = '#f57863', size = 100, delay = 0) {
   if (calm()) return;
   const layer = document.createElement('div');
   layer.setAttribute('aria-hidden', 'true'); layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden'; document.body.append(layer);
   const ring = document.createElement('i');
   ring.style.cssText = `position:absolute;left:${x - size / 2}px;top:${y - size / 2}px;width:${size}px;height:${size}px;border-radius:50%;border:2px solid ${color}`; layer.append(ring);
-  ring.animate?.([{ transform: 'scale(.2)', opacity: .7 }, { transform: 'scale(2.2)', opacity: 0 }], { duration: 520, delay, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
-  setTimeout(() => layer.remove(), 900 + delay);
+  ring.animate?.([{ transform: 'scale(.2)', opacity: .7 }, { transform: 'scale(2.2)', opacity: 0 }], { duration: 280, delay, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+  setTimeout(() => layer.remove(), 320 + delay);
 }
 // Where a blocked arrow meets the one in its way: a crisp thin ring and a few small sparks (no blur, no scaling of the arrows).
 export function contactFx(board, sx, sy, viewport) {
