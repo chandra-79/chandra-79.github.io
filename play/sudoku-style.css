@@ -213,3 +213,7 @@ html[data-play-focus] .sudoku-shell .play-instructions{grid-row:6}
 }
 @media (width>=1100px){html:not([data-play-focus]) .sudoku-shell .sudoku-layout .sudoku-main{max-width:none}
 html:not([data-play-focus]) .sudoku-shell .board-card{grid-template-columns:auto minmax(230px,460px)!important;justify-content:center;column-gap:40px}}
+html[data-play-focus] body #game-drawer#game-drawer>:is(.puzzle-settings,.puzzle-controls){grid-area:auto/1/auto/-1!important;height:max-content!important;display:grid!important;grid-template-columns:minmax(0,1fr);justify-items:start;gap:8px!important;margin:0 0 14px!important}
+html[data-play-focus] body #game-drawer#game-drawer>.game-bar-items{max-width:none!important;overflow:visible!important;flex-wrap:wrap!important;gap:10px!important}
+html[data-play-focus] body #game-drawer#game-drawer>.game-bar-items .variant-list{max-width:none!important;width:100%!important;flex-wrap:wrap!important;overflow:visible!important;gap:8px}
+html[data-play-focus] body #game-drawer.sudoku-side>.game-bar-items{order:1}
