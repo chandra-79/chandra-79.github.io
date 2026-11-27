@@ -21,7 +21,7 @@ function section(title, rows) {
   heading.textContent = title; items.className = 'keys-rows'; items.append(...rows);
   return [heading, items];
 }
-export function toggleList({ prefs, items, show, allTaken, lettersTaken, page, crossword }) {
+export function toggleList({ prefs, items, show, allTaken, lettersTaken, page, crossword, count = () => 0 }) {
   if (list?.open) { list.close(); return; }
   if (document.querySelector('dialog[open]')) return;
   if (!list) {
@@ -38,7 +38,8 @@ export function toggleList({ prefs, items, show, allTaken, lettersTaken, page, c
   }
   back = document.activeElement;
   const body = list.querySelector('.keys-body');
-  const rows = group => items.filter(item => item.group === group).map(item => row(show(item.key), item.name));
+  const pick = { games: 'Pick a game from the Games menu', train: 'Pick a trainer from the Train menu' };
+  const rows = group => items.filter(item => item.group === group).flatMap(item => [row(show(item.key), item.name), ...(pick[item.id] && count(item.id) ? [row(`${show(item.key)} then 1 to ${count(item.id)}`, pick[item.id])] : [])]);
   const own = (gameKeys(page, crossword).find(([here]) => here) || [0, []])[1].map(([keys, what]) => row(keys, what));
   const note = document.createElement('p'); note.className = 'keys-note';
   note.textContent = !prefs.on ? 'Single-key shortcuts are switched off. You can switch them back on in Settings.'

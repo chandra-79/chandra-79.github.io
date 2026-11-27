@@ -1,6 +1,8 @@
-/* Keyboard shortcuts (2.67): a small key label beside a control, on computers only, and the list of keys. */
-@media (hover:hover) and (pointer:fine) and (min-width:901px){
-[data-key-hint]::after{content:attr(data-key-hint);display:inline-block;flex:none;box-sizing:border-box;min-width:17px;margin-left:6px;padding:1px 4px;border:1px solid currentColor;border-radius:5px;font:700 11px/13px ui-monospace,Menlo,Consolas,monospace;letter-spacing:0;text-align:center;text-transform:none;vertical-align:middle;opacity:.62;pointer-events:none}
+/* Keyboard shortcuts (2.67): a small key label beside a control, where there is a keyboard (a computer, or a tablet with one attached), and the list of keys. */
+@media (min-width:901px){
+html[data-keyboard] [data-key-hint]::after{content:attr(data-key-hint);display:inline-block;flex:none;box-sizing:border-box;min-width:17px;margin-left:6px;padding:1px 4px;border:1px solid currentColor;border-radius:5px;font:700 11px/13px ui-monospace,Menlo,Consolas,monospace;letter-spacing:0;text-align:center;text-transform:none;vertical-align:middle;opacity:.62;pointer-events:none}
+html[data-keyboard] .nav-panel>[data-key-hint]::after{margin-left:auto}
+html[data-keyboard] .collection-nav .nav-group[data-group=games] .nav-panel:has(>[data-key-hint]){grid-template-columns:repeat(2,minmax(214px,1fr));min-width:448px}
 }
 .keys-dialog[open]{display:flex;flex-direction:column}
 .keys-dialog{width:min(440px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--stroke);border-radius:20px;background:var(--surface);color:var(--ink);box-shadow:0 24px 60px rgba(20,10,40,.28);overflow:hidden}
@@ -12,7 +14,7 @@
 .keys-body h3{margin:14px 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .keys-note{margin:4px 0 0;color:var(--muted);font-size:14px}
 .keys-rows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.keys-rows li{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:10px;font-size:15px}
+.keys-rows li{display:grid;grid-template-columns:132px 1fr;align-items:center;gap:10px;font-size:15px}
 .keys-rows kbd{justify-self:start;min-width:26px;padding:3px 8px;border:1px solid var(--stroke);border-bottom-width:2px;border-radius:7px;background:var(--surface-soft,transparent);color:inherit;font:700 13px/16px ui-monospace,Menlo,Consolas,monospace;text-align:center;white-space:nowrap}
 .keys-foot{display:flex;justify-content:space-between;gap:10px;padding:12px 18px 16px}
 .keys-foot button{min-height:40px;padding:8px 16px;border:1px solid var(--stroke);border-radius:12px;background:none;color:inherit;font:inherit;font-weight:800;cursor:pointer}

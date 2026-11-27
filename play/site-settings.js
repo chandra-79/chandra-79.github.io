@@ -4,7 +4,7 @@ import { soundOn, isTouch, play, haptic } from './fx.js';
 import './fit.js';
 import './game-frame.js';
 import './ad-slots.js';
-import { readKeys, saveKeys } from './shortcuts.js';
+import { readKeys, saveKeys, keyboardHere } from './shortcuts.js';
 
 const hub = () => globalThis.Ziggle;
 const LOOKS = Object.freeze([
@@ -67,7 +67,7 @@ function build() {
       ${check('calm-mode', 'Calmer motion', 'No flips, shakes, confetti or sliding.')}
       ${check('quick-demos', 'Quick demos', 'A short example when a new rule appears.')}
       ${check('word-shares', 'Share in words', 'Results as sentences instead of emoji.')}
-      ${check('key-shortcuts', 'Keyboard shortcuts', 'One key for common buttons, like ? for a hint. Press Ctrl and / to see them all.', ' data-keyboard-only')}
+      ${check('key-shortcuts', 'Keyboard shortcuts', 'One key for common buttons, like ? for a hint, or G then a number to pick a game. Press Ctrl and / to see them all.', ' data-keyboard-only')}
       ${check('key-hints', 'Show the keys on buttons', 'A small label beside each button that has a key.', ' data-keyboard-only')}
     </fieldset>
     <fieldset class="settings-group switches" data-tab="play" id="app-reminder" hidden><legend>Daily reminder <small>One notification a day, skipped once you’ve played. It never leaves your phone.</small></legend>
@@ -279,7 +279,7 @@ function render() {
   dialog.querySelector('#sound-fx').checked = soundOn();
   dialog.querySelector('#haptics').checked = profile.haptics !== false;
   dialog.querySelector('[data-touch-only]').hidden = !isTouch();
-  { const keys = readKeys(), phone = matchMedia('(hover: none) and (pointer: coarse)').matches;
+  { const keys = readKeys(), phone = matchMedia('(hover: none) and (pointer: coarse)').matches && !keyboardHere();
     dialog.querySelector('#key-shortcuts').checked = keys.on; dialog.querySelector('#key-hints').checked = keys.hints; dialog.querySelector('#key-hints').disabled = !keys.on;
     dialog.querySelectorAll('[data-keyboard-only]').forEach(row => { row.hidden = phone; }); }
   dialog.querySelector('#kids-mode').checked = profile.kidsMode;
