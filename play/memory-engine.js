@@ -8,6 +8,26 @@ export const BUDDIES = Object.freeze([
   Object.freeze({ id: 'comet', name: 'Comet', emoji: '☄️', color: '#e79c65' }),
 ]);
 
+// Special days (2.72): on a day that themes the Word Search daily, the six friends of the Memory
+// Mischief daily dress as the day. Pictures and names only: the trail, the shuffle, the seed and the score are untouched.
+const DAY_FRIENDS = Object.freeze({
+  space: '🚀 Rocket|🪐 Saturn|🌙 Moon|⭐ Star|🛰️ Satellite|☄️ Comet',
+  science: '🔬 Microscope|🧪 Test tube|🧲 Magnet|🧬 DNA|🔭 Telescope|💡 Bulb',
+  animals: '🦁 Lion|🐘 Elephant|🦒 Giraffe|🐼 Panda|🦊 Fox|🐧 Penguin',
+  nature: '🌲 Pine|🍄 Mushroom|🏔️ Mountain|🍂 Leaf|🦋 Butterfly|🌈 Rainbow',
+  ocean: '🐙 Octopus|🐬 Dolphin|🦀 Crab|🐠 Fish|🐳 Whale|🐚 Shell',
+  art: '🎨 Palette|🖌️ Brush|🖼️ Painting|✏️ Pencil|🎭 Masks|🧵 Thread',
+  garden: '🌻 Sunflower|🐝 Bee|🌷 Tulip|🐞 Ladybird|🥕 Carrot|🐌 Snail',
+  music: '🎸 Guitar|🥁 Drum|🎹 Piano|🎺 Trumpet|🎻 Violin|🎤 Mic',
+  kitchen: '☕ Coffee|🍳 Pan|🥄 Spoon|🧁 Cupcake|🫖 Teapot|🥐 Croissant',
+  festivals: '🎃 Pumpkin|👻 Ghost|🦇 Bat|🕷️ Spider|🍬 Sweet|🧙 Wizard',
+  weather: '❄️ Snowflake|⛄ Snowman|🌧️ Rain|☀️ Sun|🌈 Rainbow|⚡ Lightning',
+  movies: '🎬 Clapper|🍿 Popcorn|🎥 Camera|🎟️ Ticket|⭐ Star|📽️ Projector',
+});
+export const DAY_FRIEND_THEMES = Object.freeze(Object.keys(DAY_FRIENDS));
+/** The six friends for a day theme as [[picture, name], …], or null for no theme (the six usual friends). */
+export const dayFriends = theme => (Object.hasOwn(DAY_FRIENDS, theme) ? DAY_FRIENDS[theme].split('|').map(row => { const at = row.indexOf(' '); return [row.slice(0, at), row.slice(at + 1)]; }) : null);
+
 const mode = (label, description, lengths, reverseRounds, watchMs) => Object.freeze({
   label, description, lengths: Object.freeze(lengths),
   reverseRounds: Object.freeze(reverseRounds), watchMs,
