@@ -8,7 +8,10 @@ const sideways = matchMedia('(max-height:520px) and (orientation:landscape) and 
 const bar = document.querySelector('.game-bar');
 if (bar) {
   const root = document.documentElement;
-  const hidden = () => [...document.querySelectorAll('body>footer,.collection-welcome')];
+  // 2.72.1: the footer is put away only on the games. Training pages (Word Builder, Typing, Emoji & flags, Memory palace, Cube, Lexicon Atlas)
+  // keep it at the end of the page on every screen, and on a game it comes back with the header (data-header-back; see compact-focus.css).
+  const trainer = Boolean(document.querySelector('main:is(.type-shell,.uni-shell,.pal-shell,.cube-shell)'));
+  const hidden = () => [...document.querySelectorAll(trainer ? '.collection-welcome' : 'body>footer,.collection-welcome')];
   const icon = on => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${on ? 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5' : 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'}"/></svg>`;
   const button = document.createElement('button');
   button.type = 'button'; button.className = 'drawer-button focus-toggle'; button.style.minWidth = '44px'; button.style.padding = '0 10px';
@@ -50,7 +53,7 @@ if (bar) {
       for (const key of ['position', 'width', 'height', 'overflow', 'clip', 'white-space', 'text-overflow', 'min-width', 'flex']) { if (key in look) title.style.setProperty(key, look[key], 'important'); else title.style.removeProperty(key); } } // "important": the compact title-bar rules are
     for (const el of hidden()) el.style.setProperty('display', on ? 'none' : '', on ? 'important' : '');
     root.style.setProperty('--header-h', on ? '0px' : '');
-    root.toggleAttribute('data-focused', on);
+    root.toggleAttribute('data-focused', on); root.toggleAttribute('data-header-back', !on && compact.matches);
     stow(on);
     button.setAttribute('aria-pressed', String(on));
     button.setAttribute('aria-label', on ? 'Show the page header' : 'Focus: hide the page header while you play');

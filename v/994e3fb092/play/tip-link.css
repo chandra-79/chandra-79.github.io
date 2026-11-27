@@ -1,6 +1,0 @@
-/* The tip line in the finished-daily popup. Loaded by tip-link.js, so only while the tip link is switched on. */
-.level-end .le-ad.le-tip{padding:10px 12px;display:grid;gap:8px;font-size:14px;line-height:1.4}
-.level-end .le-tip p{margin:0;color:var(--ink)}
-.level-end .le-tip-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.level-end .le-tip-go{flex:1 1 auto;min-height:44px;padding:8px 14px;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
-.level-end .le-tip-no{flex:none;width:auto;min-height:44px;padding:8px 12px;border:0;border-radius:12px;background:none;box-shadow:none;color:var(--muted);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}

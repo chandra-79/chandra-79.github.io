@@ -92,7 +92,7 @@ html[data-play-focus] .game-bar .mode-switch button{min-width:0!important;min-he
 html[data-play-focus] .game-bar .mode-switch button[aria-pressed=true]{max-width:100px}
 html[data-play-focus] .game-bar h1{white-space:normal!important;flex:auto!important;min-width:0!important;font-size:14px!important;text-overflow:clip!important;overflow:hidden!important}
 html[data-play-focus] .game-bar .drawer-button{flex:none!important}
-html[data-play-focus] .how-it-works,html[data-play-focus] body>footer,html[data-play-focus] main>footer{display:none!important}
+html[data-play-focus] .how-it-works,html[data-play-focus]:not([data-header-back]) body:not(:has(>main:is(.type-shell,.uni-shell,.pal-shell,.cube-shell)))>footer{display:none!important}
 html[data-play-focus] main{width:100%!important;margin:0!important;padding:6px 10px!important;flex:none!important;min-height:0!important}
 html[data-play-focus] .collection-header{margin-bottom:0!important}
 html[data-play-focus] :is(.lock-card,.memory-card,.sum-card,.sudoku-main .board-card,.type-card,.uni-card,.pal-card,.cube-card,.twist-card){border-radius:16px!important}
