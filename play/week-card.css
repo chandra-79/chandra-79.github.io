@@ -28,14 +28,19 @@
 .week-card .week-form[data-locked] .week-go{background:var(--surface-soft);color:var(--muted);box-shadow:0 4px 0 var(--stroke);cursor:default}
 .week-card .week-go:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 .week-card .week-tiles{justify-self:start;border:1px solid var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:12px;min-height:44px;padding:0 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
-.week-card .week-keys{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.week-card .week-keys{display:grid;gap:6px;width:min(100%,520px)}
 .week-card .week-keys[hidden]{display:none}
-.week-card .week-keys button{min-height:46px;border:1px solid var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:12px;font:inherit;font-size:18px;font-weight:800;cursor:pointer;touch-action:manipulation}
-.week-card .week-keys button:active{background:var(--accent-soft)}
-.week-card .week-keys .week-back{grid-column:span 2}
+.week-card .week-keys .key-row{display:flex;justify-content:center;gap:5px}
+.week-card .week-keys .key{flex:1 1 0;min-width:0;max-width:46px;min-height:46px;border:0;background:var(--surface-soft);color:var(--ink);border-radius:9px;padding:0;font:inherit;font-size:16px;font-weight:800;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.week-card .week-keys .key.wide{flex-grow:1.8;max-width:78px;font-size:13px}
+.week-card .week-keys .key[data-key=back]{font-size:18px}
+.week-card .week-keys .key[data-key=enter]{background:var(--accent);color:var(--surface)}
+.week-card .week-keys .key:active{background:var(--accent-soft);color:var(--ink)}
+@media (width<=650px){.week-card .week-keys{width:auto;margin-inline:-8px}.week-card .week-keys .key-row{gap:4px}}
+@media (width<=380px){.week-card .week-keys{gap:5px}.week-card .week-keys .key-row{gap:3px}}
 .week-card .week-status{min-height:20px;margin:0 0 6px;color:var(--ink);font-size:14px;font-weight:700}
 .week-card .week-status.error{color:var(--danger,var(--ink))}
-.week-card .week-slot:focus-visible,.week-card .week-tiles:focus-visible,.week-card .week-go:focus-visible,.week-card .week-keys button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.week-card .week-slot:focus-visible,.week-card .week-tiles:focus-visible,.week-card .week-go:focus-visible,.week-card .week-keys .key:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .week-card .week-tile.pop{animation:week-pop .45s ease-out}
 .week-card .week-form.shake{animation:week-shake .35s ease-in-out}
 @keyframes week-pop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}

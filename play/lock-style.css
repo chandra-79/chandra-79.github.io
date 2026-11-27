@@ -39,6 +39,7 @@ to{transform:rotateX(0)}
 .key-row{justify-content:center;gap:5px;display:flex}
 .key{background:var(--surface-soft);max-width:46px;min-height:52px;color:var(--ink);border-radius:9px;flex:1 1 0;font-size:16px;font-weight:800;position:relative}
 .key.wide{flex-grow:1.6;max-width:70px;font-size:14px}
+.key.wide:last-child{font-size:18px}
 .key:hover:not(:disabled){background:var(--accent-soft)}
 .key[data-mark=c]{background:var(--mint-ink);color:var(--surface)}
 .key[data-mark=p]{background:var(--citrus);color:var(--citrus-ink)}
