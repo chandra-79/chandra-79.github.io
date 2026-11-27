@@ -2,6 +2,9 @@
 // controls and the Ziggle logo stay. Anything that is not play brings it all back: a pause, a popup or drawer, Escape, leaving the tab, or
 // moving the pointer to the top edge. The logo always stays, and always leads home. Loaded on demand by the game frame; trainers and
 // browsing screens are left alone.
+// 2.77: switched off. The showing and hiding felt wonky, so on a computer the menus, the game bar and the footer now stay where they are
+// while you play, in every game; only Maximize, which the player chooses, hides them. The code stays in case a quiet mode is wanted later.
+const QUIET_PLAY = false;
 const root = document.documentElement;
 const AREAS = '#board-viewport,#word-board,#weave-sky,#weave-input,#lock-board,#keyboard,#memory-board,.sum-board,#sum-keys,#sudoku-board,#twist-board';
 if (document.querySelector(AREAS) && document.querySelector('.collection-header')) {
@@ -12,7 +15,7 @@ if (document.querySelector(AREAS) && document.querySelector('.collection-header'
   // On phones every game already starts full screen (focus-mode.js), so the first-move fade is for bigger screens only.
   const phone = matchMedia('(max-width:650px)');
   const enter = () => {
-    if (playing || phone.matches) return; playing = true; clearTimeout(timer);
+    if (!QUIET_PLAY || playing || phone.matches) return; playing = true; clearTimeout(timer);
     if (calm()) { root.setAttribute('data-playing', ''); resize(); return; }
     root.setAttribute('data-fading', '');
     timer = setTimeout(() => { root.setAttribute('data-playing', ''); root.removeAttribute('data-fading'); resize(); }, 320);

@@ -1,13 +1,11 @@
-import { attachArrowHelp } from './arrow-flow.js';
+import { attachArrowHelp, subscribeToDaily, withBackup } from './arrow-flow.js';
 import { showLevelEnd } from './level-end.js';
-import { ringFx, clickFx, contactFx, escapeDuration } from './arrow-fx.js';
+import { contactFx, escapeDuration } from './arrow-fx.js';
 import { levelSnapshot, isPractice, menuResume, practiceStart } from './arrow-resume.js';
 import { LEVELS, WORLD_TOUR, generateLevel, generateDaily, inferDailyTier, generateTourBoard, canLeave, generateClimb, buildAhead } from './engine.js';
 import { COLOUR_NAMES as colourNames, piecesHelp as helpFor, whyBlocked as whyFor, pieceWords as wordsFor, pieceBadges as badgesFor, piecesSvg, gatesOpenedBy as openedFor, refuse as refuseFor, boardFrame, helpBody, SHAPE_LABELS as shapeLabels } from './arrow-pieces.js';
 import { letters as columnName, createIdentifiers, normalizeIdentifier, findDirectionalNeighbor } from './keyboard.js';
 import { loadProgress, writeProgress, localDateKey, dailyStats, recordDailyResult, recordVisit, mergeStoredProgress, collectedTotal, collectedSince } from './progress.js';
-import { backupMarkup, attachBackupControls } from './backup.js';
-import { subscribeToDaily } from './reminders.js';
 import { play as playSound, haptic, burst, isTouch, soundOn, confetti as fxConfetti } from './fx.js';
 
 const $ = (id) => document.getElementById(id);
@@ -38,6 +36,9 @@ const icons = {
 const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.arrow}</svg>`;
 document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = icon(el.dataset.icon));
 const palette = [['#9861d4','#7542ba'],['#e59a43','#ca752f'],['#47ad8c','#27856b'],['#4aa5d1','#397eaf'],['#df739b','#bd5084'],['#b5a342','#95832b'],['#7770d3','#5d54b2']];
+const calmNow=()=>globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
+const arrowW=()=>Math.max(3.6,Math.min(11,124/state.board.size)),boardWord=n=>n<35?'Gentle':n<65?'Steady':n<110?'Tricky':'Fiendish';
+let learn=null;
 const free=path=>canLeave(state.board,state.remaining,path);
 const pc=()=>({board:state.board,remaining:state.remaining,identifiers:state.identifiers,palette});
 const piecesHelp=()=>helpFor(state.board),whyBlocked=(path,check)=>whyFor(pc(),path,check),pieceWords=path=>wordsFor(pc(),path),pieceBadges=(path,points,step)=>badgesFor(pc(),path,points,step),gatesOpenedBy=leaving=>openedFor(pc(),leaving);
@@ -54,7 +55,7 @@ function save() {
   return stored;
 }
 const hintedIds=new Set();
-const state = { level:saved.current, mode:'levels', tour:null, board:null, remaining:[], history:[], lives:3, hints:3, hintsUsed:0, elapsed:0, paused:false, ended:false, busy:false, generation:0, modal:null, highlighted:null, selected:null, identifiers:new Map() };
+const state = { level:saved.current, mode:'levels', tour:null, board:null, remaining:[], history:[], lives:3, hints:3, hintsUsed:0, elapsed:0, paused:false, ended:false, flying:0, flagged:new Set(), generation:0, modal:null, highlighted:null, selected:null, identifiers:new Map() };
 const dateKey = localDateKey;
 let activeDailyDate = dateKey();
 let activeTier = 'medium';
@@ -64,7 +65,6 @@ const archiveDate=(()=>{if(typeof URLSearchParams!=='function'||!globalThis.loca
 const seedFor = date => [...date].reduce((n,c)=>((n*31+c.charCodeAt(0))>>>0),71);
 const formatTime = seconds => `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
 const ziggle = () => globalThis.Ziggle;
-let audioContext;
 function tone(success=true) { playSound(success?'launch':'bump'); }
 function setSound(on){ const hub=ziggle(); if(!hub)return; const profile=hub.profile(); profile.sound=on; hub.saveProfile(profile); }
 function updateDailyStats(){
@@ -102,12 +102,12 @@ function restoreSession(session){
 function startLevel(level=state.level, mode=state.mode, resume=false, tour=state.tour) {
   $('arrow-completion').hidden=true;document.querySelector('.game-panel').hidden=false;
   if(state.board&&(state.mode==='daily'||isPractice(state.mode)))saveSession();
-  tapQueue.length=0;state.generation++;state.level=level;state.mode=mode;state.tour=mode==='tour'?tour:null;
+  $('board-fly').innerHTML='';state.flying=0;state.flagged.clear();state.generation++;state.level=level;state.mode=mode;state.tour=mode==='tour'?tour:null;
   if(mode==='daily'){activeDailyDate=dateKey();activeTier=resume&&saved.activeDaily?.date===activeDailyDate?inferDailyTier(saved.activeDaily,ziggle()?.tier?.('arrows',activeDailyDate)||'medium'):(ziggle()?.tier?.('arrows',activeDailyDate)||'medium');}
   else if(mode==='archive')activeTier=ziggle()?.tier?.('arrows',archiveDate)||'medium';
   else if(mode==='climb'){activeDailyDate=dateKey();state.climb=ladder()?.place||{tier:'medium',index:1,count:Infinity,daily:false};activeTier=state.climb.tier;}
-  state.board=mode==='climb'?(state.climb.daily?generateDaily(activeDailyDate,activeTier):generateClimb(activeDailyDate,activeTier,state.climb.index,state.climb.count)):mode==='daily'?generateDaily(activeDailyDate,activeTier):mode==='archive'?generateDaily(archiveDate,activeTier):mode==='tour'?generateTourBoard(tour):generateLevel(level);
-  state.remaining=[...state.board.paths];state.history=[];state.lives=3;state.hints=3;state.hintsUsed=0;hintedIds.clear();state.attempt=`${Date.now()}-${Math.random()}`;state.elapsed=0;state.ended=false;state.busy=false;state.highlighted=null;state.lifeUsed=false;
+  state.board=mode==='climb'?(state.climb.daily?generateDaily(activeDailyDate,activeTier):generateClimb(activeDailyDate,activeTier,state.climb.index,state.climb.count)):mode==='daily'?generateDaily(activeDailyDate,activeTier):mode==='archive'?generateDaily(archiveDate,activeTier):mode==='tour'?generateTourBoard(tour):mode==='learn'?learn.boards[level]:generateLevel(level);
+  state.remaining=[...state.board.paths];state.history=[];state.lives=3;state.hints=3;state.hintsUsed=0;hintedIds.clear();state.attempt=`${Date.now()}-${Math.random()}`;state.elapsed=0;state.ended=false;state.highlighted=null;state.lifeUsed=false;
   state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,'numbers');
   const restored=resume&&(mode==='daily'?restoreSession(saved.activeDaily):isPractice(mode)&&restoreSession(saved.activeLevel));
   $('arrow-address').value='';setSelectionStatus('Type an ID to highlight its arrow. Enter fires it.');
@@ -115,14 +115,15 @@ function startLevel(level=state.level, mode=state.mode, resume=false, tour=state
   if(mode==='levels')saved.current=level;
   else if(mode==='daily')recordVisit(saved,activeDailyDate);
   const stop=mode==='tour'?WORLD_TOUR.find(item=>item.id===tour):null;
-  $('mode-label').textContent=mode==='daily'?`ZIGGLE #${ziggle()?.dailyNumber?.(activeDailyDate)??''} · ONE FRESH PUZZLE`.replace('# ·','·'):mode==='archive'?`ZIGGLE #${ziggle()?.dailyNumber?.(archiveDate)??''} · FROM THE ARCHIVE`:mode==='climb'?`TODAY’S LADDER${state.climb.daily?` · THE ${TIER_LABEL[activeTier].toUpperCase()}`:' · BONUS LEVEL'}`:mode==='endless'?'ENDLESS PRACTICE':mode==='tour'?'WORLD TOUR':'YOUR NEXT LITTLE CHALLENGE';
-  $('level-number').textContent=mode==='climb'?String(state.climb.index+1):mode==='daily'?'puzzle':mode==='archive'?new Date(`${archiveDate}T12:00:00`).toLocaleDateString(undefined,{month:'short',day:'numeric'}):mode==='tour'?stop.name:String(level+1).padStart(2,'0');
-  $('level-prefix').textContent=mode==='climb'?TIER_LABEL[activeTier].split(' ')[0]:mode==='daily'?'Today’s':mode==='archive'?'Archive ·':mode==='tour'?'Tour':mode==='endless'?'Endless':'Level';
-  $('difficulty-text').textContent=mode==='climb'?(ziggle()?.ladderLabel?.(state.climb)||'')+(state.climb.daily?' · daily':''):mode==='daily'?TIER_LABEL[activeTier]:mode==='archive'?`Just for fun · ${TIER_LABEL[activeTier].split(' ')[0]}`:mode==='tour'?stop.place:mode==='endless'?`Board ${level-11}`:level<4?'Easy does it':level<8?'Find your flow':'Take your time';
+  $('mode-label').textContent=mode==='daily'?`ZIGGLE #${ziggle()?.dailyNumber?.(activeDailyDate)??''} · ONE FRESH PUZZLE`.replace('# ·','·'):mode==='archive'?`ZIGGLE #${ziggle()?.dailyNumber?.(archiveDate)??''} · FROM THE ARCHIVE`:mode==='climb'?`TODAY’S LADDER${state.climb.daily?` · THE ${TIER_LABEL[activeTier].toUpperCase()}`:' · BONUS LEVEL'}`:mode==='endless'?'ENDLESS PRACTICE':mode==='tour'?'WORLD TOUR':mode==='learn'?'LEARN BY PLAYING':'YOUR NEXT LITTLE CHALLENGE';
+  $('level-number').textContent=mode==='climb'?String(state.climb.index+1):mode==='daily'?'puzzle':mode==='archive'?new Date(`${archiveDate}T12:00:00`).toLocaleDateString(undefined,{month:'short',day:'numeric'}):mode==='tour'?stop.name:mode==='learn'?`${level+1} of ${learn.boards.length}`:String(level+1).padStart(2,'0');
+  $('level-prefix').textContent=mode==='climb'?TIER_LABEL[activeTier].split(' ')[0]:mode==='daily'?'Today’s':mode==='archive'?'Archive ·':mode==='tour'?'Tour':mode==='endless'?'Endless':mode==='learn'?'Warm-up':'Level';
+  $('difficulty-text').textContent=mode==='climb'?(ziggle()?.ladderLabel?.(state.climb)||'')+(state.climb.daily?' · daily':''):mode==='daily'?TIER_LABEL[activeTier]:mode==='archive'?`Just for fun · ${TIER_LABEL[activeTier].split(' ')[0]}`:mode==='tour'?stop.place:mode==='endless'?`Board ${level-11}`:mode==='learn'?'No hearts to lose':level<4?'Easy does it':level<8?'Find your flow':'Take your time';
+  const word=boardWord(state.board.paths.length);$('board-word').textContent=mode==='learn'?'Warm-up':word;document.documentElement?.toggleAttribute?.('data-learn',mode==='learn');
   syncModeSwitch();
-  $('shape-label').textContent=shapeLabels[state.board.shape];
+  $('shape-label').textContent=shapeLabels[state.board.shape]||'';
   $('timer').textContent=formatTime(state.elapsed);
-  message(restored?'Welcome back. Your puzzle is right where you left it.':(isTouch()?'Tap an arrow with a clear path.':'Tap an arrow with a clear path, or select one by ID.'));
+  message(restored?'Welcome back. Your puzzle is right where you left it.':mode==='learn'?state.board.tip:`${word} board · ${state.board.paths.length} arrows. `+(isTouch()?'Tap an arrow with a clear path.':'Tap an arrow with a clear path, or select one by ID.'));
   const guide=[];
   if(state.board.gates?.length)guide.push('Shape gates open after all arrows with the matching shape leave. The number counts those still on the board.');
   if(state.board.paths.some(p=>p.lock!==undefined))guide.push('Dark numbered badges are locks. Clear the yellow key with the same number first.');
@@ -139,7 +140,7 @@ function startLevel(level=state.level, mode=state.mode, resume=false, tour=state
 }
 function introBoard(){
   const board=$('board');
-  if(!board?.classList||(globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  if(!board?.classList||calmNow())return;
   const furthest=Math.hypot(300,300);
   for(const path of state.remaining){
     const group=board.querySelector(`[data-id="${path.id}"]`);if(!group?.style?.setProperty)continue;
@@ -157,24 +158,27 @@ function geometry(path) {
   return points;
 }
 const lineD=points=>points.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
-const inkD=(points,[dx,dy])=>{const k=saved.theme==='snakes'?5:4,end=points.at(-1),before=points.at(-2)||end,room=Math.hypot(end[0]-before[0],end[1]-before[1]),cut=Math.min(k,room*.5);return lineD([...points.slice(0,-1),[end[0]-dx*cut,end[1]-dy*cut]]);};
+const inkD=(points,[dx,dy])=>{const k=(saved.theme==='snakes'?1.25:1)*arrowW(),end=points.at(-1),before=points.at(-2)||end,room=Math.hypot(end[0]-before[0],end[1]-before[1]),cut=Math.min(k,room*.5);return lineD([...points.slice(0,-1),[end[0]-dx*cut,end[1]-dy*cut]]);};
 function headD(point,direction) {
-  const [x,y]=point,[dx,dy]=direction,w=5.6,h=6.3;
+  const [x,y]=point,[dx,dy]=direction,k=arrowW()/4,w=5.6*k,h=6.3*k;
   return `M${x-dx*h+dy*w},${y-dy*h-dx*w} L${x},${y} L${x-dx*h-dy*w},${y-dy*h+dx*w}`;
 }
+function setShape(group,path,points,hit){const d=lineD(points),ink=inkD(points,path.direction),head=headD(points.at(-1),path.direction);group.querySelectorAll(hit?'.arrow-selection,.arrow-hit':'.arrow-selection').forEach(el=>el.setAttribute('d',d));group.querySelectorAll('.arrow-ink,.arrow-inner').forEach(el=>el.setAttribute('d',ink));group.querySelector('.arrow-head').setAttribute('d',head);group.querySelector('.arrow-shade')?.setAttribute('d',`${ink} ${head}`);}
 function renderBoard() {
   const board=$('board'),focusedId=board.contains(document.activeElement)?Number(document.activeElement.dataset.id):null;
-  board.className.baseVal=`theme-${saved.theme}${saved.showLabels&&canShowArrowIds()?' show-labels':''}`;
+  board.className.baseVal=`theme-${saved.theme}${saved.showLabels&&canShowArrowIds()?' show-labels':''}`;$('board-fly').className.baseVal=`theme-${saved.theme}`;
+  const aw=arrowW(),lift=(aw*.32).toFixed(2);for(const el of [board,$('board-fly')])el.style.setProperty?.('--aw',`${aw.toFixed(2)}px`);
+  for(const id of state.flagged){const p=state.remaining.find(p=>p.id===id);if(!p||free(p).ok)state.flagged.delete(id);}
   const defs=state.board.paths.map(path=>{const p=geometry(path),[a,b]=palette[path.color];return `<linearGradient id="color-${path.id}" gradientUnits="userSpaceOnUse" x1="${p[0][0]}" y1="${p[0][1]}" x2="${p.at(-1)[0]+.1}" y2="${p.at(-1)[1]+.1}"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;}).join('');
   const step=460/state.board.size,offset=(600-step*(state.board.size-1))/2;
   const dots=!saved.gridMarks?'':state.board.paths.flatMap(p=>p.cells).map(([x,y])=>`<circle class="board-dot" cx="${offset+x*step}" cy="${offset+y*step}" r="1.15"/>`).join('');
   const frame=boardFrame(state.board,{offset,step,coordinates:saved.gridMarks,labels:saved.showLabels&&canShowArrowIds(),columnName});
-  board.setAttribute('viewBox',frame.viewBox);const axes=frame.axes;board.dataset.across=frame.across;document.querySelector('.play-layout')?.toggleAttribute?.('data-big',state.board.paths.length>=90);if(state.board.paths.length<90)document.documentElement?.removeAttribute?.('data-immersive');
+  board.setAttribute('viewBox',frame.viewBox);$('board-fly').setAttribute('viewBox',frame.viewBox);const axes=frame.axes;board.dataset.across=frame.across;document.querySelector('.play-layout')?.toggleAttribute?.('data-big',state.board.paths.length>=90);if(state.board.paths.length<90)document.documentElement?.removeAttribute?.('data-immersive');
   const tabId=state.selected??findDirectionalNeighbor(state.remaining,null,'ArrowRight');
   const paths=state.remaining.map(path=>{
-    const points=geometry(path),d=lineD(points),head=points.at(-1),stroke=`url(#color-${path.id})`,direction=path.direction[0]===1?'right':path.direction[0]===-1?'left':path.direction[1]===1?'down':'up';
+    const points=geometry(path),d=lineD(points),head=points.at(-1),ink=inkD(points,path.direction),hd=headD(head,path.direction),stroke=`url(#color-${path.id})`,direction=path.direction[0]===1?'right':path.direction[0]===-1?'left':path.direction[1]===1?'down':'up';
     const label=state.identifiers.get(path.id),labelWidth=Math.min(step-1,label.length*7.1+7);
-    return `<g class="arrow-group${state.highlighted===path.id?' hinted':''}${state.selected===path.id?' selected':''}" data-id="${path.id}" data-label="${label}" role="button" tabindex="${path.id===tabId?0:-1}" aria-label="Arrow ${label}, pointing ${direction}${pieceWords(path)}${state.highlighted===path.id?', hint':''}" aria-describedby="keyboard-help" style="color:${palette[path.color][0]}"><path class="arrow-hit" d="${d}"/><path class="arrow-selection" d="${d}"/><path class="arrow-ink" stroke="${stroke}" d="${inkD(points,path.direction)}"/>${saved.theme==='border'?`<path class="arrow-inner" d="${inkD(points,path.direction)}"/>`:''}<path class="arrow-head" stroke="${stroke}" d="${headD(head,path.direction)}"/>${saved.theme==='snakes'?`<circle class="snake-eye" cx="${head[0]-path.direction[0]*3+path.direction[1]*1.5}" cy="${head[1]-path.direction[1]*3-path.direction[0]*1.5}" r="1.2"/>`:''}${pieceBadges(path,points,step)}<g class="arrow-label" aria-hidden="true" transform="translate(${head[0]},${head[1]-16})"><rect x="${-labelWidth/2}" y="-8" width="${labelWidth}" height="16" rx="4"/><text y="4" textLength="${labelWidth-5}" lengthAdjust="spacingAndGlyphs">${label}</text></g></g>`;
+    return `<g class="arrow-group${state.highlighted===path.id?' hinted':''}${state.selected===path.id?' selected':''}${state.flagged.has(path.id)?' flagged':''}" data-id="${path.id}" data-label="${label}" role="button" tabindex="${path.id===tabId?0:-1}" aria-label="Arrow ${label}, pointing ${direction}${pieceWords(path)}${state.highlighted===path.id?', hint':''}" aria-describedby="keyboard-help" style="color:${palette[path.color][0]}"><path class="arrow-hit" d="${d}"/><path class="arrow-selection" d="${d}"/><path class="arrow-shade" d="${ink} ${hd}" transform="translate(0 ${lift})"/><path class="arrow-ink" stroke="${stroke}" d="${ink}"/>${saved.theme==='border'?`<path class="arrow-inner" d="${ink}"/>`:''}<path class="arrow-head" stroke="${stroke}" d="${hd}"/>${saved.theme==='snakes'?`<circle class="snake-eye" cx="${head[0]-path.direction[0]*3+path.direction[1]*1.5}" cy="${head[1]-path.direction[1]*3-path.direction[0]*1.5}" r="1.2"/>`:''}${pieceBadges(path,points,step)}<g class="arrow-label" aria-hidden="true" transform="translate(${head[0]},${head[1]-16})"><rect x="${-labelWidth/2}" y="-8" width="${labelWidth}" height="16" rx="4"/><text y="4" textLength="${labelWidth-5}" lengthAdjust="spacingAndGlyphs">${label}</text></g></g>`;
   }).join('');
   const edge=v=>v>0?575:25,laneD=path=>{const head=geometry(path).at(-1),[dx,dy]=path.direction;return `M${head[0].toFixed(1)},${head[1].toFixed(1)} L${(dx?edge(dx):head[0]).toFixed(1)},${(dy?edge(dy):head[1]).toFixed(1)}`;};
   const lanes=state.remaining.filter(path=>saved.lanes||state.highlighted===path.id).map(path=>`<path class="arrow-lane${state.highlighted===path.id?' hinted':''}" data-lane="${path.id}" d="${laneD(path)}"/>`).join('');
@@ -188,12 +192,11 @@ function updateHud(){
   $('hearts').setAttribute('aria-label',`${state.lives} lives remaining`);
   const cleared=state.board.paths.length-state.remaining.length,percent=Math.round(cleared/state.board.paths.length*100);
   $('cleared-count').textContent=cleared;$('total-count').textContent=state.board.paths.length;$('progress-fill').style.width=`${percent}%`;$('progress-percent').textContent=`${percent}%`;
-  $('hint-count').textContent=state.hints;$('hint-button').disabled=state.hints===0||state.ended||state.busy;
+  $('hint-count').textContent=state.hints;$('hint-button').disabled=state.hints===0||state.ended;
   $('hint-top-count').textContent=state.hints;$('hint-top').disabled=$('hint-button').disabled;$('lanes-button').setAttribute('aria-pressed',String(saved.lanes));$('grid-button').setAttribute('aria-pressed',String(saved.gridMarks));
   $('theme-button').hidden=state.history.length>0||state.ended;
   $('hearts').dataset.lives=state.lives;
-  for(const id of ['levels-button','help-button','theme-button','settings-button','trophies-button','daily-button','email-button','save-status']) $(id).disabled=state.busy;
-  $('pause-button').disabled=state.busy||state.ended;
+  $('pause-button').disabled=state.ended;
   $('trophy-count').textContent=trophies().filter(t=>t.earned).length;
   updateKeyboardControls();
 }
@@ -205,7 +208,7 @@ function setSelectionStatus(text,invalid=false){
   $('arrow-address').setAttribute('aria-invalid',String(invalid));
 }
 function updateKeyboardControls(){
-  const locked=state.busy||state.paused||state.ended;
+  const locked=state.paused||state.ended;
   $('arrow-address').readOnly=locked;
   $('fire-button').disabled=locked||state.selected===null;
   const button=$('board-labels-button');
@@ -216,7 +219,6 @@ function updateKeyboardControls(){
   $('arrow-address').inputMode='numeric';
   const example=state.identifiers.values().next().value||'1';
   $('arrow-address').placeholder=`e.g. ${example}`;
-  $('board').setAttribute('aria-busy',String(state.busy));
   $('board').querySelectorAll('[data-id]').forEach(group=>group.setAttribute('aria-disabled',String(locked)));
 }
 function selectArrow(id,{focus=false,fill=false,announce=true}={}){
@@ -238,7 +240,7 @@ function selectArrow(id,{focus=false,fill=false,announce=true}={}){
   updateKeyboardControls();
 }
 function previewAddress(){
-  if(state.paused||state.ended||state.busy)return;
+  if(state.paused||state.ended)return;
   const value=normalizeIdentifier($('arrow-address').value);
   const entry=[...state.identifiers].find(([,label])=>label===value);
   if(entry&&state.remaining.some(path=>path.id===entry[0])){selectArrow(entry[0]);return;}
@@ -258,14 +260,14 @@ $('arrow-command').addEventListener('keydown',event=>{
 });
 $('arrow-command').addEventListener('submit',event=>{
   event.preventDefault();
-  if(state.paused||state.ended||state.busy)return;
+  if(state.paused||state.ended)return;
   previewAddress();
   if(state.selected!==null)tapArrow(state.selected);
 });
 $('arrow-address').addEventListener('keydown',event=>{
   if(event.isComposing||event.ctrlKey||event.altKey||event.metaKey)return;
   if(event.key==='Enter'&&event.repeat){event.preventDefault();return;}
-  if(state.paused||state.ended||state.busy){if(event.key==='Enter')event.preventDefault();return;}
+  if(state.paused||state.ended){if(event.key==='Enter')event.preventDefault();return;}
   if(event.key==='ArrowUp'||event.key==='ArrowDown'){
     event.preventDefault();event.stopPropagation();
     selectArrow(findDirectionalNeighbor(state.remaining,state.selected,event.key),{focus:true,fill:true});
@@ -274,36 +276,28 @@ $('arrow-address').addEventListener('keydown',event=>{
   }
 });
 $('board-labels-button').onclick=()=>{
-  if(state.paused||state.ended||state.busy)return;
+  if(state.paused||state.ended)return;
   saved.showLabels=!saved.showLabels;save();
   $('board').classList.toggle('show-labels',saved.showLabels&&canShowArrowIds());updateKeyboardControls();
 };
 
 function escapeAnimation(path,group,done) {
-  const points=geometry(path),last=points.at(-1),[dx,dy]=path.direction;
+  const points=geometry(path),last=points.at(-1),[dx,dy]=path.direction,step=460/state.board.size;
   const lengths=[0];for(let i=1;i<points.length;i++)lengths.push(lengths.at(-1)+Math.hypot(points[i][0]-points[i-1][0],points[i][1]-points[i-1][1]));
-  const bodyLength=lengths.at(-1),travel=750+bodyLength;
+  const bodyLength=lengths.at(-1),room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),travel=room+bodyLength+step*2;
   points.push([last[0]+dx*travel,last[1]+dy*travel]);lengths.push(bodyLength+travel);
   function at(distance){let i=1;while(i<lengths.length-1&&lengths[i]<distance)i++;const t=(distance-lengths[i-1])/(lengths[i]-lengths[i-1]);return [points[i-1][0]+(points[i][0]-points[i-1][0])*t,points[i-1][1]+(points[i][1]-points[i-1][1])*t];}
-  const calmNow=globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const duration=calmNow?0:escapeDuration(bodyLength),start=performance.now(),generation=state.generation,step=460/state.board.size;
-  group.classList.add('escaping');group.querySelector('.arrow-label')?.remove();
-  if(!calmNow)playSound('glide',{dur:duration/1000});
-  const lane=$('board').querySelector(`[data-lane="${path.id}"]`);lane?.classList.add('used');
+  const calm=calmNow(),duration=calm?0:escapeDuration(travel,step),start=performance.now(),generation=state.generation;
+  group.classList.add('escaping');group.querySelector('.arrow-label')?.remove();group.querySelector('.snake-eye')?.remove();
+  if(!calm)playSound('glide',{dur:duration/1000});
   let sparked=false;
-  const room=Math.max(0,dx>0?565-last[0]:dx<0?last[0]-35:dy>0?565-last[1]:last[1]-35),ease=u=>u*u;
   const trace=s=>{const m=[at(s)];for(let i=1;i<points.length;i++)if(lengths[i]>s&&lengths[i]<s+bodyLength)m.push(points[i]);m.push(at(s+bodyLength));return m;};
   function frame(now){
     if(generation!==state.generation)return;
-    const t=duration?Math.min(1,(now-start)/duration):1;
-    const shift=travel*ease(t);
-    group.style.opacity=t>.7?String(Math.max(0,1-(t-.7)/.3)):'';
+    const t=duration?Math.min(1,(now-start)/duration):1,shift=travel*t;
     if(!sparked&&shift>=room-4){sparked=true;sparkAtEdge(path,points);}
-    const moving=trace(shift);
-    group.querySelectorAll('.arrow-selection').forEach(el=>el.setAttribute('d',lineD(moving)));group.querySelectorAll('.arrow-ink,.arrow-inner').forEach(el=>el.setAttribute('d',inkD(moving,path.direction)));
-    group.querySelector('.arrow-head').setAttribute('d',headD(moving.at(-1),path.direction));
-    group.querySelector('.snake-eye')?.remove();
-    if(t<1)requestAnimationFrame(frame);else{group.remove();lane?.remove();done();}
+    setShape(group,path,trace(shift));
+    if(t<1)requestAnimationFrame(frame);else{group.remove();done();}
   }requestAnimationFrame(frame);
 }
 function sparkAtEdge(path,points){
@@ -325,13 +319,11 @@ function bumpAnimation(path,group){
   const lengths=[0];for(let i=1;i<points.length;i++)lengths.push(lengths.at(-1)+Math.hypot(points[i][0]-points[i-1][0],points[i][1]-points[i-1][1]));
   const bodyLength=lengths.at(-1);points.push([last[0]+dx*(reach+step),last[1]+dy*(reach+step)]);lengths.push(bodyLength+reach+step);
   const at=distance=>{let i=1;while(i<lengths.length-1&&lengths[i]<distance)i++;const t=(distance-lengths[i-1])/(lengths[i]-lengths[i-1]||1);return [points[i-1][0]+(points[i][0]-points[i-1][0])*t,points[i-1][1]+(points[i][1]-points[i-1][1])*t];};
-  const draw=shift=>{const moving=[at(Math.max(0,shift))];for(let i=1;i<points.length;i++)if(lengths[i]>shift&&lengths[i]<shift+bodyLength)moving.push(points[i]);moving.push(at(shift+bodyLength));
-    group.querySelectorAll('.arrow-selection,.arrow-hit').forEach(el=>el.setAttribute('d',lineD(moving)));group.querySelectorAll('.arrow-ink,.arrow-inner').forEach(el=>el.setAttribute('d',inkD(moving,path.direction)));group.querySelector('.arrow-head').setAttribute('d',headD(moving.at(-1),path.direction));};
-  const restore=()=>{const d=lineD(geometry(path)),ink=inkD(geometry(path),path.direction);group.querySelectorAll('.arrow-selection,.arrow-hit').forEach(el=>el.setAttribute('d',d));group.querySelectorAll('.arrow-ink,.arrow-inner').forEach(el=>el.setAttribute('d',ink));group.querySelector('.arrow-head').setAttribute('d',headD(geometry(path).at(-1),path.direction));};
+  const draw=shift=>{const moving=[at(Math.max(0,shift))];for(let i=1;i<points.length;i++)if(lengths[i]>shift&&lengths[i]<shift+bodyLength)moving.push(points[i]);moving.push(at(shift+bodyLength));setShape(group,path,moving,true);};
+  const restore=()=>setShape(group,path,geometry(path),true);
   const hit=()=>{tone(false);haptic([35,45,35]);group.classList.add('blocked');blockerGroup?.classList.remove('bumped');blockerGroup?.style?.setProperty?.('--nx',`${dx*3}px`);blockerGroup?.style?.setProperty?.('--ny',`${dy*3}px`);void blockerGroup?.getBoundingClientRect();blockerGroup?.classList.add('bumped');contactFx($('board'),last[0]+dx*reach,last[1]+dy*reach,$('board-viewport'));
     setTimeout(()=>{group.classList.remove('blocked');blockerGroup?.classList.remove('bumped');},520);};
-  const calmNow=globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(calmNow){hit();return;}
+  if(calmNow()){hit();return;}
   const out=Math.min(260,120+gap*28),back=360,start=performance.now(),generation=state.generation;
   group.classList.add('bumping');let struck=false;
   const frame=now=>{
@@ -343,10 +335,10 @@ function bumpAnimation(path,group){
   };
   requestAnimationFrame(frame);
 }
-const tapQueue=[];
+function missFx(){const v=$('board-viewport');v.classList.remove('miss');void v.offsetWidth;v.classList.add('miss');setTimeout(()=>v.classList.remove('miss'),460);}
+function landed(){state.flying--;if(state.flying||state.remaining.length||state.ended)return;if(state.mode==='learn')learnNext();else win();}
 function tapArrow(id){
   if(state.paused||state.ended)return;
-  if(state.busy){if(tapQueue.length<3&&!tapQueue.includes(id))tapQueue.push(id);return;}
   const path=state.remaining.find(p=>p.id===id);if(!path)return;
   const group=$('board').querySelector(`[data-id="${id}"]`);
   const returnToBoard=$('board').contains(document.activeElement);
@@ -355,38 +347,38 @@ function tapArrow(id){
   selectArrow(byTouch?null:id,{fill:!byTouch,announce:!byTouch});
   const check=free(path);
   if(!check.ok){
-    state.lives--;
+    const learning=state.mode==='learn';if(!learning)state.lives--;
+    state.flagged.add(id);group.classList.add('flagged');missFx();
     if(check.reason==='blocked')bumpAnimation(path,group);else{tone(false);haptic([35,45,35]);refuseFor(pc(),$('board'),path,group,check);}
-    message(state.lives?whyBlocked(path,check):'Out of hearts. A fresh start is one tap away.','warning');updateHud();
+    message(learning?'That one is blocked, so it bumps and turns red. Free the arrow in its way first.':state.lives?whyBlocked(path,check):'Out of hearts. A fresh start is one tap away.','warning');updateHud();
+    if(!learning)$('hearts').children[state.lives]?.classList.add('going');
     if(!state.lives){state.ended=true;if(state.mode==='daily')recordDailyResult(saved,activeDailyDate,{won:false,lives:0,elapsed:state.elapsed});updateHud();showFailure();}saveSession();return;
   }
   const partner=partnerOf(path),partnerGroup=partner?$('board').querySelector(`[data-id="${partner.id}"]`):null;
   const opened=gatesOpenedBy([path,partner].filter(Boolean)),unlocked=state.remaining.filter(p=>p.lock===path.id||(partner&&p.lock===partner.id));
-  state.busy=true;state.remaining=state.remaining.filter(p=>p.id!==id&&p.id!==partner?.id);state.history.push(path);if(partner)state.history.push(partner);countArrows(partner?2:1);state.highlighted=null;group.classList.remove('hinted','blocked');tone();haptic(12);clickFx(group,palette[path.color]?.[0]);updateHud();saveSession();
-  message(!state.remaining.length?'Every arrow found its way out.':partner?`${state.identifiers.get(path.id)} and ${state.identifiers.get(partner.id)} left together.`:unlocked.length?`Key used: ${unlocked.map(p=>state.identifiers.get(p.id)).join(', ')} unlocked.`:opened.length?`The ${opened.map(g=>colourNames[g.color]).join(' and ')} gate is open.`:'A little more room to breathe.','success');
-  if(partnerGroup){partnerGroup.classList.remove('hinted','blocked');escapeAnimation(partner,partnerGroup,()=>{});}
-  escapeAnimation(path,group,()=>{
-    state.busy=false;
-    $('arrow-address').value='';
-    selectArrow(null,{announce:false});renderBoard();
-    if(returnToBoard){$('board').setAttribute('tabindex','-1');$('board').focus({preventScroll:true});}
-    setSelectionStatus(`${state.identifiers.get(path.id)} escaped. Type the next arrow’s ID.`);
-    if(returnToCommand&&[document.body,$('fire-button')].includes(document.activeElement))$('arrow-address').focus();
-    updateHud();if(!state.remaining.length)win();
-    const next=tapQueue.shift();if(next!==undefined&&!state.ended)tapArrow(next);
-  });
+  state.remaining=state.remaining.filter(p=>p.id!==id&&p.id!==partner?.id);state.history.push(path);if(partner)state.history.push(partner);if(state.mode!=='learn')countArrows(partner?2:1);state.highlighted=null;tone();haptic(12);
+  // 2.77: the arrow leaves on its own layer, so the board is live at once.
+  for(const [p,g] of [[path,group],[partner,partnerGroup]])if(p&&g){g.classList.remove('hinted','blocked','flagged','selected');g.remove();$('board-fly').append(g);state.flying++;escapeAnimation(p,g,landed);}
+  $('arrow-address').value='';selectArrow(null,{announce:false});renderBoard();
+  if(returnToBoard){$('board').setAttribute('tabindex','-1');$('board').focus({preventScroll:true});}
+  setSelectionStatus(`${state.identifiers.get(path.id)} escaped. Type the next arrow’s ID.`);
+  if(returnToCommand&&[document.body,$('fire-button')].includes(document.activeElement))$('arrow-address').focus();
+  updateHud();saveSession();
+  if(state.mode!=='learn'||!state.remaining.length)message(!state.remaining.length?'Every arrow found its way out.':partner?`${state.identifiers.get(path.id)} and ${state.identifiers.get(partner.id)} left together.`:unlocked.length?`Key used: ${unlocked.map(p=>state.identifiers.get(p.id)).join(', ')} unlocked.`:opened.length?`The ${opened.map(g=>colourNames[g.color]).join(' and ')} gate is open.`:'A little more room to breathe.','success');
 }
+function startLearn(boards,then){learn={boards,then};startLevel(0,'learn');}
+function learnNext(){const next=state.level+1;if(next<learn.boards.length){startLevel(next,'learn');return;}const then=learn.then;learn=null;then();message('That is all there is to it. Here is a real puzzle.','success');}
 let lastPointer='mouse';
 $('board').addEventListener('pointerdown',event=>{lastPointer=event.pointerType||'mouse';});
 $('board').addEventListener('keydown',()=>{lastPointer='keyboard';},true);
 $('board').addEventListener('click',event=>{const group=event.target.closest('[data-id]');if(group)tapArrow(Number(group.dataset.id));});
-$('board').addEventListener('focusin',event=>{const group=event.target.closest('[data-id]');if(group&&!state.busy)selectArrow(Number(group.dataset.id),{fill:true});});
+$('board').addEventListener('focusin',event=>{const group=event.target.closest('[data-id]');if(group)selectArrow(Number(group.dataset.id),{fill:true});});
 $('board').addEventListener('keydown',event=>{
   if(event.isComposing||event.ctrlKey||event.altKey||event.metaKey)return;
   const group=event.target.closest('[data-id]');
   if(['Enter',' ','Escape','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)||/^[a-z0-9]$/i.test(event.key)){
     event.preventDefault();event.stopPropagation();
-    if(state.paused||state.ended||state.busy)return;
+    if(state.paused||state.ended)return;
     if(event.key.startsWith('Arrow'))selectArrow(findDirectionalNeighbor(state.remaining,group?Number(group.dataset.id):null,event.key),{focus:true,fill:true});
     else if(event.key==='Escape'){clearAddress();$('arrow-address').focus();}
     else if(event.key==='Enter'||event.key===' '){if(group&&!event.repeat)tapArrow(Number(group.dataset.id));}
@@ -398,7 +390,7 @@ $('hint-top').onclick=()=>$('hint-button').onclick();
 {const vm=$('view-more');if(vm)vm.onclick=()=>{const bar=document.querySelector('.board-view-controls'),on=bar?.toggleAttribute?.('data-view-open');vm.setAttribute?.('aria-expanded',String(Boolean(on)));};}
 $('grid-button').onclick=()=>{saved.gridMarks=!saved.gridMarks;save();renderBoard();updateHud();message(saved.gridMarks?'Grid markers on.':'Grid markers off.');};
 $('lanes-button').onclick=()=>{saved.lanes=!saved.lanes;save();renderBoard();updateHud();message(saved.lanes?'Exit lanes on: each arrow shows the way it would go.':'Exit lanes off.');};
-$('hint-button').onclick=()=>{if(state.paused||state.ended||state.busy||!state.hints)return;const available=state.remaining.filter(p=>free(p).ok);const fresh=available.find(p=>!hintedIds.has(p.id)),path=fresh||available.find(p=>p.id!==state.highlighted)||available[0];if(path){if(fresh){state.hints--;state.hintsUsed++;hintedIds.add(path.id);}state.highlighted=path.id;renderBoard();$('board').querySelector(`[data-id="${path.id}"]`)?.scrollIntoView?.({block:'nearest',inline:'nearest'});updateHud();message(`The glowing arrow (${state.identifiers.get(path.id)}) can leave: its way out is clear.`,'success');saveSession();}};
+$('hint-button').onclick=()=>{if(state.paused||state.ended||!state.hints)return;const available=state.remaining.filter(p=>free(p).ok);const fresh=available.find(p=>!hintedIds.has(p.id)),path=fresh||available.find(p=>p.id!==state.highlighted)||available[0];if(path){if(fresh){state.hints--;state.hintsUsed++;hintedIds.add(path.id);}state.highlighted=path.id;renderBoard();$('board').querySelector(`[data-id="${path.id}"]`)?.scrollIntoView?.({block:'nearest',inline:'nearest'});updateHud();message(`The glowing arrow (${state.identifiers.get(path.id)}) can leave: its way out is clear.`,'success');saveSession();}};
 $('restart-button').onclick=()=>startLevel();
 let modalReturnFocus, modalBackgroundStates=[];
 function showModal(content,type,center=false){
@@ -425,7 +417,7 @@ function closeModal(){
   modalReturnFocus=null;
   if(previousModal==='settings'&&state.ended&&state.mode==='daily'){if(!state.remaining.length)win();else showFailure();}
 }
-function showPause(){if(state.ended||state.busy)return;showModal(`<div class="modal-symbol">${icon('pause')}</div><span class="eyebrow">TAKE A BREATHER</span><h2 id="modal-title">Right where you left off.</h2><p>Your arrows can wait. Come back when you’re ready to find your flow.</p><button class="primary-button" id="resume">Keep playing</button><button class="secondary-button" id="pause-restart">Restart this puzzle</button>`,'pause',true);$('resume').onclick=closeModal;$('pause-restart').onclick=()=>startLevel();}
+function showPause(){if(state.ended||state.flying)return;showModal(`<div class="modal-symbol">${icon('pause')}</div><span class="eyebrow">TAKE A BREATHER</span><h2 id="modal-title">Right where you left off.</h2><p>Your arrows can wait. Come back when you’re ready to find your flow.</p><button class="primary-button" id="resume">Keep playing</button><button class="secondary-button" id="pause-restart">Restart this puzzle</button>`,'pause',true);$('resume').onclick=closeModal;$('pause-restart').onclick=()=>startLevel();}
 $('pause-button').onclick=showPause;
 function showFailure(){
   state.paused=true;state.modal='failure';updateKeyboardControls();
@@ -436,7 +428,7 @@ function showFailure(){
 function endResult(){if(state.modal!=='win'&&state.modal!=='failure')return;state.modal=null;state.paused=false;updateKeyboardControls();if(state.ended&&!state.remaining.length)$('continue-arrow')?.focus();}
 function win(){
   saveSession();state.ended=true;
-  fxConfetti();playSound('win');haptic([20,60,20,60,40]);
+  playSound('win');haptic([20,60,20,60,40]);
   const previousPoints=dailyStats(saved).points;
   const dailyResult={time:state.elapsed,hearts:state.lives,hints:Math.max(0,3-state.hintsUsed),tier:activeTier,...(state.lifeUsed?{life:true}:{})};
   if(state.mode==='daily'){if(!ziggle()?.helped?.('arrows',activeDailyDate))recordDailyResult(saved,activeDailyDate,{won:true,lives:state.lives,elapsed:state.elapsed});ziggle()?.recordDaily?.('arrows',dailyResult,activeDailyDate);}
@@ -458,6 +450,7 @@ function win(){
   const posts=state.mode==='daily'||(state.mode==='climb'&&state.climb.daily);
   const nextLabel=state.mode==='climb'&&ladder()?`Next: ${ladder().label} →`:state.mode==='daily'?'Next puzzle →':final||state.mode==='tour'?'Explore your puzzles':state.mode==='endless'?'Next endless board →':'Next puzzle →';
   const nextRun=()=>{if(state.mode==='archive')location.href='/play/index.html';else if(state.mode==='climb'&&ladder())startLevel(0,'climb');else if(state.mode==='daily')startPractice();else if(final||state.mode==='tour')showLevels();else startLevel(state.level+1,state.mode);};
+  const generation=state.generation,open=()=>{if(generation!==state.generation)return;fxConfetti();
   $('piece-guide').hidden=true;document.querySelector('.game-panel').hidden=true;$('arrow-result-detail').textContent=`${state.board.paths.length} arrows freed · ${formatTime(state.elapsed)} · ${state.lives} of 3 hearts kept`;$('repeat-arrow').onclick=()=>startLevel();
   $('arrow-completion').hidden=false;$('continue-arrow').textContent=nextLabel;$('continue-arrow').onclick=nextRun;
     state.paused=true;state.modal='win';updateKeyboardControls();
@@ -470,7 +463,9 @@ function win(){
     actions:[{id:'next',label:nextLabel,primary:true,run:nextRun},...(state.mode==='daily'&&ladder()?[{id:'ladder',label:`More of today: ${ladder().label}`,run:()=>startLevel(0,'climb')}]:[]),{id:'again',label:'Play again',run:()=>startLevel()},
       ...(posts?[{id:'share',label:'Share result',keepOpen:true,run:async()=>(await ziggle()?.share?.('arrows',dailyResult,activeDailyDate))||''}]:[]),
       ...(posts&&!state.lifeUsed&&!ziggle()?.kids?.()?[{id:'post',label:'Post to leaderboard',keepOpen:true,run:()=>{postScore(dailyResult,document.querySelector('dialog.level-end .le-status'));}}]:[])],
-    onDismiss:()=>{},focus:()=>$('continue-arrow')}).then(endResult);
+    onDismiss:()=>{},focus:()=>$('continue-arrow')}).then(endResult);};
+  // 2.77: dots ripple out, then the usual popup.
+  if(calmNow())open();else{import('./arrow-extras.js').then(m=>m.ripple($('board-fly'),state.board)).catch(()=>{});setTimeout(open,950);}
 }
 function showLevels(){
   showModal(`<span class="eyebrow">ONE PUZZLE AT A TIME</span><h2 id="modal-title">Your little escapes.</h2><p>Clear a board to open the next. There’s no rush.</p><div class="level-grid">${LEVELS.map((level,i)=>`<button class="level-cell${i===state.level&&state.mode==='levels'?' current':''}${saved.completed.includes(i)?' completed':''}" data-level="${i}" data-tip="${level.name}: a ${level.size} × ${level.size} ${level.shape} board. ${i<4?'Easy does it: the gentlest tangles.':i<8?'Find your flow: a bigger board, longer chains.':'Take your time: the biggest boards and the longest chains.'}" ${i>saved.unlocked?'disabled':''} aria-label="Level ${i+1}, ${level.name}${i>saved.unlocked?', locked':''}">${String(i+1).padStart(2,'0')}<small>${saved.completed.includes(i)?'Cleared ✓':i>saved.unlocked?'Locked':level.shape}</small></button>`).join('')}</div><p class="modal-note">${saved.completed.length} of 12 puzzles completed</p><h3 class="levels-subtitle">World Tour</h3><p class="modal-note">Boards shaped after famous city landmarks. Open from the start.</p><div class="level-grid tour-grid">${WORLD_TOUR.map(stop=>`<button class="level-cell${(saved.tour||[]).includes(stop.id)?' completed':''}" data-tour="${stop.id}" aria-label="World Tour, ${stop.place}${(saved.tour||[]).includes(stop.id)?', cleared':''}">${stop.name}<small>${(saved.tour||[]).includes(stop.id)?'Cleared ✓':stop.place.split(', ')[1]}</small></button>`).join('')}</div><h3 class="levels-subtitle">Endless practice</h3><p class="modal-note">${saved.completed.length===12?`Fresh boards forever. Best: board ${saved.endless||0}.`:'Clear all twelve puzzles to unlock fresh boards forever.'}</p><button class="secondary-button" id="start-endless" ${saved.completed.length===12?'':'disabled'}>${saved.endless?`Continue at board ${saved.endless+1}`:'Start endless practice'}</button>`,'levels');
@@ -482,9 +477,9 @@ $('levels-button').onclick=showLevels;
 function showThemes(){
   saveSession();
   const choices=[['gradient','Gradient arrows','Soft colors. Clear directions.'],['border','Gradient borders','A lighter line through the maze.'],['snakes','Snakes','A playful twist on every turn.']];
-  showModal(`<span class="eyebrow">MAKE IT YOUR KIND OF CALM</span><h2 id="modal-title">A change of scenery.</h2><p>Same puzzle. A fresh way to see it.</p><div class="theme-options">${choices.map(([id,title,description])=>`<button class="theme-option${saved.theme===id?' active':''}" data-theme="${id}" aria-pressed="${saved.theme===id}"><span class="theme-preview"><svg viewBox="0 0 40 40"><path d="M6 32V10h14v21h14V10m-5 5 5-5 5 5" style="stroke-width:${id==='snakes'?5:id==='border'?4:2.5}"/>${id==='border'?'<path d="M6 32V10h14v21h14V10" style="stroke:#ffffff;stroke-width:1.5"/>':''}</svg></span><span><strong>${title}</strong><small>${description}</small></span>${saved.theme===id?`<span class="theme-check">${icon('check')}</span>`:''}</button>`).join('')}</div><div class="setting-row"><span>Soft sound effects</span><button id="sound-toggle" class="toggle${soundOn()?' on':''}" role="switch" aria-checked="${soundOn()}" aria-label="Sound effects"></button></div>${backupMarkup()}<p class="modal-note">Ziggle · Your happy little brain break.<br>Made for small moments of play.</p>`,'settings');
+  showModal(`<span class="eyebrow">MAKE IT YOUR KIND OF CALM</span><h2 id="modal-title">A change of scenery.</h2><p>Same puzzle. A fresh way to see it.</p><div class="theme-options">${choices.map(([id,title,description])=>`<button class="theme-option${saved.theme===id?' active':''}" data-theme="${id}" aria-pressed="${saved.theme===id}"><span class="theme-preview"><svg viewBox="0 0 40 40"><path d="M6 32V10h14v21h14V10m-5 5 5-5 5 5" style="stroke-width:${id==='snakes'?5:id==='border'?4:2.5}"/>${id==='border'?'<path d="M6 32V10h14v21h14V10" style="stroke:#ffffff;stroke-width:1.5"/>':''}</svg></span><span><strong>${title}</strong><small>${description}</small></span>${saved.theme===id?`<span class="theme-check">${icon('check')}</span>`:''}</button>`).join('')}</div><div class="setting-row"><span>Soft sound effects</span><button id="sound-toggle" class="toggle${soundOn()?' on':''}" role="switch" aria-checked="${soundOn()}" aria-label="Sound effects"></button></div><div id="backup-slot"></div><p class="modal-note">Ziggle · Your happy little brain break.<br>Made for small moments of play.</p>`,'settings');
   document.querySelectorAll('[data-theme]').forEach(el=>el.onclick=()=>{saved.theme=el.dataset.theme;save();renderBoard();showThemes();});
-  attachBackupControls({getSaved:()=>saved,setSaved:value=>{saved=value;},save,onRestore:()=>{if(state.mode==='daily')restoreSession(saved.activeDaily);state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,'numbers');$('arrow-address').value='';$('timer').textContent=formatTime(state.elapsed);renderBoard();updateHud();updateDailyStats();showThemes();}});
+  withBackup(b=>{const slot=$('backup-slot');if(!slot)return;slot.innerHTML=b.backupMarkup();b.attachBackupControls({getSaved:()=>saved,setSaved:value=>{saved=value;},save,onRestore:()=>{if(state.mode==='daily')restoreSession(saved.activeDaily);state.selected=null;state.identifiers=createIdentifiers(state.board.paths,state.board.size,'numbers');$('arrow-address').value='';$('timer').textContent=formatTime(state.elapsed);renderBoard();updateHud();updateDailyStats();showThemes();}});});
   $('sound-toggle').onclick=()=>{const on=!soundOn();setSound(on);$('sound-toggle').classList.toggle('on',on);$('sound-toggle').setAttribute('aria-checked',on);if(on)playSound('pop');};
 }
 $('settings-button').onclick=showThemes;$('theme-button').onclick=showThemes;$('save-status').onclick=showThemes;
@@ -500,8 +495,8 @@ $('trophies-button').onclick=()=>showModal(`<span class="eyebrow">LITTLE WINS, W
 const isToday=()=>state.mode==='daily'||(state.mode==='climb'&&Boolean(state.climb?.daily));
 function startPractice(){const p=practiceStart(saved,LEVELS.length);startLevel(p.level,p.mode,p.resume);}
 function syncModeSwitch(){$('mode-daily')?.setAttribute('aria-pressed',String(isToday()));$('mode-practice')?.setAttribute('aria-pressed',String(!isToday()));}
-$('mode-daily')&&($('mode-daily').onclick=()=>{if(isToday()||state.busy)return;startLevel(8,'daily',!saved.daily.includes(dateKey()));});
-$('mode-practice')&&($('mode-practice').onclick=()=>{if(!isToday()||state.busy)return;startPractice();});
+$('mode-daily')&&($('mode-daily').onclick=()=>{if(isToday())return;startLevel(8,'daily',!saved.daily.includes(dateKey()));});
+$('mode-practice')&&($('mode-practice').onclick=()=>{if(!isToday())return;startPractice();});
 function showDaily(){
   const complete=saved.daily.includes(dateKey()),stats=dailyStats(saved);
   showModal(`<div class="modal-symbol">${icon('calendar')}</div><span class="eyebrow">ONE DAY. ONE FRESH PUZZLE.</span><h2 id="modal-title">Your daily escape.</h2><div class="daily-date">${new Date().toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</div><p>${complete?'Today is complete. Play again for fun, or return tomorrow to grow your streak.':'The same puzzle for everyone today. A fresh challenge at your local midnight, no account needed.'}</p><div class="stats-row"><div><strong>${stats.currentStreak}</strong><small>current streak</small></div><div><strong>${stats.bestStreak}</strong><small>best streak</small></div><div><strong>${stats.points}</strong><small>total points</small></div></div><button class="primary-button" id="start-daily">${complete?'Replay today’s puzzle':'Continue daily challenge'}</button><p class="modal-note">Earn 100 points + 25 per remaining heart on your first daily win. Replays never add points.</p><button data-grownups class="secondary-button" id="daily-email">Email me the daily challenge · optional</button>`,'daily',true);
@@ -555,16 +550,17 @@ document.addEventListener('keydown',event=>{
   if(event.repeat&&['Enter',' ','Escape','p','P','/'].includes(event.key)){event.preventDefault();return;}
   const editing=event.target.closest('input,textarea,select,[contenteditable="true"]');
   if(event.key==='Escape'&&(state.modal||!editing)&&!['win','failure'].includes(state.modal)){event.preventDefault();if(state.modal)closeModal();else{clearAddress();selectArrow(null,{announce:false});}}
-  if(event.key==='/'&&!editing&&!state.modal&&!state.ended&&!state.busy){event.preventDefault();$('arrow-address').focus();$('arrow-address').select();}
+  if(event.key==='/'&&!editing&&!state.modal&&!state.ended){event.preventDefault();$('arrow-address').focus();$('arrow-address').select();}
   if(event.key.toLowerCase()==='p'&&!editing&&!state.modal&&!state.ended)showPause();
   if(event.key==='Tab'&&state.modal){const buttons=[...$('modal-root').querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),a[href]')].filter(el=>!el.hidden),first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
 });
 setInterval(()=>{updateDayNotice();if(!state.paused&&!state.ended&&!document.hidden){state.elapsed++;$('timer').textContent=formatTime(state.elapsed);if(state.elapsed%5===0)saveSession();}},1000);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&!state.ended&&!state.busy&&!state.modal)showPause();saveSession();updateDayNotice();});
-window.addEventListener('pagehide',()=>{if(!state.ended&&!state.busy&&!state.modal)showPause();saveSession();});
-{ const menu=menuResume();
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&!state.ended&&!state.modal)showPause();saveSession();updateDayNotice();});
+window.addEventListener('pagehide',()=>{if(!state.ended&&!state.modal)showPause();saveSession();});
+function boot(){ const menu=menuResume();
   if(menu&&!archiveDate)startPractice();
   else if(!archiveDate&&ladder()&&ziggle()?.profile?.().days?.[dateKey()]?.arrows&&saved.activeDaily?.date!==dateKey())startLevel(0,'climb');else startLevel(8,archiveDate?'archive':'daily',true);
 }
+boot();
 
-attachArrowHelp({ state, $, updateHud, saveSession, date: () => activeDailyDate });
+attachArrowHelp({ state, $, updateHud, saveSession, date: () => activeDailyDate, isNew: () => !archiveDate && !saved.completed.length && !saved.daily.length && !state.history.length && !saved.activeLevel && !saved.collected?.before && !Object.keys(saved.collected?.days || {}).length, learn: boards => startLearn(boards, boot) });

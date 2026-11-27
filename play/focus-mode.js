@@ -22,8 +22,11 @@ if (bar) {
   let leftFullScreen = false;
   // Less on screen while you play (2.61): maximised, the level and puzzle pickers and the daily route move into More (the drawer), and come
   // back when the header is shown again. They are moved, not copied, so every button keeps working.
-  const STOW = '.word-shell .puzzle-settings,.sudoku-main .puzzle-controls,#daily-route';
+  // 2.77: Arrow Escape keeps only hearts, Paths and Hint by the board; its level picker, Restart, Style, Fit and Grid wait under More.
+  const STOW = '.word-shell .puzzle-settings,.sudoku-main .puzzle-controls,#daily-route,.game-shell .game-heading,.game-shell .board-zoom-controls,.game-shell #grid-button,.game-shell .game-panel>.tools';
   const homes = new Map();
+  // Arrow Escape's phone layout is only needed here, so its stylesheet loads with this script (same site, no inline styles).
+  if (document.getElementById('board-viewport')) { const sheet = document.createElement('link'); sheet.rel = 'stylesheet'; sheet.href = '/play/arrow-phone.css'; document.head.append(sheet); }
   const stow = on => {
     const drawer = document.getElementById('game-drawer'), head = drawer?.querySelector('.drawer-head');
     if (!head) return;

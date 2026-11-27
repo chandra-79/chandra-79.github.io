@@ -6,7 +6,7 @@ export const PROMOS = [
   { href: '/play/weaver.html', title: 'Word Cloud', line: 'Flip the clue clouds and type the hidden word.', art: '☁️', go: 'Play' },
   { href: '/play/lock.html', title: 'Letter Lock', line: 'Crack today’s five-letter lock in six tries.', art: '🔐', go: 'Play' },
   { href: '/play/index.html', title: 'Arrow escape', line: 'Send every arrow out the way it points.', art: '➡️', go: 'Play' },
-  { href: '/play/twists.html', title: 'Arrow Twists', line: 'Two-headed arrows, one-way tiles and colour gates.', art: '🔀', go: 'Play' },
+  { href: '/play/twists.html', title: 'Arrow Escape: Twist boards', line: 'Two-headed arrows, one-way tiles and colour gates.', art: '🔀', go: 'Play' },
   { href: '/play/memory.html', title: 'Memory Mischief', line: 'Six friends, a sneaky shuffle. Who went where?', art: '✨', go: 'Play' },
   { href: '/play/sudoku.html', title: 'Sudoku', line: 'Classic, Addoku, diagonal, mini and even-or-odd.', art: '🔢', go: 'Play' },
   { href: '/play/sums.html', title: 'Sum Spark', line: 'Chain number tiles to hit today’s three targets.', art: '➕', go: 'Play' },

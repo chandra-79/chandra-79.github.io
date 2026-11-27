@@ -1,7 +1,8 @@
 // Arrow Escape click effects (2.29.1): one soft ring that grows from a point, where the arrow was clicked or reached the edge.
 // (The screen-edge flash, board pulse, afterimages and glow of 2.27.5 were too much and are gone.) Nothing here runs with Calmer motion or reduced motion.
 const calm = () => globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-export const escapeDuration = bodyLength => Math.round(Math.min(1100, 720 + bodyLength * 0.5) * 1.7);
+// 2.77: an arrow leaves at one steady speed (no slow start), quick enough that a tap never feels like a wait. travel and step are in board units (the board is 530 across).
+export const escapeDuration = (travel, step) => Math.round(Math.max(180, Math.min(1400, travel / Math.max(step * 24, 430) * 1000)));
 export function ringFx(x, y, color = '#f57863', size = 100, delay = 0) {
   if (calm()) return;
   const layer = document.createElement('div');
