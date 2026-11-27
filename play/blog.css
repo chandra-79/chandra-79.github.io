@@ -182,3 +182,7 @@ ul.try-links li{margin:0}
 @media(width<=560px){.blog-hello{grid-template-columns:1fr auto;padding:16px}.blog-hello-mark{display:none}.blog-hello h2{font-size:21px}}
 @media print{.blog-hello{display:none}}
 @media(width<=560px){.blog-hello-games{gap:6px}.blog-hello-games img{width:30px;height:30px;border-radius:8px}.blog-hello-actions>*{flex:1;justify-content:center;padding:8px 10px;white-space:nowrap}.blog-hello-words>p:not(.blog-hello-kicker){font-size:15px}}
+/* 2.73: a wide table scrolls inside its own frame instead of pushing the page sideways (folded phones, split screens) */
+.post-body figure:has(>table.data){overflow-x:auto}
+@media(width<=400px){table.data{font-size:14px}table.data th,table.data td{padding:6px}}
+@media(width<=340px){.blog-hello{padding:12px;gap:8px}.blog-hello-words{min-width:0}.blog-hello-actions>*{white-space:normal}}

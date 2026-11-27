@@ -1,0 +1,14 @@
+@media (min-width:1100px) and (hover:hover) and (pointer:fine){
+html body .collection-layout:has(>.words-sidebar){grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+html body .words-sidebar{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;align-self:start}
+html body .words-sidebar :is(.clue-item,.clue-button){font-size:17px;line-height:1.45;padding:11px 10px;gap:10px}
+html body .words-sidebar .clue-number{font-size:16px;min-width:22px}
+html body .words-sidebar .clue-group h3{font-size:14px;margin-bottom:8px}
+html body .words-sidebar .word-item{font-size:17px;padding:10px 12px}
+html body .words-sidebar :is(#word-list-subtitle,#direction-note){font-size:15px;line-height:1.5}
+html body .words-sidebar .word-list-heading h2{font-size:20px}
+html body .words-sidebar .word-list-heading>span{font-size:14px}
+html body .active-clue{font-size:19px;line-height:1.45;font-weight:700;margin:0 0 14px;padding:14px 16px}
+html body :is(.play-instructions,#play-instructions,#type-hint,#mm-message,#keyboard-note){font-size:15px;line-height:1.5}
+}
+html[data-game-active] body>main.has-ad-rail{grid-template-columns:minmax(0,1fr)!important;column-gap:0!important}
