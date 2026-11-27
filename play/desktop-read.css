@@ -25,3 +25,6 @@ html:not([data-look=contrast])[data-appearance=dark]{--relief-light:#ffffff24;--
 html :is(button,.header-button,.nav-link,.home-cta,.primary-action,.tool-button,.bar-link,:where(.nav-group,.collection-menu)>summary):where(:not(.buddy,.cloud-face,.cell,.letter-cell,.crossword-cell,[role=switch],.level-picker,.activity *)){box-shadow:var(--key)}
 html:not([data-look=contrast]) body :is(.game-bar,.settings-group){box-shadow:var(--relief-raised)}
 html body .game-bar :is(.mode-switch,.daily-levels) button:not([aria-pressed=true]){box-shadow:none}
+.game-bar .mode-switch[data-three]{grid-template-columns:auto auto auto}
+@media (orientation:portrait){html[data-play-focus] body .game-bar .mode-switch[data-three] button{flex:1;max-width:none!important}}
+@media (width<=650px){html body .game-bar:has(.mode-switch[data-three]){flex-wrap:wrap}html:not([data-focused]) body .game-bar .mode-switch[data-three]{order:9;flex:1 0 100%;display:flex;min-width:0}html:not([data-focused]) body .game-bar .mode-switch[data-three] button{flex:1;min-width:0;padding:4px 6px}}

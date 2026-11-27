@@ -37,7 +37,7 @@ const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = icon(el.dataset.icon));
 const palette = [['#9861d4','#7542ba'],['#e59a43','#ca752f'],['#47ad8c','#27856b'],['#4aa5d1','#397eaf'],['#df739b','#bd5084'],['#b5a342','#95832b'],['#7770d3','#5d54b2']];
 const calmNow=()=>globalThis.Ziggle?.calm?.() ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
-const arrowW=()=>Math.max(3.6,Math.min(11,124/state.board.size)),boardWord=n=>n<35?'Gentle':n<65?'Steady':n<110?'Tricky':'Fiendish';
+const arrowW=()=>Math.max(2.4,Math.min(9,88/state.board.size)),boardWord=n=>n<35?'Gentle':n<65?'Steady':n<110?'Tricky':'Fiendish';
 let learn=null;
 const free=path=>canLeave(state.board,state.remaining,path);
 const pc=()=>({board:state.board,remaining:state.remaining,identifiers:state.identifiers,palette});
@@ -100,7 +100,7 @@ function restoreSession(session){
   return true;
 }
 function startLevel(level=state.level, mode=state.mode, resume=false, tour=state.tour) {
-  $('arrow-completion').hidden=true;document.querySelector('.game-panel').hidden=false;
+  $('arrow-completion').hidden=true;$('board').inert=false;
   if(state.board&&(state.mode==='daily'||isPractice(state.mode)))saveSession();
   $('board-fly').innerHTML='';state.flying=0;state.flagged.clear();state.generation++;state.level=level;state.mode=mode;state.tour=mode==='tour'?tour:null;
   if(mode==='daily'){activeDailyDate=dateKey();activeTier=resume&&saved.activeDaily?.date===activeDailyDate?inferDailyTier(saved.activeDaily,ziggle()?.tier?.('arrows',activeDailyDate)||'medium'):(ziggle()?.tier?.('arrows',activeDailyDate)||'medium');}
@@ -160,14 +160,14 @@ function geometry(path) {
 const lineD=points=>points.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
 const inkD=(points,[dx,dy])=>{const k=(saved.theme==='snakes'?1.25:1)*arrowW(),end=points.at(-1),before=points.at(-2)||end,room=Math.hypot(end[0]-before[0],end[1]-before[1]),cut=Math.min(k,room*.5);return lineD([...points.slice(0,-1),[end[0]-dx*cut,end[1]-dy*cut]]);};
 function headD(point,direction) {
-  const [x,y]=point,[dx,dy]=direction,k=arrowW()/4,w=5.6*k,h=6.3*k;
+  const [x,y]=point,[dx,dy]=direction,w=Math.min(1.4*arrowW(),124/state.board.size),h=w*1.12;
   return `M${x-dx*h+dy*w},${y-dy*h-dx*w} L${x},${y} L${x-dx*h-dy*w},${y-dy*h+dx*w}`;
 }
 function setShape(group,path,points,hit){const d=lineD(points),ink=inkD(points,path.direction),head=headD(points.at(-1),path.direction);group.querySelectorAll(hit?'.arrow-selection,.arrow-hit':'.arrow-selection').forEach(el=>el.setAttribute('d',d));group.querySelectorAll('.arrow-ink,.arrow-inner').forEach(el=>el.setAttribute('d',ink));group.querySelector('.arrow-head').setAttribute('d',head);group.querySelector('.arrow-shade')?.setAttribute('d',`${ink} ${head}`);}
 function renderBoard() {
   const board=$('board'),focusedId=board.contains(document.activeElement)?Number(document.activeElement.dataset.id):null;
   board.className.baseVal=`theme-${saved.theme}${saved.showLabels&&canShowArrowIds()?' show-labels':''}`;$('board-fly').className.baseVal=`theme-${saved.theme}`;
-  const aw=arrowW(),lift=(aw*.32).toFixed(2);for(const el of [board,$('board-fly')])el.style.setProperty?.('--aw',`${aw.toFixed(2)}px`);
+  const aw=arrowW(),lift=(aw*.26).toFixed(2);for(const el of [board,$('board-fly')])el.style.setProperty?.('--aw',`${aw.toFixed(2)}px`);
   for(const id of state.flagged){const p=state.remaining.find(p=>p.id===id);if(!p||free(p).ok)state.flagged.delete(id);}
   const defs=state.board.paths.map(path=>{const p=geometry(path),[a,b]=palette[path.color];return `<linearGradient id="color-${path.id}" gradientUnits="userSpaceOnUse" x1="${p[0][0]}" y1="${p[0][1]}" x2="${p.at(-1)[0]+.1}" y2="${p.at(-1)[1]+.1}"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;}).join('');
   const step=460/state.board.size,offset=(600-step*(state.board.size-1))/2;
@@ -348,7 +348,7 @@ function tapArrow(id){
   const check=free(path);
   if(!check.ok){
     const learning=state.mode==='learn';if(!learning)state.lives--;
-    state.flagged.add(id);group.classList.add('flagged');missFx();
+    state.flagged.add(id);group.classList.add('flagged');missFx();$('arrow-address').value='';if(returnToCommand)$('arrow-address').focus();
     if(check.reason==='blocked')bumpAnimation(path,group);else{tone(false);haptic([35,45,35]);refuseFor(pc(),$('board'),path,group,check);}
     message(learning?'That one is blocked, so it bumps and turns red. Free the arrow in its way first.':state.lives?whyBlocked(path,check):'Out of hearts. A fresh start is one tap away.','warning');updateHud();
     if(!learning)$('hearts').children[state.lives]?.classList.add('going');
@@ -357,7 +357,6 @@ function tapArrow(id){
   const partner=partnerOf(path),partnerGroup=partner?$('board').querySelector(`[data-id="${partner.id}"]`):null;
   const opened=gatesOpenedBy([path,partner].filter(Boolean)),unlocked=state.remaining.filter(p=>p.lock===path.id||(partner&&p.lock===partner.id));
   state.remaining=state.remaining.filter(p=>p.id!==id&&p.id!==partner?.id);state.history.push(path);if(partner)state.history.push(partner);if(state.mode!=='learn')countArrows(partner?2:1);state.highlighted=null;tone();haptic(12);
-  // 2.77: the arrow leaves on its own layer, so the board is live at once.
   for(const [p,g] of [[path,group],[partner,partnerGroup]])if(p&&g){g.classList.remove('hinted','blocked','flagged','selected');g.remove();$('board-fly').append(g);state.flying++;escapeAnimation(p,g,landed);}
   $('arrow-address').value='';selectArrow(null,{announce:false});renderBoard();
   if(returnToBoard){$('board').setAttribute('tabindex','-1');$('board').focus({preventScroll:true});}
@@ -451,7 +450,7 @@ function win(){
   const nextLabel=state.mode==='climb'&&ladder()?`Next: ${ladder().label} →`:state.mode==='daily'?'Next puzzle →':final||state.mode==='tour'?'Explore your puzzles':state.mode==='endless'?'Next endless board →':'Next puzzle →';
   const nextRun=()=>{if(state.mode==='archive')location.href='/play/index.html';else if(state.mode==='climb'&&ladder())startLevel(0,'climb');else if(state.mode==='daily')startPractice();else if(final||state.mode==='tour')showLevels();else startLevel(state.level+1,state.mode);};
   const generation=state.generation,open=()=>{if(generation!==state.generation)return;fxConfetti();
-  $('piece-guide').hidden=true;document.querySelector('.game-panel').hidden=true;$('arrow-result-detail').textContent=`${state.board.paths.length} arrows freed · ${formatTime(state.elapsed)} · ${state.lives} of 3 hearts kept`;$('repeat-arrow').onclick=()=>startLevel();
+  $('piece-guide').hidden=true;{const k=state.remaining;state.remaining=state.board.paths;renderBoard();state.remaining=k;$('board').inert=true;}$('arrow-result-detail').textContent=`${state.board.paths.length} arrows freed · ${formatTime(state.elapsed)} · ${state.lives} of 3 hearts kept`;$('repeat-arrow').onclick=()=>startLevel();
   $('arrow-completion').hidden=false;$('continue-arrow').textContent=nextLabel;$('continue-arrow').onclick=nextRun;
     state.paused=true;state.modal='win';updateKeyboardControls();
   showLevelEnd({outcome:'win',symbol:'✦',
@@ -464,7 +463,7 @@ function win(){
       ...(posts?[{id:'share',label:'Share result',keepOpen:true,run:async()=>(await ziggle()?.share?.('arrows',dailyResult,activeDailyDate))||''}]:[]),
       ...(posts&&!state.lifeUsed&&!ziggle()?.kids?.()?[{id:'post',label:'Post to leaderboard',keepOpen:true,run:()=>{postScore(dailyResult,document.querySelector('dialog.level-end .le-status'));}}]:[])],
     onDismiss:()=>{},focus:()=>$('continue-arrow')}).then(endResult);};
-  // 2.77: dots ripple out, then the usual popup.
+  // Ripple, then the popup.
   if(calmNow())open();else{import('./arrow-extras.js').then(m=>m.ripple($('board-fly'),state.board)).catch(()=>{});setTimeout(open,950);}
 }
 function showLevels(){

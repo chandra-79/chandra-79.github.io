@@ -42,16 +42,18 @@ if (bar) {
     on = on && compact.matches; mark.style.display = on ? 'flex' : 'none';
     // One standard bar on every game: logo, then the title (or the Today / Practice switch), then the corner button, Help and More, on a single row.
     const put = (el, rules) => { for (const [key, value] of Object.entries(rules)) { if (on && value) el.style.setProperty(key, value, 'important'); else el.style.removeProperty(key); } };
-    put(bar, { display: 'flex', 'flex-wrap': 'nowrap', 'align-items': 'center', gap: tight ? '2px' : '6px', padding: sideways.matches ? '0 8px' : tight ? '5px 3px' : '5px 8px', 'min-height': sideways.matches ? '44px' : '56px', height: sideways.matches ? 'auto' : '', 'margin-bottom': sideways.matches ? '4px' : '', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
+    // Arrow Escape's three-way switch (Today, Practice, Twists) takes a row of its own on an upright phone, so the labels never squeeze.
+    const three = !sideways.matches && !!bar.querySelector('.mode-switch[data-three]');
+    put(bar, { display: 'flex', 'flex-wrap': three ? 'wrap' : 'nowrap', 'align-items': 'center', gap: tight ? '2px' : '6px', padding: sideways.matches ? '0 8px' : tight ? '5px 3px' : '5px 8px', 'min-height': sideways.matches ? '44px' : '56px', height: sideways.matches || three ? 'auto' : '', 'max-height': three ? 'none' : '', 'margin-bottom': sideways.matches ? '4px' : '', 'max-width': '100%', 'box-sizing': 'border-box', overflow: 'hidden' });
     for (const el of bar.children) {
       if (el === mark) put(el, { flex: 'none', margin: tight ? '0' : '0 2px 0 0' });
       else if (el.matches('.focus-toggle,.assist-open,.drawer-button')) put(el, { flex: 'none', margin: '0', width: 'auto', height: '44px', 'min-height': '44px', 'min-width': 'max-content', padding: tight ? '0 3px' : innerWidth <= 340 ? '0 6px' : '0 12px', 'font-size': '14px', 'box-sizing': 'border-box' });
-      else if (el.matches('.mode-switch')) put(el, { flex: '0 1 auto', 'min-width': '0', margin: '0 auto 0 0' }); // 2.59: its own width, not stretched across the bar (Arrow Escape)
+      else if (el.matches('.mode-switch')) put(el, three ? { flex: '1 0 100%', order: '9', 'min-width': '0', margin: '0' } : { flex: '0 1 auto', order: '', 'min-width': '0', margin: '0 auto 0 0' }); // 2.59: its own width, not stretched across the bar (Arrow Escape)
       else if (el.matches('h1')) put(el, { flex: '1 1 0', 'min-width': '0', margin: '0' });
     }
     // With the logo in the bar the title gives way: it shortens with … , and it is left to screen readers when the bar also holds the Today / Practice
     // switch (the row would be too crowded on a phone). The game's name is still the page's h1.
-    const title = bar.querySelector('h1'), crowded = [...bar.querySelectorAll('.mode-switch,[data-url-switch]')].some(el => el.getClientRects().length); // a hidden switch (the daily route) leaves room for the name
+    const title = bar.querySelector('h1'), crowded = !three && [...bar.querySelectorAll('.mode-switch,[data-url-switch]')].some(el => el.getClientRects().length); // a hidden switch (the daily route) leaves room for the name
     if (title) { const look = !on ? {} : crowded ? { position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)', 'white-space': 'nowrap' } : { overflow: 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap', 'min-width': '0', flex: '1 1 0' };
       for (const key of ['position', 'width', 'height', 'overflow', 'clip', 'white-space', 'text-overflow', 'min-width', 'flex']) { if (key in look) title.style.setProperty(key, look[key], 'important'); else title.style.removeProperty(key); } } // "important": the compact title-bar rules are
     for (const el of hidden()) el.style.setProperty('display', on ? 'none' : '', on ? 'important' : '');

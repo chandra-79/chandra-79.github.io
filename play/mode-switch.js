@@ -11,3 +11,5 @@ if (box) {
   today.addEventListener('click', () => { if (!onToday()) go(true); });
   practice.addEventListener('click', () => { if (onToday() || now().searchParams.has('date')) go(false); });
 }
+// Arrow Escape's third choice (2.78): Today, Practice and Twists share one switch across its two pages; a button with data-go opens that page.
+for (const button of document.querySelectorAll('.game-bar .mode-switch [data-go]')) button.addEventListener('click', () => location.assign(button.dataset.go));
