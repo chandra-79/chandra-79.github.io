@@ -17,7 +17,7 @@ if (bar) {
   button.type = 'button'; button.className = 'drawer-button focus-toggle'; button.style.minWidth = '44px'; button.style.padding = '0 10px';
   // The Ziggle logo stays on screen while the header is away: a small link at the start of the title bar.
   const mark = document.createElement('a'), logo = document.createElement('img');
-  mark.href = '/'; mark.className = 'bar-brand'; mark.setAttribute('aria-label', 'Ziggle home'); logo.src = '/play/logo.svg'; logo.alt = ''; logo.width = logo.height = 30; mark.append(logo);
+  mark.href = '/'; mark.className = 'bar-brand'; mark.setAttribute('aria-label', 'Ziggle home'); logo.src = '/play/art/still/ziggle.svg'; logo.alt = ''; logo.width = logo.height = 38; mark.append(logo);
   Object.assign(mark.style, { display: 'none', flex: 'none', alignItems: 'center', marginRight: '8px' }); bar.prepend(mark);
   let leftFullScreen = false;
   // Less on screen while you play (2.61): maximised, the level and puzzle pickers and the daily route move into More (the drawer), and come

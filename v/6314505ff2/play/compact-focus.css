@@ -1,6 +1,6 @@
 html[data-play-focus]{--header-h:48px!important;--shell-pad:max(10px,var(--inline-safe))!important}
 html[data-play-focus] body .collection-header{height:48px!important;min-height:48px!important;box-shadow:0 3px 0 var(--relief-edge)!important;gap:4px!important;padding:4px var(--shell-pad)!important}
-html[data-play-focus] .collection-header .brand-symbol{width:30px!important;height:30px!important}
+html[data-play-focus] .collection-header .brand-symbol{width:38px!important;height:38px!important}
 html[data-play-focus] .collection-header .brand>span{display:none!important}
 html[data-play-focus] .collection-header .collection-nav{flex:1!important;gap:3px!important;width:auto!important;height:40px!important;margin:0!important;padding:0!important;position:static!important}
 html[data-play-focus] .collection-header :is(.header-button,.collection-menu>summary,.nav-group>summary,.nav-link){height:var(--tap,36px)!important;min-height:var(--tap,36px)!important;padding:0 5px!important;font-size:13px!important}

@@ -36,7 +36,7 @@
 .streak-row strong{color:var(--accent);font-size:22px;font-weight:800;display:block}
 .streak-row small{color:var(--muted);font-size:12px;line-height:1.3;display:block}
 .today-note{color:var(--muted);margin:12px 0 0;font-size:13px;line-height:1.45}
-.home-section-title{letter-spacing:-.6px;margin:0 0 16px;font-size:22px;font-weight:700}
+.home-section-title{letter-spacing:var(--ls,-.6px);margin:0 0 16px;font-size:22px;font-weight:700}
 .game-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;display:grid}
 .game-card{border:1px solid var(--stroke);background:var(--surface);height:100%;box-shadow:0 4px 0 var(--stroke);border-radius:22px;flex-direction:column;gap:6px;padding:16px 16px 14px;transition:transform .14s,box-shadow .14s,border-color .14s;display:flex}
 .game-card:hover{box-shadow:0 7px 0 var(--stroke);border-color:var(--accent);transform:translateY(-3px)}
@@ -252,7 +252,7 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 #ziggle-home .home-band+.ad-slot,#ziggle-home .ad-slot+.home-band{margin-top:0}
 #ziggle-home .section-kicker{letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);align-items:center;gap:10px;margin:0 0 6px;font-size:12px;font-weight:800;display:flex}
 #ziggle-home .section-kicker:after{content:"";opacity:.6;background:currentColor;border-radius:2px;flex:0 0 36px;height:2px}
-#ziggle-home .home-band .home-section-title{letter-spacing:-.7px;font-size:clamp(22px,2.4vw,28px)}
+#ziggle-home .home-band .home-section-title{letter-spacing:var(--ls,-.7px);font-size:clamp(22px,2.4vw,28px)}
 #ziggle-home .band-games{padding-top:34px}
 #ziggle-home .band-training{--band:var(--surface-soft)}
 #ziggle-home .band-training .training-grid{gap:12px}
@@ -361,7 +361,7 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .today-ring{display:contents}
 .today-dot,.today-key{display:none}
 .streak-row{justify-content:space-between;align-items:center;gap:6px;display:flex}
-.stat{text-align:center;flex:1 1 0;grid-auto-flow:column;justify-content:center;align-items:center;gap:7px;min-width:0;display:grid}
+.stat{text-align:center;white-space:nowrap;flex:1 1 auto;grid-auto-flow:column;justify-content:center;align-items:center;gap:7px;min-width:0;display:grid}
 .stat small{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
 .stat[hidden]{display:none}
 .stat .stat-icon{color:var(--accent)}
@@ -454,3 +454,31 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 }
 :root[data-motion=calm] .today-list.afloat .today-art,:root[data-motion=calm] .today-list.afloat a.done.done .today-ring:before,:root[data-motion=calm] .today-list a.just-done .today-check{animation:none}
 @media (prefers-reduced-motion:reduce){.today-list.afloat .today-art,.today-list.afloat a.done.done .today-ring:before,.today-list a.just-done .today-check{animation:none}}
+/* Opening hello (2.83, play/opening.js): the mark pops in and glides to the header (A), letters tumble in on a special day (B), then one line says hello (D). Touch screens and the installed app, once a day; opening.js never starts it with Calmer motion or reduce motion. */
+.opening{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;justify-items:center;gap:14px;background:var(--paper);transition:background-color .35s;touch-action:none}
+.opening-mark{width:min(30vmin,140px);height:auto;aspect-ratio:1;opacity:0}
+html[data-opening=on] .brand :is(.brand-symbol,.brand-love){animation-play-state:paused}
+.opening-word{width:min(31vmin,146px);height:auto;opacity:0}
+[data-appearance="dark"] .opening-word{filter:brightness(0)invert()}
+.opening.go .opening-mark{opacity:1;animation:opening-pop .4s cubic-bezier(.3,1.5,.5,1) backwards}
+.opening.go .opening-word{opacity:1;animation:opening-rise .3s .33s backwards}
+.opening.out{background-color:#0000;pointer-events:none}
+.opening.out .opening-word,.opening-b.out>*{opacity:0;transition:opacity .3s}
+.opening-row{display:flex;gap:min(1.6vmin,8px);position:relative}
+.opening-row span{box-sizing:border-box;width:min(11vmin,56px);height:min(14vmin,72px);border-radius:min(3vmin,14px);background:#f46f66;color:#28223d;font-family:var(--hf,var(--f0));font-size:min(9vmin,46px);font-weight:700;line-height:min(14vmin,72px);text-align:center;box-shadow:0 4px 0 #140c2840;animation:opening-drop .5s cubic-bezier(.3,1.4,.5,1) backwards}
+.opening-row span:nth-child(even){background:#d8f36a}
+.opening-row span:nth-child(2){animation-delay:60ms}
+.opening-row span:nth-child(3){animation:opening-drop .5s .12s cubic-bezier(.3,1.4,.5,1) backwards,opening-wig .34s .72s}
+.opening-row span:nth-child(4){animation:opening-drop .5s .18s cubic-bezier(.3,1.4,.5,1) backwards,opening-wig .34s .78s}
+.opening-row span:nth-child(5){animation-delay:.24s}
+.opening-row span:nth-child(6){animation-delay:.3s}
+.opening-row::before{content:"";position:absolute;left:min(15.1vmin,76px);top:max(-5vmin,-26px);width:min(4vmin,20px);aspect-ratio:1;background:#d8f36a;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 1px #28223d);animation:opening-pop .3s .62s backwards}
+.opening-tag{margin:0;color:var(--ink);font-size:clamp(17px,4.5vmin,22px);font-weight:800;line-height:1.3;text-align:center;animation:opening-rise .3s .5s backwards}
+.opening-line{position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top,0px) + 76px);box-sizing:border-box;width:max-content;max-width:calc(100vw - 32px);margin:0;padding:8px 16px;border:1px solid var(--stroke);border-radius:999px;background:var(--surface);color:var(--ink);font-size:15px;font-weight:700;line-height:1.3;text-align:center;pointer-events:none;box-shadow:0 8px 22px #140c2826;transform:translateX(-50%);animation:opening-line 3.1s both}
+.opening-still,:root[data-motion=calm] .opening-line{animation:none}
+@keyframes opening-pop{from{transform:scale(.4);opacity:0}}
+@keyframes opening-rise{from{transform:translateY(10px);opacity:0}}
+@keyframes opening-drop{from{transform:translateY(-46vh) rotate(-20deg);opacity:0}}
+@keyframes opening-wig{25%{transform:rotate(-13deg)}75%{transform:rotate(13deg)}}
+@keyframes opening-line{0%,100%{opacity:0;transform:translate(-50%,-10px)}9%,86%{opacity:1;transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.opening{display:none}.opening-line{animation:none}}

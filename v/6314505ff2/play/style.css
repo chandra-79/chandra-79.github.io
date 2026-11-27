@@ -9,8 +9,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[r
 button:not(:disabled):active{transform:translateY(1px)}
 svg{display:block}
 button svg,[data-icon] svg{fill:none;stroke:currentColor;stroke-width:1.8px;stroke-linecap:round;stroke-linejoin:round;width:20px;height:20px}
-.brand{color:var(--ink);align-items:center;gap:11px;text-decoration:none;display:flex}
-.brand strong{letter-spacing:-1.8px;font-size:34px;font-weight:850;line-height:1;display:block}
 .top-actions{align-items:center;gap:16px;display:flex}
 .daily-button{color:#6240cd;background:#eee7ff;border-radius:13px;align-items:center;gap:9px;padding:13px 17px;font-size:12px;font-weight:750;display:flex}
 .daily-button:hover{background:#e4d9ff}
@@ -249,8 +247,7 @@ to{opacity:1}
 .difficulty{padding:7px;font-size:12px}
 .keyboard-badge{display:none}
 }
-@media (width<=760px){.brand strong{font-size:30px}
-.top-actions{gap:9px}
+@media (width<=760px){.top-actions{gap:9px}
 .daily-button{padding:11px}
 .daily-button>span:nth-child(2),.daily-button i{display:none}
 .icon-button{min-width:36px;height:38px}
@@ -300,9 +297,7 @@ kbd{font-size:12px}
 .arrow-hit{stroke-width:17px}
 .arrow-ink,.arrow-head{stroke-width:4px}
 }
-@media (width<=430px){.brand{gap:8px}
-.brand strong{font-size:28px}
-.top-actions{gap:4px}
+@media (width<=430px){.top-actions{gap:4px}
 .top-actions .icon-button{gap:4px;min-width:32px;font-size:12px}
 .top-actions svg{width:17px;height:17px}
 .daily-button{padding:9px}

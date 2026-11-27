@@ -4,17 +4,19 @@
 .week-card .week-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
 .week-card h2{margin:0;font-size:clamp(20px,2.4vw,26px);font-weight:700;line-height:1.15}
 .week-card .week-count{background:var(--surface-soft);color:var(--muted);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:800;white-space:nowrap}
-.week-card .week-lede{margin:0 0 14px;color:var(--ink);font-size:15px;line-height:1.45}
+.week-card .week-lede{margin:0 0 14px;color:var(--ink);font-size:15px;line-height:1.45;max-width:70ch;overflow-wrap:anywhere}
 .week-card .week-slots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0 0 12px;padding:0;list-style:none;max-width:560px}
 .week-card .week-slot{display:grid;justify-items:center;gap:3px;min-width:0}
-.week-card .week-tile{display:grid;place-items:center;width:100%;aspect-ratio:1;max-width:64px;border:2px dashed var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:14px;font-size:clamp(20px,5vw,30px);font-weight:800;line-height:1}
+.week-card .week-tile{display:grid;place-items:center;width:100%;aspect-ratio:1;max-width:64px;border:2px dashed var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:min(14px,var(--r-card,14px));font-size:clamp(20px,5vw,30px);font-weight:800;line-height:1}
 .week-card .week-slot[data-state=own] .week-tile,.week-card .week-slot[data-state=found] .week-tile{border:2px solid var(--accent);background:var(--accent-soft);box-shadow:0 3px 0 var(--accent)}
 .week-card .week-slot[data-state=found] .week-tile{box-shadow:none}
 .week-card .week-slot[data-state=hint] .week-tile{color:var(--muted);border-style:dashed;background:var(--surface-soft)}
-.week-card .week-slot[data-today] .week-tile{outline:2px solid var(--accent);outline-offset:2px}
+/* Today's ring goes round the empty tile only: round a lit tile it made three lines (border, shadow, ring). A lit today shows in its day name. */
+.week-card .week-slot[data-today][data-state=open] .week-tile{outline:2px solid var(--accent);outline-offset:2px}
+.week-card .week-slot[data-today] .week-day{color:var(--accent)}
 .week-card .week-day{color:var(--ink);font-size:12px;font-weight:800}
 .week-card .week-mark{color:var(--muted);font-size:11px;font-weight:700;min-height:14px}
-.week-card .week-slot[data-state=own] .week-mark{color:var(--accent)}
+.week-card .week-slot[data-earned] .week-mark{color:var(--accent)}
 .week-card .week-note,.week-card .week-tried,.week-card .week-last{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.45}
 .week-card .week-note a{color:var(--accent);font-weight:700}
 .week-card .week-form{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:4px 0 10px;max-width:560px}
@@ -47,6 +49,6 @@
 @keyframes week-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 :root[data-motion=calm] .week-card .week-tile.pop,:root[data-motion=calm] .week-card .week-form.shake{animation:none}
 @media (prefers-reduced-motion:reduce){.week-card .week-tile.pop,.week-card .week-form.shake{animation:none}}
-@media (max-width:650px){.week-card{border-radius:18px;margin-bottom:24px;padding:16px 14px 14px}.week-card .week-slots{gap:6px}.week-card .week-entry input{font-size:22px;letter-spacing:.25em}.week-card .week-go{min-width:88px;padding:0 14px}}
+@media (max-width:650px){.week-card{margin-bottom:24px;padding:16px 14px 14px}.week-card .week-slots{gap:6px}.week-card .week-entry input{font-size:22px;letter-spacing:.25em}.week-card .week-go{min-width:88px;padding:0 14px}}
 
 .week-card .week-status:empty{min-height:0;margin:0}

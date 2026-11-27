@@ -1,6 +1,6 @@
 @media (width<=650px),(height<=520px) and (orientation:landscape) and (width>=651px){.collection-header{height:56px}
-.collection-header .brand .brand-symbol{width:32px;height:32px}
-.collection-header .brand .brand-wordmark{width:80px;height:27px}
+.collection-header .brand .brand-symbol{width:44px;height:44px}
+.collection-header .brand .brand-wordmark{width:104px;height:32px}
 .collection-header .collection-menu>summary,.collection-header .header-button{height:38px}
 .collection-nav{margin-bottom:4px;padding-top:6px;padding-bottom:6px}
 .collection-nav>:is(a,button),body .collection-nav>:is(a,button){height:34px;padding:0 11px}
@@ -309,8 +309,8 @@ main.has-ad-rail>.ad-rail{grid-area:1/2/span 8;align-content:stretch;width:160px
 .cube-shell .cube-wrap{height:max(130px,calc(var(--room) - 90px));min-height:130px}
 }
 @media (height<=700px) and (height>=521px) and (width>=651px){.collection-header{height:58px}
-.collection-header .brand .brand-symbol{width:32px;height:32px}
-.collection-header .brand .brand-wordmark{width:82px;height:28px}
+.collection-header .brand .brand-symbol{width:50px;height:50px}
+.collection-header .brand .brand-wordmark{width:117px;height:36px}
 .collection-header .collection-menu>summary,.collection-header .header-button{height:38px}
 .collection-nav{padding-top:6px;padding-bottom:6px}
 .collection-nav>:is(a,button),body .collection-nav>:is(a,button){height:34px}
@@ -390,7 +390,7 @@ body:has(.game-bar) [data-welcome-banner]{display:none!important}
 @media (width<=650px){body>.collection-header{gap:4px;margin-bottom:10px}
 .collection-header-actions{gap:4px}
 body>.collection-header .brand>span{display:none}
-body>.collection-header .brand .brand-symbol{width:34px;height:34px}
+body>.collection-header .brand .brand-symbol{width:46px;height:46px}
 body .collection-header .collection-nav{gap:4px;margin-left:2px!important}
 .collection-nav .nav-group>summary,.collection-nav .nav-link{height:38px;padding:0 5px;font-size:13px}
 .collection-nav .nav-current{display:none}
@@ -495,7 +495,6 @@ body{background-image:radial-gradient(ellipse at 12% 0,color-mix(in srgb,var(--a
 :is(.game-card-kicker,.badge,.nav-current,.stat-chip){box-shadow:inset 0 1px 0 var(--relief-light)}
 .game-art>:is(g,path,rect){filter:drop-shadow(0 2px 0 var(--relief-edge))}
 .training-icon{box-shadow:var(--relief-raised)}
-.brand-symbol{filter:drop-shadow(0 2px 0 var(--relief-edge))}
 body:has(>.collection-header)>footer{margin-top:40px!important;background:none;border:0;border-top:1px solid var(--stroke);border-radius:0;box-shadow:none;padding-top:22px;padding-bottom:max(24px,env(safe-area-inset-bottom))}
 .legal-links a{background:transparent;box-shadow:none;border-radius:6px;padding:7px 8px;display:inline-flex}
 .game-card .game-card-go{background:var(--accent);color:var(--paper);box-shadow:inset 0 1px 0 var(--relief-light),0 4px 0 color-mix(in srgb,var(--accent) 65%,var(--ink));border-radius:10px;align-self:flex-start;padding:8px 14px}
@@ -509,6 +508,8 @@ body .collection-header .collection-nav{gap:8px;margin-left:4px!important}
 .collection-header .collection-menu>summary,.collection-header .header-button{width:40px;gap:0!important;padding:0!important;font-size:0!important}
 .collection-header .header-label{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}
 }
+@media (width>=761px) and (width<=1010px){.collection-header .brand .brand-symbol{width:50px;height:50px}
+.collection-header .brand .brand-wordmark{width:104px;height:32px}}
 @media (width>=651px) and (width<=760px){.collection-header .brand>span{display:none}
 }
 @media (width>=900px) and (width<=1279px){.collection-nav .nav-current{display:none}
@@ -547,7 +548,7 @@ body .collection-header .collection-nav{gap:8px;margin-left:4px!important}
 html[data-game-active]{--header-h:56px}
 html[data-game-active] .collection-header{height:56px;min-height:56px;padding-block:4px}
 html[data-game-active] .nav-current{display:none!important}
-html[data-game-active] .collection-header .brand-symbol{width:36px;height:36px}
+html[data-game-active] .collection-header .brand-symbol{width:54px;height:54px}
 html[data-game-active] .game-bar :is(.bar-chip,.stat-chip,.stat-pill,.bar-stats,.game-stats),html[data-game-active] .game-shell .game-bar-items{display:none!important}
 html[data-game-active] :is(.ad-slot,.collection-welcome,main>footer){display:none!important}
 html[data-game-active] .game-bar{gap:8px!important}
@@ -559,7 +560,7 @@ html[data-game-active] .theme-note{display:none!important}
 html[data-play-focus] .collection-header-actions{gap:6px!important}
 @media(max-width:379px){
 html body>.collection-header{gap:3px!important;padding-inline:max(10px,var(--inline-safe))!important}
-body>.collection-header .brand .brand-symbol{width:28px!important;height:28px!important}
+body>.collection-header .brand .brand-symbol{width:34px!important;height:34px!important}
 html body>.collection-header .collection-nav{gap:3px!important}
 html body>.collection-header .collection-nav :is(.nav-group>summary,.nav-link){padding-inline:0!important;gap:2px!important}
 html body>.collection-header .nav-group>summary::after{width:6px;height:6px;margin-left:0}

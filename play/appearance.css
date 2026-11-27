@@ -148,8 +148,9 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 :root[data-look="amber"][data-appearance="dark"]{--paper:#14100a;--surface:#1d1710;--surface-soft:#2a2117;--ink:#ffd9a0;--muted:#e0b26c;--accent:#ffb000;--accent-soft:#3a2a05;--stroke:#5a4420;--secondary:#7fe0a0;--citrus-ink:#14100a}
 :root[data-look="slate"]:not([data-appearance="dark"]){--paper:#e9edef;--surface:#f6f8f9;--surface-soft:#dce2e6;--ink:#1c262e;--muted:#3f4c57;--accent:#9b4d1d;--accent-soft:#fbeee4;--stroke:#c3ccd2;--secondary:#3f6b5a;--citrus-ink:var(--surface)}
 :root[data-look="slate"][data-appearance="dark"]{--paper:#151c22;--surface:#1d272f;--surface-soft:#27343e;--ink:#e9edef;--muted:#b7c2cb;--accent:#e49a66;--accent-soft:#402a1b;--stroke:#3a4955;--secondary:#8fc9b0;--citrus-ink:#1c262e}
-:root[data-look]:not([data-look="contrast"]) :is(.home-hero,.today-card,.game-card,.panel,.leaderboard,.history-card,.training-card,.post-card){border-radius:var(--r-card);border-width:var(--bw);box-shadow:var(--lift)}
+:root[data-look]:not([data-look="contrast"]) :is(.home-hero,.today-card,.week-card,.game-card,.panel,.leaderboard,.history-card,.training-card,.post-card){border-radius:var(--r-card);border-width:var(--bw);box-shadow:var(--lift)}
 :root[data-look]:not([data-look="contrast"]) :is(.primary-button,.secondary-button,.home-cta,.appearance-toggle){border-radius:var(--r-btn)}
+:root[data-look]:not([data-look="contrast"]) :is(.look-back,.train-tile,.egg-card,.ad-slot,.blog-promise,.post-thumb,.settings-group,.game-panel,.board-card,.puzzle-card,.word-list-card,.lock-card,.memory-card,.sum-card,.sum-board,.weave-card,.loom,.twist-card,.twist-wrap,.type-card,.type-stage,.uni-card,.quiz-start,.pal-card,.cube-card,.cube-main,.lesson,.atlas-card,.atlas-meter,.vocab-card,.word-card){border-radius:min(var(--r-card),18px)!important}
 :root[data-look]{--lift:none}
 :root[data-look="press"]{--r-card:0px;--r-btn:0px;--bw:2px;--hf:var(--f4);--ls:.02em}
 :root[data-look="storybook"]{--r-card:26px;--r-btn:999px;--bw:2px}
@@ -162,8 +163,7 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 :root :is(h1,h2,h3,.game-card-title){font-family:var(--hf,var(--f0));letter-spacing:var(--ls,-.01em)}
 :root[data-look="amber"] body{font-family:var(--f3)}
 
-/* 2.42 tile art. Game cards and menu items show the game's tile; each game bar opens with it too, picked from the menu item marked
-   as this page. hub.js swaps data-art pictures to their moving copies; under Calmer motion everything stays on the still copies. */
+/* 2.42 tile art: hub.js swaps data-art pictures to moving copies; Calmer motion keeps the still ones. */
 .game-card .game-art{filter:drop-shadow(0 8px 12px var(--shadow))}
 .game-bar h1{display:flex;align-items:center;gap:10px}
 .game-bar h1:before{content:"";flex:none;width:38px;height:38px;background:var(--bar-art) center/contain no-repeat;filter:drop-shadow(0 3px 5px var(--shadow))}
@@ -186,7 +186,7 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 @media (hover:hover){.collection-nav :is(a,button):hover>img.nav-tile{transform:scale(1.12) rotate(-4deg)}}
 :root[data-motion=calm] .collection-nav img.nav-tile{transition:none}
 @media (prefers-reduced-motion:reduce){.collection-nav img.nav-tile{transition:none}}
-/* iPhone Safari zooms the page in when a field under 16px gets focus, and never zooms back out (2.41.1). */
+/* iPhone Safari zooms in on a field under 16px (2.41.1). */
 @media (pointer:coarse){:root:root:root:root :is(input:not([type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit]),select,textarea){font-size:max(16px,1em)!important}}
 .ziggle-hello{z-index:40;border:1px solid var(--stroke);background:var(--surface);width:min(360px,100% - 24px);color:var(--ink);border-radius:18px;padding:16px;font-family:Avenir Next,Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;position:fixed;bottom:max(12px,env(safe-area-inset-bottom));right:12px;box-shadow:0 10px 34px var(--relief-shadow,#0004)}
 .ziggle-hello h2{margin:0 0 8px;font-size:19px}
