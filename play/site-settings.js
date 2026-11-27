@@ -4,6 +4,7 @@ import { soundOn, isTouch, play, haptic } from './fx.js';
 import './fit.js';
 import './game-frame.js';
 import './ad-slots.js';
+import { readKeys, saveKeys } from './shortcuts.js';
 
 const hub = () => globalThis.Ziggle;
 const LOOKS = Object.freeze([
@@ -66,6 +67,8 @@ function build() {
       ${check('calm-mode', 'Calmer motion', 'No flips, shakes, confetti or sliding.')}
       ${check('quick-demos', 'Quick demos', 'A short example when a new rule appears.')}
       ${check('word-shares', 'Share in words', 'Results as sentences instead of emoji.')}
+      ${check('key-shortcuts', 'Keyboard shortcuts', 'One key for common buttons, like ? for a hint. Press Ctrl and / to see them all.', ' data-keyboard-only')}
+      ${check('key-hints', 'Show the keys on buttons', 'A small label beside each button that has a key.', ' data-keyboard-only')}
     </fieldset>
     <fieldset class="settings-group switches" data-tab="play" id="app-reminder" hidden><legend>Daily reminder <small>One notification a day, skipped once you’ve played. It never leaves your phone.</small></legend>
       ${check('reminder-on', 'Remind me every day', 'Off unless you switch it on.')}
@@ -216,6 +219,8 @@ function build() {
   profileToggle('sound-fx', 'sound', 'Sounds are on.', 'Sounds are off.');
   profileToggle('haptics', 'haptics', 'Vibration is on.', 'Vibration is off.');
   dialog.querySelector('#sound-fx').addEventListener('change', event => { if (event.target.checked) play('ding'); });
+  dialog.querySelector('#key-shortcuts').addEventListener('change', event => { saveKeys({ on: event.target.checked }); dialog.querySelector('#key-hints').disabled = !event.target.checked; say(event.target.checked ? 'Keyboard shortcuts are on.' : 'Keyboard shortcuts are off.'); });
+  dialog.querySelector('#key-hints').addEventListener('change', event => { saveKeys({ hints: event.target.checked }); say(event.target.checked ? 'Keys now show on buttons.' : 'Keys are hidden on buttons.'); });
   dialog.querySelector('#haptics').addEventListener('change', event => { if (event.target.checked) haptic(20); });
   profileToggle('kids-mode', 'kidsMode', 'Kids mode is on. Nothing is sent to the server, and grown-up features are hidden.', 'Kids mode is off.');
   profileToggle('analytics-toggle', 'analytics', 'Thanks. Only anonymous day-level counts are shared.', 'Visit counts are off.');
@@ -274,6 +279,9 @@ function render() {
   dialog.querySelector('#sound-fx').checked = soundOn();
   dialog.querySelector('#haptics').checked = profile.haptics !== false;
   dialog.querySelector('[data-touch-only]').hidden = !isTouch();
+  { const keys = readKeys(), phone = matchMedia('(hover: none) and (pointer: coarse)').matches;
+    dialog.querySelector('#key-shortcuts').checked = keys.on; dialog.querySelector('#key-hints').checked = keys.hints; dialog.querySelector('#key-hints').disabled = !keys.on;
+    dialog.querySelectorAll('[data-keyboard-only]').forEach(row => { row.hidden = phone; }); }
   dialog.querySelector('#kids-mode').checked = profile.kidsMode;
   dialog.querySelector('#analytics-toggle').checked = profile.analytics && !profile.kidsMode;
   dialog.querySelector('#analytics-toggle').disabled = profile.kidsMode;

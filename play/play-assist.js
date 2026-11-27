@@ -73,7 +73,7 @@ async function open(worked = false, lead = '') {
   if (config.canFinish && !config.canFinish()) { reveal.disabled = true; reveal.textContent = 'Make a move first to see the answer'; }
   button('Back to today’s games (progress saved)', () => { location.href = '/#today'; });
   if (!dialog.open) { resume = config.suspend?.(); dialog.showModal(); }
-  if (worked) actions.querySelectorAll('button')[actions.querySelectorAll('button').length - 2].click();
+  if (worked) [...actions.querySelectorAll('button')].at(-2).click();
   else if (lead === 'hint' && hintButton && !hintButton.disabled) hintButton.focus(); else dialog.querySelector('button').focus();
 }
 export function registerAssistance(options) {
