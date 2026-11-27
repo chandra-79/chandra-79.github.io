@@ -581,6 +581,7 @@ html[data-play-focus] .uni-card #quiz-live>.quiz-next{grid-column:2;align-self:c
 html[data-play-focus] .uni-card #quiz-live .quiz-next button{font-size:13px!important;padding-left:10px!important;padding-right:10px!important}
 html[data-play-focus] .uni-card #quiz-live .options-emoji-text .opt-emoji{font-size:22px!important;line-height:1.2!important}
 }
+html[data-play-focus] .uni-card>:is(.browse,.uni-blurb){grid-column:1/-1}
 .uni-card .missed-review{text-align:left;margin-top:12px;padding-top:10px;border-top:1px solid var(--stroke)}
 .uni-card .missed-review summary{min-height:44px;cursor:pointer;font-size:14px;font-weight:800}
 .uni-card .missed-review .missed{margin-top:10px;margin-bottom:0}

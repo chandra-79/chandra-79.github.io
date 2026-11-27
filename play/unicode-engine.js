@@ -2,7 +2,7 @@
 // Data arrives as plain arrays so the page can load emoji groups only when a level needs them.
 
 /** Emoji versions and the year each was released, for history questions. */
-export const EMOJI_YEARS = Object.freeze({ 0.6: 2010, 0.7: 2014, 1: 2015, 2: 2015, 3: 2016, 4: 2016, 5: 2017, 11: 2018, 12: 2019, 12.1: 2019, 13: 2020, 13.1: 2020, 14: 2021, 15: 2022, 15.1: 2023, 16: 2024, 17: 2025 });
+export const EMOJI_YEARS = Object.freeze({ 0.6: 2010, 0.7: 2014, 1: 2015, 2: 2015, 3: 2016, 4: 2016, 5: 2017, 11: 2018, 12: 2019, 12.1: 2019, 13: 2020, 13.1: 2020, 14: 2021, 15: 2022, 15.1: 2023, 16: 2024, 17: 2025, 18: 2026 });
 export const yearOf = version => EMOJI_YEARS[version] ?? null;
 export const versionLabel = version => `Emoji ${Number.isInteger(version) ? version.toFixed(1) : version}${yearOf(version) ? ` (${yearOf(version)})` : ''}`;
 
@@ -13,13 +13,22 @@ export const LEVELS = Object.freeze([
   { n: 2, name: 'Hands and people', groups: ['people-body'], modes: ['name', 'pick'], simple: true, blurb: 'Waves, thumbs, jobs and people doing things.' },
   { n: 3, name: 'Animals and food', groups: ['animals-nature', 'food-drink'], modes: ['name', 'pick', 'group'], blurb: 'From octopus to oyster, and which family each belongs to.' },
   { n: 4, name: 'Travel, play and things', groups: ['travel-places', 'activities', 'objects'], modes: ['name', 'pick', 'group'], blurb: 'Places, sports, tools and everyday objects.' },
-  { n: 5, name: 'Flags of the world', flags: ['Europe', 'North America', 'South America'], modes: ['flag', 'country'], blurb: 'Flags from Europe and the Americas, drawn by Ziggle.' },
+  { n: 5, name: 'Flags of the world', flags: ['Europe', 'North America', 'South America'], modes: ['flag', 'country'], blurb: 'Every country’s flag in Europe and the Americas.' },
   { n: 6, name: 'Codes and sequences', groups: ['smileys-emotion', 'animals-nature', 'food-drink', 'people-body'], modes: ['code', 'build'], blurb: 'Every emoji has a number, and some are built from others.' },
   { n: 7, name: 'Emoji history', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'objects'], modes: ['first'], blurb: 'Which arrived first? From the 2010 originals to 2023’s newcomers.' },
   { n: 8, name: 'Symbols, arrows and maths', symbols: true, modes: ['symbol'], blurb: 'Arrows, maths, money, music and keyboard symbols, by their Unicode names.' },
-  { n: 9, name: 'All the flags', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'Every flag Ziggle draws, with capitals.' },
-  { n: 10, name: 'Mastery', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'travel-places', 'activities', 'objects', 'symbols'], flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], symbols: true, modes: ['name', 'pick', 'code', 'build', 'first', 'flag', 'capital', 'symbol'], blurb: 'Anything at all, in any order.' },
+  { n: 9, name: 'All the flags', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'Every country’s flag, with capitals.' },
+  { n: 10, name: 'Mastery', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'travel-places', 'activities', 'objects', 'symbols'], flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], symbols: true, territories: 'too', modes: ['name', 'pick', 'code', 'build', 'first', 'flag', 'capital', 'symbol'], blurb: 'Anything at all, in any order.' },
+  // 2.74 added the rest of the world's flags. These levels come after Mastery so nobody's saved level numbers move.
+  { n: 11, name: 'Flags of Africa', flags: ['Africa'], modes: ['flag', 'country', 'capital'], blurb: 'All 54 African countries, from Algeria to Zimbabwe.' },
+  { n: 12, name: 'Flags of Asia and Oceania', flags: ['Asia', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'From Afghanistan to Vanuatu, with capitals.' },
+  { n: 13, name: 'Islands and territories', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], territories: 'only', modes: ['flag', 'country'], blurb: 'Greenland, Bermuda, Hong Kong and other places with a flag of their own.' },
 ]);
+/** The flags a level asks about. Territories have their own level; a place that flies another's flag is never asked. */
+export function levelFlags(info, flags) {
+  if (!info.flags) return [];
+  return flags.filter(flag => !flag.same && info.flags.includes(flag.continent) && (info.territories === 'too' || (info.territories === 'only') === Boolean(flag.territory)));
+}
 export const levelInfo = n => LEVELS[Math.max(1, Math.min(LEVELS.length, n)) - 1];
 
 export function seeded(seed) {
@@ -94,17 +103,21 @@ function firstQuestion(pool, random) {
   return null;
 }
 function flagQuestion(flag, flags, random, mode) {
-  const near = item => item.continent && item.continent === flag.continent;
-  const others = distractors(flag, flags, near, random, 3, (a, b) => a.code === b.code);
+  const near = item => item.continent && item.continent === flag.continent && Boolean(item.territory) === Boolean(flag.territory);
+  // Capitals are asked of countries only, and never with two places that share a capital's name.
+  if (mode === 'capital' && (!flag.capital || flag.territory)) mode = 'flag';
+  const pool = mode === 'capital' ? flags.filter(item => item.capital && !item.territory && (item === flag || item.capital !== flag.capital)) : flags;
+  const others = distractors(flag, pool, near, random, 3, (a, b) => a.code === b.code);
   const options = shuffle([flag, ...others], random);
   const answer = options.indexOf(flag);
   const note = flag.note ? ` ${flag.note}` : '';
-  if (mode === 'country') return { id: `f:${flag.code}:country`, mode, prompt: { kind: 'text', value: flag.name }, question: 'Which flag is this?', options: options.map(item => ({ kind: 'flag', value: item.code, label: 'Flag option' })), answer, explain: `${flag.name}: capital ${flag.capital}.${note}` };
+  const capital = flag.capital ? `: capital ${flag.capital}` : flag.continent ? ` (${flag.continent})` : '';
+  if (mode === 'country') return { id: `f:${flag.code}:country`, mode, prompt: { kind: 'text', value: flag.name }, question: 'Which flag is this?', options: options.map(item => ({ kind: 'flag', value: item.code, label: 'Flag option' })), answer, explain: `${flag.name}${capital}.${note}` };
   if (mode === 'capital') {
     const capitals = options.map(item => item.capital);
     return { id: `f:${flag.code}:capital`, mode, prompt: { kind: 'flag', value: flag.code }, question: 'What is the capital?', options: capitals.map(value => ({ kind: 'text', value })), answer, explain: `${flag.name}: ${flag.capital}.${note}` };
   }
-  return { id: `f:${flag.code}`, mode: 'flag', prompt: { kind: 'flag', value: flag.code }, question: 'Whose flag is this?', options: options.map(item => ({ kind: 'text', value: item.name })), answer, explain: `${flag.name}${flag.continent ? ` (${flag.continent})` : ''}: capital ${flag.capital}.${note}` };
+  return { id: `f:${flag.code}`, mode: 'flag', prompt: { kind: 'flag', value: flag.code }, question: 'Whose flag is this?', options: options.map(item => ({ kind: 'text', value: item.name })), answer, explain: `${flag.name}${flag.continent && flag.capital ? ` (${flag.continent})` : ''}${capital}.${note}` };
 }
 function symbolQuestion(symbol, symbols, random) {
   const others = distractors(symbol, symbols, item => item[3] === symbol[3], random, 3, (a, b) => a[0] === b[0]);
@@ -123,7 +136,7 @@ export function buildRound(n, data, { seed = 1, count = ROUND, review = [], revi
   const usable = info.simple ? emojiPool.filter(item => !isSequence(item.record)) : emojiPool;
   const records = usable.map(item => item.record);
   const sequences = emojiPool.filter(item => isSequence(item.record) && sequenceParts(item.record).length <= 3);
-  const flags = info.flags ? data.flags.filter(flag => info.flags.includes(flag.continent)) : [];
+  const flags = levelFlags(info, data.flags);
   const symbols = info.symbols ? data.symbols : [];
   const questions = [], used = new Set();
   const make = (mode) => {

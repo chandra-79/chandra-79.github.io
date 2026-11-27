@@ -2,8 +2,9 @@ import { registerHowTo } from './howto-boot.js';
 import { LEVELS, ROUND, CARD_MODES, levelInfo, buildRound, passed as roundPassed, dateSeed, codeLabel, versionLabel, isSequence, sequenceParts } from './unicode-engine.js';
 import { renderPager } from './pager.js';
 import { newCard, review, dueCards, mastery } from './review-core.js';
-import { flagSvg } from './flags.js';
-import { FLAGS } from './flags-data.js';
+import { flagSvg, artSvg } from './flags.js';
+import { ALL_FLAGS as FLAGS } from './flags-data.js';
+import { ART_FILES } from './flags-world.js';
 import { GROUPS, SUBGROUPS } from './emoji/groups.js';
 import { pop, shake, play, haptic, feedback, burstFrom, countUp } from './fx.js';
 
@@ -29,13 +30,13 @@ function load() {
       cards[id] = { id, box: finite(card.box, 0, 5, 0), due: finite(card.due, 0, 1e14, 0), seen: finite(card.seen, 0, 1e6, 0), right: finite(card.right, 0, 1e6, 0), last: finite(card.last, 0, 1e14, 0) };
     }
     const best = {};
-    for (const [level, right] of Object.entries(value.best || {})) if (/^([1-9]|10)$/.test(level)) best[level] = finite(right, 0, ROUND, 0);
+    for (const [level, right] of Object.entries(value.best || {})) if (/^[1-9]\d?$/.test(level) && Number(level) <= LEVELS.length) best[level] = finite(right, 0, ROUND, 0);
     const daily = {};
     for (const [date, right] of Object.entries(value.daily || {}).slice(-120)) if (/^\d{4}-\d{2}-\d{2}$/.test(date)) daily[date] = finite(right, 0, ROUND, 0);
     return {
       version: 1, level: finite(value.level, 1, LEVELS.length, 1), cards, best, daily,
       passed: Array.isArray(value.passed) ? [...new Set(value.passed.filter(n => Number.isInteger(n) && n >= 1 && n <= LEVELS.length))] : [],
-      history: Array.isArray(value.history) ? value.history.filter(item => item && typeof item.at === 'string').slice(-200).map(item => ({ at: item.at, kind: ['level', 'review', 'daily'].includes(item.kind) ? item.kind : 'level', level: finite(item.level, 1, 10, 1), right: finite(item.right, 0, ROUND, 0), total: finite(item.total, 1, ROUND, ROUND) })) : [],
+      history: Array.isArray(value.history) ? value.history.filter(item => item && typeof item.at === 'string').slice(-200).map(item => ({ at: item.at, kind: ['level', 'review', 'daily'].includes(item.kind) ? item.kind : 'level', level: finite(item.level, 1, LEVELS.length, 1), right: finite(item.right, 0, ROUND, 0), total: finite(item.total, 1, ROUND, ROUND) })) : [],
     };
   } catch { return blank(); }
 }
@@ -76,6 +77,18 @@ async function loadData(info) {
   return { emoji: emojiCache, groups: GROUPS, flags: FLAGS, symbols: symbolCache || [] };
 }
 const flagByCode = Object.fromEntries(FLAGS.map(flag => [flag.code, flag]));
+// Flag pictures load a file at a time, only for the flags about to be shown. A place that flies another's flag shows that flag.
+const artCache = {}, artFiles = {};
+const shown = flag => (flag.same ? flagByCode[flag.same] : flag);
+function loadArt(flags) {
+  const files = [...new Set(flags.map(flag => shown(flag).art).filter(n => n >= 1 && n <= ART_FILES))];
+  return Promise.all(files.map(n => (artFiles[n] ||= import(`./flag-art/${n}.js`).then(module => { Object.assign(artCache, module.default); }, error => { delete artFiles[n]; throw error; }))));
+}
+function flagPicture(flag) {
+  const real = shown(flag);
+  return real.art ? (artCache[real.code] ? artSvg(artCache[real.code]) : '') : flagSvg(real);
+}
+const roundFlags = questions => questions.flatMap(q => [q.prompt, ...q.options]).filter(part => part.kind === 'flag').map(part => flagByCode[part.value]);
 
 // ---- State ---------------------------------------------------------------------------
 let mode = 'level', round = null, roundRequest = 0;
@@ -121,7 +134,7 @@ function showStart() {
   } else if (mode === 'browse') {
     $('uni-kicker').textContent = 'THE LIBRARY';
     $('uni-title').textContent = 'Browse';
-    $('uni-blurb').textContent = 'Every emoji, symbol and flag here, with its official name and code. Names come from Unicode’s CLDR project.';
+    $('uni-blurb').textContent = 'Every emoji, symbol and flag here, with its official name. Tap one to learn about it.';
   }
   updateDueBadge();
   renderSide();
@@ -151,6 +164,9 @@ async function startRound() {
     : kind === 'review' ? { seed: Date.now() & 0xffffffff, review: due, reviewShare: 1, count: Math.min(ROUND, due.length) }
     : { seed: Date.now() & 0xffffffff, review: due };
   const questions = buildRound(n, data, options);
+  try { await loadArt(roundFlags(questions)); }
+  catch { if (request !== roundRequest) return; showStart(); $('start-note').textContent = 'Couldn’t load the flags. Check your connection and try again.'; return; }
+  if (request !== roundRequest) return;
   if (!questions.length) { showStart(); $('start-note').textContent = 'Nothing to ask right now.'; return; }
   round = { kind, level: n, questions, at: 0, answers: [] };
   $('quiz-start').hidden = true; $('round-result').hidden = true; $('quiz-live').hidden = false;
@@ -158,7 +174,7 @@ async function startRound() {
 }
 function visual(kind, value) {
   const el = document.createElement('span');
-  if (kind === 'flag') { el.className = 'flag-box'; el.innerHTML = flagSvg(flagByCode[value]); }
+  if (kind === 'flag') { el.className = 'flag-box'; el.innerHTML = flagPicture(flagByCode[value]); }
   else { el.className = kind === 'text' ? 'opt-text' : kind === 'code' ? 'opt-code' : 'opt-emoji'; el.textContent = value; }
   return el;
 }
@@ -294,6 +310,7 @@ function renderSide() {
 }
 
 // ---- Browse ---------------------------------------------------------------------------------
+const FLAGS_AZ = [...FLAGS].sort((a, b) => a.name.localeCompare(b.name, 'en'));
 const BROWSE_SETS = [...GROUPS.map(group => ({ id: group.id, name: `${group.name} (${group.count})` })), { id: 'flags', name: `Flags (${FLAGS.length})` }, { id: 'unicode', name: 'Unicode symbols' }];
 let browseSet = 'smileys-emotion', browseItems = [];
 async function renderBrowse() {
@@ -301,52 +318,80 @@ async function renderBrowse() {
   if (!select.options.length) select.replaceChildren(...BROWSE_SETS.map(set => Object.assign(document.createElement('option'), { value: set.id, textContent: set.name })));
   select.value = browseSet;
   try {
-    if (browseSet === 'flags') browseItems = FLAGS.map(flag => ({ kind: 'flag', flag, name: flag.name }));
+    if (browseSet === 'flags') browseItems = FLAGS_AZ.map(flag => ({ kind: 'flag', flag, name: flag.name }));
     else if (browseSet === 'unicode') { await loadData({ symbols: true }); browseItems = symbolCache.map(symbol => ({ kind: 'symbol', symbol, name: symbol[1] })); }
     else { await loadData({ groups: [browseSet] }); browseItems = emojiCache[browseSet].map(record => ({ kind: 'emoji', record, name: record[1] })); }
   } catch { $('browse-count').textContent = 'Couldn’t load this set. Check your connection.'; return; }
   drawBrowse();
 }
-// Browse shows a page of tiles at a time (2.6.5): a big group (387 people and body emoji) never becomes an endless wall.
-const BROWSE_PAGE = 60;
-let browsePage = 1, browseKey = '';
-function drawBrowse() {
+// Browse shows one page of tiles at a time, and a page is exactly what fits (2.74): whole rows, no box that scrolls
+// inside the page. The rows come from the room between the grid and the bottom of the window, so the page buttons
+// stay in view on a phone and on a desktop alike.
+const TILE_ROW = { emoji: 52, flags: 60 };
+let browsePage = 1, browseKey = '', browseSize = 0, browseDraw = 0;
+function pageSize(grid) {
+  const columns = Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length);
+  const top = grid.getBoundingClientRect().top + window.scrollY;
+  const pagerRoom = 64, rowHeight = TILE_ROW[grid.classList.contains('flags') ? 'flags' : 'emoji'];
+  const detail = $('browse-detail').getBoundingClientRect().height + 12;
+  let room = window.innerHeight - top - pagerRoom;
+  // Keep the name card in view too when there is room for it (desktops and tablets).
+  if ((room - detail) / rowHeight >= 5) room -= detail;
+  const rows = Math.max(4, Math.min(10, Math.floor(room / rowHeight)));
+  // A very short window (a phone on its side) still gets a useful page: at least 24 tiles.
+  return columns * Math.max(rows, Math.ceil(24 / columns));
+}
+async function drawBrowse() {
+  const request = ++browseDraw;
   const term = $('browse-search').value.trim().toLowerCase();
   const all = term ? browseItems.filter(item => item.name.toLowerCase().includes(term)) : browseItems;
-  if (browseKey !== `${browseSet}|${term}`) { browseKey = `${browseSet}|${term}`; browsePage = 1; }
-  const pages = Math.max(1, Math.ceil(all.length / BROWSE_PAGE));
-  browsePage = Math.min(browsePage, pages);
-  const items = all.slice((browsePage - 1) * BROWSE_PAGE, browsePage * BROWSE_PAGE);
-  $('browse-count').textContent = `${all.length} ${all.length === 1 ? 'item' : 'items'}${term ? ` matching “${term}”` : ''}${pages > 1 ? ` · page ${browsePage} of ${pages}` : ''}`;
-  let nav = $('browse-pager');
-  if (!nav) { nav = document.createElement('nav'); nav.id = 'browse-pager'; nav.setAttribute('aria-label', 'Browse pages'); $('browse-grid').after(nav); }
-  renderPager(nav, browsePage, pages, page => { browsePage = page; drawBrowse(); $('browse-count').scrollIntoView({ block: 'nearest' }); });
   const grid = $('browse-grid');
   grid.className = `browse-grid${browseSet === 'flags' ? ' flags' : ''}`;
+  const size = pageSize(grid);
+  if (browseKey !== `${browseSet}|${term}`) { browseKey = `${browseSet}|${term}`; browsePage = 1; }
+  // When the window changes shape, stay on the page that holds what was first on screen.
+  else if (browseSize && size !== browseSize) browsePage = Math.floor(((browsePage - 1) * browseSize) / size) + 1;
+  browseSize = size;
+  const pages = Math.max(1, Math.ceil(all.length / size));
+  browsePage = Math.min(browsePage, pages);
+  const items = all.slice((browsePage - 1) * size, browsePage * size);
+  $('browse-count').textContent = `${all.length} ${all.length === 1 ? 'item' : 'items'}${term ? ` matching “${term}”` : ''}${pages > 1 ? ` · page ${browsePage} of ${pages}` : ''}`;
+  let nav = $('browse-pager');
+  if (!nav) { nav = document.createElement('nav'); nav.id = 'browse-pager'; nav.setAttribute('aria-label', 'Browse pages'); grid.after(nav); }
+  renderPager(nav, browsePage, pages, page => { browsePage = page; drawBrowse(); $('browse-count').scrollIntoView({ block: 'nearest' }); }, { short: window.innerWidth < 520 });
+  try { await loadArt(items.filter(item => item.kind === 'flag').map(item => item.flag)); }
+  catch { if (request === browseDraw) $('browse-count').textContent = 'Couldn’t load the flags. Check your connection.'; return; }
+  if (request !== browseDraw) return;
   grid.replaceChildren(...items.map(item => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'tile';
     button.setAttribute('aria-label', item.name);
     button.title = item.name;
-    if (item.kind === 'flag') button.innerHTML = flagSvg(item.flag);
+    if (item.kind === 'flag') button.innerHTML = flagPicture(item.flag);
     else button.textContent = item.kind === 'emoji' ? item.record[0] : item.symbol[0];
     button.addEventListener('click', () => showDetail(item));
     return button;
   }));
 }
+let resizeTimer = 0;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (mode === 'browse' && pageSize($('browse-grid')) !== browseSize) drawBrowse(); }, 150); });
 function showDetail(item) {
   const box = $('browse-detail');
   const big = document.createElement('div'); big.className = 'detail-big'; big.setAttribute('aria-hidden', 'true');
   const title = document.createElement('h3');
   const lines = [];
   if (item.kind === 'flag') {
-    big.innerHTML = flagSvg(item.flag); big.classList.add('flag');
-    title.textContent = item.flag.name;
-    lines.push(`Capital: ${item.flag.capital}`, item.flag.continent ? `Continent: ${item.flag.continent}` : 'Spans Europe and Asia', `Shape: ${item.flag.ratio[0]}:${item.flag.ratio[1]}`);
-    if (item.flag.simplified) lines.push('Its emblem is drawn simply here; the real flag has more detail.');
-    if (item.flag.note) lines.push(item.flag.note);
-    lines.push(`As an emoji, this flag is two regional-indicator letters, ${item.flag.code.length === 2 ? item.flag.code.split('').join(' + ') : 'with tag characters'}, which each device draws its own way.`);
+    const flag = item.flag;
+    big.innerHTML = flagPicture(flag); big.classList.add('flag');
+    title.textContent = flag.name;
+    if (flag.capital) lines.push(`Capital: ${flag.capital}`);
+    if (flag.continent) lines.push(`Continent: ${flag.continent}`); else if (!flag.territory) lines.push('Spans Europe and Asia');
+    if (flag.territory) lines.push('Not a country of its own, but it has a flag in Unicode.');
+    if (flag.same) lines.push(`It flies the flag of ${flagByCode[flag.same].name}.`);
+    if (!shown(flag).art) lines.push(`Shape: ${flag.ratio[0]}:${flag.ratio[1]}`);
+    if (flag.note) lines.push(flag.note);
+    lines.push(`As an emoji, this flag is ${flag.code.length === 2 ? `two letters, ${flag.code.split('').join(' + ')}` : 'a black flag with hidden letters'}, which each device draws its own way.`);
   } else if (item.kind === 'symbol') {
     const [ch, name, hex, family] = item.symbol;
     big.textContent = ch;
@@ -362,6 +407,8 @@ function showDetail(item) {
   const list = document.createElement('ul');
   list.replaceChildren(...lines.map(line => Object.assign(document.createElement('li'), { textContent: line })));
   box.replaceChildren(big, title, list);
+  // On a phone the name card sits under the grid: bring it into view so a tap always shows its answer.
+  box.scrollIntoView({ block: 'nearest' });
 }
 
 // ---- Wiring ---------------------------------------------------------------------------------

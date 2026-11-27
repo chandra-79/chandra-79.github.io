@@ -68,4 +68,6 @@ authorization of the copyright holder.
 
 SPDX-License-Identifier: Unicode-3.0
 
-3. Symbol names are the official Unicode character names. Flags are drawn by Ziggle's own renderer (play/flags.js); no flag artwork is copied.
+3. Symbol names are the official Unicode character names.
+
+4. Flags. 83 flags are drawn by Ziggle's own renderer (play/flags.js). The other flag pictures (play/flag-art/) come from country-flag-icons (https://gitlab.com/catamphetamine/country-flag-icons), MIT licence, Copyright (c) 2020 @catamphetamine <purecatamphetamine@gmail.com>. Capitals and continents (play/flags-world.js) come from countries-list (https://github.com/annexare/Countries), MIT licence, Copyright (c) 2014 Annexare Studio. Both are used under the same MIT terms printed in full in section 1 above, with these copyright lines in place of that section's.

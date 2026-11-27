@@ -24,7 +24,7 @@ repository and must stay with any copy of that data:
     see library/v1/NOTICE.txt
   - SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson
     see play/SCOWL-COPYRIGHT.txt
-  - emojibase-data (MIT) and Unicode CLDR / Unicode data (Unicode License V3)
+  - emojibase-data (MIT), country-flag-icons (MIT), countries-list (MIT) and Unicode CLDR / Unicode data (Unicode License V3)
     see play/emoji/NOTICE.txt
 
 Emoji are drawn by the visitor's own device; no emoji artwork is included.

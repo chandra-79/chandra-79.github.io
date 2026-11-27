@@ -3,6 +3,8 @@
 // those carry `simplified: true` and the trainer says the emblem is simplified. Coats of arms stay out.
 // code: ISO 3166 (or the UK subdivision code) · ratio: width:height · continent is left empty for countries
 // that span two continents, so the quiz never asks an unfair question.
+import { WORLD } from './flags-world.js';
+
 const W = '#ffffff', K = '#000000';
 const tri = (kind, colors, weights) => [kind, colors, weights];
 
@@ -126,3 +128,8 @@ export const FLAGS = Object.freeze([
     ['shape', [0.325, 0.25, 0.35, 0.5], 'M2,46 C30,30 70,32 98,58 L98,66 C70,40 30,38 2,54 Z', W], ['star', 0.43, 0.62, 0.025, W], ['star', 0.52, 0.66, 0.02, W], ['star', 0.58, 0.58, 0.022, W], ['star', 0.47, 0.7, 0.018, W], ['star', 0.55, 0.72, 0.018, W]] },
 ]);
 export const CONTINENTS = Object.freeze(['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania']);
+
+// Every flag the trainer knows: Ziggle's own drawings, plus the rest of the Unicode flags as 3:2 pictures (flags-world.js).
+// Where both exist (the six flags whose emblem Ziggle drew simply), the fuller picture is used.
+const pictured = new Set(WORLD.map(flag => flag.code));
+export const ALL_FLAGS = Object.freeze([...FLAGS.filter(flag => !pictured.has(flag.code)), ...WORLD.map(flag => Object.freeze({ ratio: [3, 2], ...flag }))]);

@@ -88,6 +88,13 @@ export function flagSvg(flag, { title = '' } = {}) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img"${title ? '' : ' aria-hidden="true"'} class="flag-svg">${label}<rect width="${W}" height="${H}" fill="#ffffff"/>${parts.join('')}</svg>`;
 }
 
+/** A flag picture from flag-art/*.js ("viewBox|shapes") as SVG, the same size and class as a drawn flag. */
+export function artSvg(art, { title = '' } = {}) {
+  const at = art.indexOf('|');
+  const label = title ? `<title>${title.replace(/[<&>]/g, '')}</title>` : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${art.slice(0, at)}" width="90" height="60" role="img"${title ? '' : ' aria-hidden="true"'} class="flag-svg">${label}${art.slice(at + 1)}</svg>`;
+}
+
 /** Every colour a flag uses, for tests and the colour hint. */
 export function flagColors(flag) {
   const colors = new Set();

@@ -1,13 +1,13 @@
 # Ziggle credits
 
-Ziggle 2.73.2. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
+Ziggle 2.74.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
 
 ## Third-party data and notices
 
 - Open English WordNet 2024 (CC BY 4.0), derived from Princeton WordNet 3.0: [`play/OEWN-NOTICE.txt`](play/OEWN-NOTICE.txt)
 - Princeton WordNet 3.0 (practice word library): [`library/v1/NOTICE.txt`](library/v1/NOTICE.txt)
 - SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson: [`play/SCOWL-COPYRIGHT.txt`](play/SCOWL-COPYRIGHT.txt)
-- emojibase-data (MIT) and Unicode CLDR / Unicode data (Unicode License V3): [`play/emoji/NOTICE.txt`](play/emoji/NOTICE.txt)
+- emojibase-data (MIT), country-flag-icons (MIT), countries-list (MIT) and Unicode CLDR / Unicode data (Unicode License V3): [`play/emoji/NOTICE.txt`](play/emoji/NOTICE.txt)
 
 ## Project credits
 
@@ -24,7 +24,7 @@ Sudoku puzzles are generated locally by Ziggle's own solver-checked engine (Clas
 
 Word Cloud and Letter Lock grew out of ideas from Mind Gym, an earlier, now retired project by the same owner; their Ziggle code, clue text and styling are new. Word Cloud's 127 weaves and clues are original. Letter Lock's word lists are derived from SCOWL (Spell Checker Oriented Word Lists) by Kevin Atkinson, via the `wordlist-english` package; SCOWL's permission notice ships with the lists in `play/SCOWL-COPYRIGHT.txt`. Letter Lock's answers were curated by hand from the common-word levels. Its second answer list (1,014 words, used once the first 809 have each been a daily) was chosen by hand from the same SCOWL-derived guess list: no plurals in -s and no -ed forms, and about three in four are also entries in Ziggle's WordNet-based word catalog (`library/v1/`, see above). The typing trainer's practice words also come from SCOWL (its most common level); its sentences, number and code snippets were written for Ziggle. The blog posts are original writing; facts and figures link to their sources.
 
-The emoji and flags learner's emoji names, code points, versions and groups come from emojibase-data (MIT, by Miles Johnson), built on the Unicode CLDR project (Unicode License V3); both notices ship in `play/emoji/NOTICE.txt`. Symbol names are the official Unicode character names. The emoji themselves are drawn by the player's device. The 82 flags are drawn by Ziggle's own renderer (`play/flags.js`) from each flag's published geometry and colours; no flag artwork or icon set is copied. Questions, levels and notes were written for Ziggle.
+The emoji and flags learner's emoji names, code points, versions and groups come from emojibase-data (MIT, by Miles Johnson), built on the Unicode CLDR project (Unicode License V3); both notices ship in `play/emoji/NOTICE.txt`. Symbol names are the official Unicode character names. The emoji themselves are drawn by the player's device. Of its 260 flags (every flag Unicode defines except the United Nations and Sark), 83 are drawn by Ziggle's own renderer (`play/flags.js`) from each flag's published geometry and colours. The other 177 use the 3:2 flag pictures from country-flag-icons (MIT, © 2020 @catamphetamine), with capitals and continents from countries-list (MIT, © 2014 Annexare Studio); both notices ship in `play/emoji/NOTICE.txt`, and `flags-source/build-flags.mjs` rebuilds the list. Questions, levels and notes were written for Ziggle.
 
 The memory palace trainer's word lists, objects, names, made-up historical events, Major-system pegs, Ziggle House and lessons were written for Ziggle; its faces and abstract shapes are drawn by Ziggle's own code (`play/palace-art.js`). The method of loci, the Major system and the memory-championship disciplines are traditional techniques, described here in Ziggle's own words.
 
@@ -43,6 +43,6 @@ The tile pictures in `play/art/` were drawn for Ziggle (`art-source/build-art.mj
 - `library/v1/NOTICE.txt`: Princeton WordNet 3.0 licence (word catalog).
 - `play/SCOWL-COPYRIGHT.txt`: SCOWL word lists (Letter Lock, typing, catalog frequencies).
 - `play/OEWN-NOTICE.txt`: Open English WordNet 2024, CC BY 4.0 (Word Builder).
-- `play/emoji/NOTICE.txt`: emojibase-data (MIT) and Unicode CLDR (emoji and flags learner).
+- `play/emoji/NOTICE.txt`: emojibase-data (MIT), Unicode CLDR, country-flag-icons (MIT) and countries-list (MIT) (emoji and flags learner).
 
 The same list, with links, is on the About page under Credits (`/about.html#credits`), linked from every page's footer.
