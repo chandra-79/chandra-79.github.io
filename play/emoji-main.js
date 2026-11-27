@@ -1,5 +1,5 @@
 import { registerHowTo } from './howto-boot.js';
-import { LEVELS, ROUND, CARD_MODES, levelInfo, buildRound, passed as roundPassed, dateSeed, codeLabel, versionLabel, isSequence, sequenceParts } from './unicode-engine.js';
+import { LEVELS, ROUND, CARD_MODES, levelInfo, levelNumber, nextLevel, flagHome, buildRound, passed as roundPassed, dateSeed, codeLabel, versionLabel, isSequence, sequenceParts } from './unicode-engine.js';
 import { renderPager } from './pager.js';
 import { newCard, review, dueCards, mastery } from './review-core.js';
 import { flagSvg, artSvg } from './flags.js';
@@ -110,7 +110,7 @@ function showStart() {
   $('quiz-live').hidden = true; $('round-result').hidden = true; $('quiz-start').hidden = false;
   const due = dueIds().length;
   if (mode === 'level') {
-    $('uni-kicker').textContent = `LEVEL ${info.n} OF ${LEVELS.length}${save.passed.includes(info.n) ? ' · ★ EARNED' : ''}`;
+    $('uni-kicker').textContent = `LEVEL ${levelNumber(info.n)} OF ${LEVELS.length}${save.passed.includes(info.n) ? ' · ★ EARNED' : ''}`;
     $('uni-title').textContent = info.name;
     $('uni-blurb').textContent = info.blurb;
     $('start').textContent = 'Start round';
@@ -252,7 +252,7 @@ function finish() {
   $('quiz-live').hidden = true; $('round-result').hidden = false;
   $('round-score').textContent = `0 of ${total}`; countUp($('round-score'), right, { format: n => `${Math.round(n)} of ${total}` });
   const pass = roundPassed(right, total);
-  $('round-title').textContent = earned ? `★ Level ${round.level} star earned` : pass ? 'Lovely round' : right >= total / 2 ? 'Good going' : 'A learning round';
+  $('round-title').textContent = earned ? `★ Level ${levelNumber(round.level)} star earned` : pass ? 'Lovely round' : right >= total / 2 ? 'Good going' : 'A learning round';
   $('round-detail').textContent = round.kind === 'level'
     ? (pass ? (earned ? 'That’s 8 or more. The star is yours.' : 'Another clean round.') : `Get 8 of 10 for the star. Missed ones come back in Review.`)
     : round.kind === 'review' ? 'Right answers wait longer before they return. Misses come back tomorrow.' : `Daily 10 #${dayNumber()}. Come back tomorrow for a new set.`;
@@ -261,13 +261,13 @@ function finish() {
   $('missed-count').textContent = missed.length;
   $('missed-review').hidden = missed.length === 0;
   $('missed-review').open = false;
-  const nextLevel = round.kind === 'level' && pass && round.level < LEVELS.length;
-  $('next-level').hidden = !nextLevel;
+  const hasNext = round.kind === 'level' && pass && nextLevel(round.level) !== null;
+  $('next-level').hidden = !hasNext;
   $('share').hidden = round.kind !== 'daily';
   $('share-status').textContent = '';
   updateDueBadge();
   renderSide();
-  (nextLevel ? $('next-level') : $('again')).focus({ preventScroll: true });
+  (hasNext ? $('next-level') : $('again')).focus({ preventScroll: true });
   if (earned) feedback.win(); else if (pass) { play('ding'); haptic(20); }
 }
 
@@ -280,10 +280,10 @@ function renderSide() {
     const passed = save.passed.includes(info.n), current = info.n === save.level && mode === 'level';
     button.className = `level${passed ? ' passed' : ''}${current ? ' current' : ''}`;
     button.innerHTML = '<span class="lv-mark" aria-hidden="true"></span><span class="lv-name"></span><span class="lv-goal"></span>';
-    button.querySelector('.lv-mark').textContent = passed ? '★' : String(info.n);
+    button.querySelector('.lv-mark').textContent = passed ? '★' : String(levelNumber(info.n));
     button.querySelector('.lv-name').textContent = info.name;
     button.querySelector('.lv-goal').textContent = save.best[info.n] ? `${save.best[info.n]}/10` : '';
-    button.setAttribute('aria-label', `Level ${info.n}, ${info.name}${passed ? ', star earned' : ''}${save.best[info.n] ? `, best ${save.best[info.n]} of 10` : ''}`);
+    button.setAttribute('aria-label', `Level ${levelNumber(info.n)}, ${info.name}${passed ? ', star earned' : ''}${save.best[info.n] ? `, best ${save.best[info.n]} of 10` : ''}`);
     if (current) button.setAttribute('aria-current', 'true');
     button.addEventListener('click', () => { save.level = info.n; persist(); setMode('level'); $('start').focus({ preventScroll: true }); });
     item.append(button);
@@ -303,7 +303,7 @@ function renderSide() {
   const recent = save.history.slice(-6).reverse();
   $('history').replaceChildren(...(recent.length ? recent.map(item => {
     const li = document.createElement('li');
-    const label = item.kind === 'daily' ? 'Daily 10' : item.kind === 'review' ? 'Review' : `Level ${item.level}`;
+    const label = item.kind === 'daily' ? 'Daily 10' : item.kind === 'review' ? 'Review' : `Level ${levelNumber(item.level)}`;
     li.textContent = `${label}: ${item.right} of ${item.total}`;
     return li;
   }) : [Object.assign(document.createElement('li'), { className: 'empty', textContent: 'Your rounds will show here.' })]));
@@ -311,14 +311,19 @@ function renderSide() {
 
 // ---- Browse ---------------------------------------------------------------------------------
 const FLAGS_AZ = [...FLAGS].sort((a, b) => a.name.localeCompare(b.name, 'en'));
-const BROWSE_SETS = [...GROUPS.map(group => ({ id: group.id, name: `${group.name} (${group.count})` })), { id: 'flags', name: `Flags (${FLAGS.length})` }, { id: 'unicode', name: 'Unicode symbols' }];
+// Flags can be browsed all together or a continent at a time. Every flag sits in exactly one continent list.
+const FLAG_PLACES = ['Europe', 'North America', 'South America', 'Africa', 'Asia', 'Oceania', ''];
+const flagsIn = place => FLAGS_AZ.filter(flag => flagHome(flag) === place);
+const FLAG_SETS = [{ id: 'flags', name: `All flags (${FLAGS.length})`, flags: FLAGS_AZ }, ...FLAG_PLACES.map((place, i) => ({ id: `flags-${i}`, name: `${place || 'Antarctica and the far south'} (${flagsIn(place).length})`, flags: flagsIn(place) }))];
+const flagSet = id => FLAG_SETS.find(set => set.id === id);
+const BROWSE_SETS = [{ label: 'Emoji', sets: GROUPS.map(group => ({ id: group.id, name: `${group.name} (${group.count})` })) }, { label: 'Flags', sets: FLAG_SETS }, { label: 'Symbols', sets: [{ id: 'unicode', name: 'Unicode symbols' }] }];
 let browseSet = 'smileys-emotion', browseItems = [];
 async function renderBrowse() {
   const select = $('browse-set');
-  if (!select.options.length) select.replaceChildren(...BROWSE_SETS.map(set => Object.assign(document.createElement('option'), { value: set.id, textContent: set.name })));
+  if (!select.options.length) select.replaceChildren(...BROWSE_SETS.map(group => { const box = Object.assign(document.createElement('optgroup'), { label: group.label }); box.append(...group.sets.map(set => Object.assign(document.createElement('option'), { value: set.id, textContent: set.name }))); return box; }));
   select.value = browseSet;
   try {
-    if (browseSet === 'flags') browseItems = FLAGS_AZ.map(flag => ({ kind: 'flag', flag, name: flag.name }));
+    if (flagSet(browseSet)) browseItems = flagSet(browseSet).flags.map(flag => ({ kind: 'flag', flag, name: flag.name }));
     else if (browseSet === 'unicode') { await loadData({ symbols: true }); browseItems = symbolCache.map(symbol => ({ kind: 'symbol', symbol, name: symbol[1] })); }
     else { await loadData({ groups: [browseSet] }); browseItems = emojiCache[browseSet].map(record => ({ kind: 'emoji', record, name: record[1] })); }
   } catch { $('browse-count').textContent = 'Couldn’t load this set. Check your connection.'; return; }
@@ -346,7 +351,7 @@ async function drawBrowse() {
   const term = $('browse-search').value.trim().toLowerCase();
   const all = term ? browseItems.filter(item => item.name.toLowerCase().includes(term)) : browseItems;
   const grid = $('browse-grid');
-  grid.className = `browse-grid${browseSet === 'flags' ? ' flags' : ''}`;
+  grid.className = `browse-grid${flagSet(browseSet) ? ' flags' : ''}`;
   const size = pageSize(grid);
   if (browseKey !== `${browseSet}|${term}`) { browseKey = `${browseSet}|${term}`; browsePage = 1; }
   // When the window changes shape, stay on the page that holds what was first on screen.
@@ -416,7 +421,7 @@ document.querySelectorAll('[data-mode]').forEach(button => button.addEventListen
 $('start').addEventListener('click', startRound);
 $('next').addEventListener('click', next);
 $('again').addEventListener('click', () => { showStart(); startRound(); });
-$('next-level').addEventListener('click', () => { save.level = Math.min(LEVELS.length, (round?.level || save.level) + 1); persist(); setMode('level'); $('start').focus({ preventScroll: true }); });
+$('next-level').addEventListener('click', () => { save.level = nextLevel(round?.level || save.level) ?? save.level; persist(); setMode('level'); $('start').focus({ preventScroll: true }); });
 $('share').addEventListener('click', async () => {
   if (!round) return;
   const right = round.answers.filter(Boolean).length;

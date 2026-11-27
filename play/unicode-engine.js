@@ -8,28 +8,40 @@ export const versionLabel = version => `Emoji ${Number.isInteger(version) ? vers
 
 export const PASS_SCORE = 8;
 export const ROUND = 10;
+// Levels are listed in the order players meet them. `n` is the number a level is saved under and never changes or
+// moves (2.74 added 11 to 13, 2.75 added 14 to 16 and gave every continent its own level); the number a player sees
+// is the level's place in this list (levelNumber).
 export const LEVELS = Object.freeze([
   { n: 1, name: 'Faces and hearts', groups: ['smileys-emotion'], modes: ['name', 'pick'], blurb: 'Smiles, frowns and every heart. Learn their official names.' },
   { n: 2, name: 'Hands and people', groups: ['people-body'], modes: ['name', 'pick'], simple: true, blurb: 'Waves, thumbs, jobs and people doing things.' },
   { n: 3, name: 'Animals and food', groups: ['animals-nature', 'food-drink'], modes: ['name', 'pick', 'group'], blurb: 'From octopus to oyster, and which family each belongs to.' },
   { n: 4, name: 'Travel, play and things', groups: ['travel-places', 'activities', 'objects'], modes: ['name', 'pick', 'group'], blurb: 'Places, sports, tools and everyday objects.' },
-  { n: 5, name: 'Flags of the world', flags: ['Europe', 'North America', 'South America'], modes: ['flag', 'country'], blurb: 'Every country’s flag in Europe and the Americas.' },
-  { n: 6, name: 'Codes and sequences', groups: ['smileys-emotion', 'animals-nature', 'food-drink', 'people-body'], modes: ['code', 'build'], blurb: 'Every emoji has a number, and some are built from others.' },
-  { n: 7, name: 'Emoji history', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'objects'], modes: ['first'], blurb: 'Which arrived first? From the 2010 originals to 2023’s newcomers.' },
-  { n: 8, name: 'Symbols, arrows and maths', symbols: true, modes: ['symbol'], blurb: 'Arrows, maths, money, music and keyboard symbols, by their Unicode names.' },
-  { n: 9, name: 'All the flags', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'Every country’s flag, with capitals.' },
-  { n: 10, name: 'Mastery', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'travel-places', 'activities', 'objects', 'symbols'], flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], symbols: true, territories: 'too', modes: ['name', 'pick', 'code', 'build', 'first', 'flag', 'capital', 'symbol'], blurb: 'Anything at all, in any order.' },
-  // 2.74 added the rest of the world's flags. These levels come after Mastery so nobody's saved level numbers move.
+  { n: 5, name: 'Flags of Europe', flags: ['Europe'], modes: ['flag', 'country', 'capital'], blurb: 'Every country in Europe, from Albania to Wales, with capitals.' },
+  { n: 14, name: 'Flags of North America', flags: ['North America'], modes: ['flag', 'country', 'capital'], blurb: 'Canada to Panama and the Caribbean, with capitals.' },
+  { n: 15, name: 'Flags of South America', flags: ['South America'], modes: ['flag', 'country', 'capital'], blurb: 'All twelve countries, from Argentina to Venezuela.' },
   { n: 11, name: 'Flags of Africa', flags: ['Africa'], modes: ['flag', 'country', 'capital'], blurb: 'All 54 African countries, from Algeria to Zimbabwe.' },
-  { n: 12, name: 'Flags of Asia and Oceania', flags: ['Asia', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'From Afghanistan to Vanuatu, with capitals.' },
-  { n: 13, name: 'Islands and territories', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], territories: 'only', modes: ['flag', 'country'], blurb: 'Greenland, Bermuda, Hong Kong and other places with a flag of their own.' },
+  { n: 12, name: 'Flags of Asia', flags: ['Asia'], modes: ['flag', 'country', 'capital'], blurb: 'From Afghanistan to Yemen, with capitals.' },
+  { n: 16, name: 'Flags of Oceania', flags: ['Oceania'], modes: ['flag', 'country', 'capital'], blurb: 'Australia, New Zealand and the Pacific island countries.' },
+  { n: 13, name: 'Flags of islands and territories', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], territories: 'only', modes: ['flag', 'country'], blurb: 'Greenland, Bermuda, Hong Kong and other places with a flag of their own.' },
+  { n: 9, name: 'Flags of the world', flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], modes: ['flag', 'country', 'capital'], blurb: 'Every country’s flag from every continent, mixed together.' },
+  { n: 6, name: 'Codes and sequences', groups: ['smileys-emotion', 'animals-nature', 'food-drink', 'people-body'], modes: ['code', 'build'], blurb: 'Every emoji has a number, and some are built from others.' },
+  { n: 7, name: 'Emoji history', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'objects'], modes: ['first'], blurb: 'Which arrived first? From the 2010 originals to this year’s newcomers.' },
+  { n: 8, name: 'Symbols, arrows and maths', symbols: true, modes: ['symbol'], blurb: 'Arrows, maths, money, music and keyboard symbols, by their Unicode names.' },
+  { n: 10, name: 'Mastery', groups: ['smileys-emotion', 'people-body', 'animals-nature', 'food-drink', 'travel-places', 'activities', 'objects', 'symbols'], flags: ['Europe', 'Africa', 'Asia', 'North America', 'South America', 'Oceania', ''], symbols: true, territories: 'too', modes: ['name', 'pick', 'code', 'build', 'first', 'flag', 'capital', 'symbol'], blurb: 'Anything at all, in any order.' },
 ]);
+/** A level by the number it is saved under; an unknown number gives the first level. */
+export const levelInfo = n => LEVELS.find(level => level.n === n) || LEVELS[0];
+/** The number a player sees: the level's place in the list. */
+export const levelNumber = n => LEVELS.indexOf(levelInfo(n)) + 1;
+/** The saved number of the level that follows, or null after the last. */
+export const nextLevel = n => LEVELS[levelNumber(n)]?.n ?? null;
+/** The continent a flag is filed under. Russia and Turkey span two, so questions never name one for them, but each still belongs to one level and one Browse list. */
+export const flagHome = flag => flag.continent || { RU: 'Europe', TR: 'Asia' }[flag.code] || '';
 /** The flags a level asks about. Territories have their own level; a place that flies another's flag is never asked. */
 export function levelFlags(info, flags) {
   if (!info.flags) return [];
-  return flags.filter(flag => !flag.same && info.flags.includes(flag.continent) && (info.territories === 'too' || (info.territories === 'only') === Boolean(flag.territory)));
+  return flags.filter(flag => !flag.same && info.flags.includes(flagHome(flag)) && (info.territories === 'too' || (info.territories === 'only') === Boolean(flag.territory)));
 }
-export const levelInfo = n => LEVELS[Math.max(1, Math.min(LEVELS.length, n)) - 1];
 
 export function seeded(seed) {
   let value = seed >>> 0;
