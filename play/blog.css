@@ -186,3 +186,11 @@ ul.try-links li{margin:0}
 .post-body figure:has(>table.data){overflow-x:auto}
 @media(width<=400px){table.data{font-size:14px}table.data th,table.data td{padding:6px}}
 @media(width<=340px){.blog-hello{padding:12px;gap:8px}.blog-hello-words{min-width:0}.blog-hello-actions>*{white-space:normal}}
+html body .post+.ad-banner{margin:28px auto 36px}
+html body .post+.ad-banner .promo{padding:12px 20px}
+@media (width<=650px){html body .post+.ad-banner{width:100%;height:auto;min-height:80px;margin:24px 0 32px}
+html body .post+.ad-banner .promo{gap:12px;padding:14px 16px}
+html body .post+.ad-banner .promo-art{border-radius:12px;width:44px;height:44px;font-size:22px}
+html body .post+.ad-banner .promo-text strong{font-size:15px}
+html body .post+.ad-banner .promo-text span{white-space:normal;font-size:13px;line-height:1.35}
+html body .post+.ad-banner .promo-go{padding:8px 12px;font-size:12px}}

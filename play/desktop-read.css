@@ -16,8 +16,10 @@ html[data-game-active] body>main.has-ad-rail{grid-template-columns:minmax(0,1fr)
 @media (width>=651px) and (height>=521px){html:not([data-play-focus]) .collection-page-heading.game-bar{gap:8px 18px}
 html:not([data-play-focus]) body .game-bar :is(.mode-switch,.daily-levels){border:1px solid var(--stroke);background:var(--surface-soft);border-radius:12px;gap:3px;padding:3px;box-shadow:inset 0 1px 2px var(--relief-edge)}
 html:not([data-play-focus]) body .game-bar :is(.mode-switch,.daily-levels) button{border-radius:9px;min-height:32px;padding:4px 18px;font-size:14px;font-weight:800}
-html:not([data-play-focus]) body .game-bar :is(.assist-open,.drawer-button,.bar-link,.bar-help){box-sizing:border-box;border:1px solid var(--stroke);background:var(--surface);color:var(--ink);border-radius:12px;height:40px;padding:0 16px;font-size:14px;font-weight:800;align-items:center;justify-content:center;gap:6px;display:inline-flex}
+html:not([data-play-focus]) body .game-bar :is(.assist-open,.drawer-button,.bar-link,.bar-help){box-sizing:border-box;height:40px;padding:0 16px;font-size:14px;align-items:center;justify-content:center;gap:6px;display:inline-flex}
 html:not([data-play-focus]) body .game-bar .bar-help{width:40px;padding:0}}
+html:root body .game-bar.game-bar :is(.assist-open,.drawer-button,.bar-link,.bar-help){border:1px solid var(--stroke);background:var(--surface);color:var(--ink);border-radius:12px;font-weight:800}
+html[data-play-focus] body .game-bar .assist-open{height:var(--tap,32px);font-size:14px}
 html:not([data-look=contrast]){--relief-edge:color-mix(in srgb,var(--ink) 24%,transparent);--relief-shadow:color-mix(in srgb,var(--ink) 18%,transparent);--relief-low:color-mix(in srgb,var(--ink) 9%,var(--stroke));--relief-raised:inset 0 1px 0 var(--relief-light),0 3px 0 var(--relief-low),0 14px 26px -12px var(--relief-shadow);--key:inset 0 1px 0 var(--relief-light),0 2px 0 var(--relief-edge),0 5px 9px -3px var(--relief-shadow)}
 html:not([data-look=contrast])[data-appearance=dark]{--relief-light:#ffffff24;--relief-edge:#000b;--relief-shadow:#000c;--relief-low:#0009}
 html :is(button,.header-button,.nav-link,.home-cta,.primary-action,.tool-button,.bar-link,:where(.nav-group,.collection-menu)>summary):where(:not(.buddy,.cloud-face,.cell,.letter-cell,.crossword-cell,[role=switch],.level-picker,.activity *)){box-shadow:var(--key)}
