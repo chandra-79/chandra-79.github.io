@@ -10,7 +10,10 @@
 :root[data-appearance=dark] .home-hero:after{opacity:.14}
 .home-hero>*{z-index:1;position:relative}
 .home-eyebrow{color:var(--accent);letter-spacing:1.2px;text-transform:uppercase;margin:0 0 10px;font-size:13px;font-weight:800}
-.home-hero h1{letter-spacing:-1.8px;max-width:14ch;margin:0 0 14px;font-size:clamp(34px,5vw,56px);font-weight:800;line-height:1.04}
+.home-eyebrow .eyebrow-part{white-space:nowrap}
+.home-eyebrow .date-short{display:none}
+@media (width<=430px){.home-eyebrow .date-long{display:none}.home-eyebrow .date-short{display:inline}}
+.home-hero h1{letter-spacing:-1.8px;margin:0 0 14px;font-size:min(clamp(34px,5vw,56px),11.6vw - 7px);font-weight:800;line-height:1.04}
 .home-hero h1 span{color:var(--accent)}
 .home-lede{max-width:50ch;color:var(--muted);margin:0 0 24px;font-size:16px;line-height:1.55}
 .home-cta{background:var(--accent);min-height:48px;box-shadow:0 4px 0 var(--ink);border-radius:14px;align-items:center;gap:10px;padding:12px 20px;font-size:15px;font-weight:800;transition:transform .12s,box-shadow .12s;display:inline-flex;color:var(--paper)!important}
@@ -414,8 +417,15 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .stat strong{font-size:17px}
 .stat .stat-icon{width:18px;height:18px}
 .look-back .look-kicker{letter-spacing:.8px;font-size:11px}
+.today-list .today-name{margin-inline:-2px}
+.today-edit{column-gap:8px}
+.look-back .look-text{display:contents}
+.look-back :is(.look-kicker,.look-count,#backup-cue){grid-column:1/-1;margin:0}
+.look-back .look-kicker{order:1}.look-back .look-count{order:2;margin-top:-8px}
+.look-back .activity{order:3}.look-back .look-nudge{order:4}
 .streak-row{position:relative}
 }
+@media (width<=380px){.home-hero{padding-inline:11px}}
 @media(width<=340px){.look-back{grid-template-columns:minmax(0,1fr)}.look-back .activity{max-width:100%}.today-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}}
 .train-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;display:grid}
 .train-tile{border:1px solid var(--stroke);background:var(--surface);height:100%;box-shadow:0 4px 0 var(--stroke);text-align:center;border-radius:22px;flex-direction:column;align-items:center;gap:8px;padding:18px 8px 16px;transition:transform .14s,box-shadow .14s,border-color .14s;display:flex}

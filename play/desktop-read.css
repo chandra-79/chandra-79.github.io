@@ -28,3 +28,8 @@ html body .game-bar :is(.mode-switch,.daily-levels) button:not([aria-pressed=tru
 .game-bar .mode-switch[data-three]{grid-template-columns:auto auto auto}
 @media (orientation:portrait){html[data-play-focus] body .game-bar .mode-switch[data-three] button{flex:1;max-width:none!important}}
 @media (width<=650px){html body .game-bar:has(.mode-switch[data-three]){flex-wrap:wrap}html:not([data-focused]) body .game-bar .mode-switch[data-three]{order:9;flex:1 0 100%;display:flex;min-width:0}html:not([data-focused]) body .game-bar .mode-switch[data-three] button{flex:1;min-width:0;padding:4px 6px}}
+
+@media (width<=379px){html:root body>.collection-header{gap:4px!important}html:root body>.collection-header .collection-nav{gap:5px!important}}
+@media (width>=340px) and (width<=379px){html:root body>.collection-header .collection-nav{gap:7px!important}}
+html:root[data-play-focus] .type-shell .mode-tabs{grid-template-columns:repeat(4,auto)!important}
+@media (width<=650px){html:root[data-play-focus]:not([data-focused]) body .game-bar:has(.mode-switch[data-three]){height:auto!important;padding-block:4px!important;row-gap:4px!important}}

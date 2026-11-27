@@ -131,3 +131,4 @@ html body .board-view-controls[data-view-open]{flex-wrap:wrap}
 }
 html:is([data-immersive],[data-focused])[data-play-focus] body>.collection-header{visibility:hidden!important;position:absolute!important;top:0;left:0;width:100%;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important;box-shadow:none!important}
 html:is([data-immersive],[data-focused])[data-play-focus] body>.collection-header .skip-link{visibility:visible!important}
+html[data-play-focus] .game-shell .board-hud .hearts{position:static!important;transform:none!important;margin:0!important}
