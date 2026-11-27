@@ -31,6 +31,14 @@
   };
   const LABELS = { new: 'newest first', old: 'oldest first', quick: 'quickest read first', long: 'longest read first', az: 'A to Z' };
   const cats = new Set(items.map(item => item.dataset.cat));
+  // Posts you have read (2.65): kept in this browser only by blog-post.js. Each gets a small "Read" tag, and "Your reading history" lists them, latest first.
+  const HISTORY = '~read';
+  let readAt = {}; try { readAt = JSON.parse(localStorage.getItem('ziggle-blog-read-v1')) || {}; } catch { /* No history here. */ }
+  const slugOf = item => (item.querySelector('a.post-card')?.getAttribute('href') || '').split('/').pop().replace(/\.html$/, '');
+  for (const item of items) { const at = readAt[slugOf(item)]; if (!at) continue; item.dataset.read = String(at); const tag = Object.assign(document.createElement('span'), { className: 'post-read', textContent: 'Read ✓' }); item.querySelector('.post-card-meta')?.append(' ', tag); }
+  const readCount = items.filter(item => item.dataset.read).length;
+  if (readCount) { cats.add(HISTORY); const b = Object.assign(document.createElement('button'), { type: 'button', className: 'history-chip', textContent: `Your reading history (${readCount})` }); b.dataset.cat = HISTORY; b.setAttribute('aria-pressed', 'false'); filter.append(b); }
+  const inTopic = (item, topic) => !topic || (topic === HISTORY ? Boolean(item.dataset.read) : item.dataset.cat === topic);
   filter.hidden = false; if (tools) tools.hidden = false;
   const search = Object.assign(document.createElement('label'), { className: 'search-box', innerHTML: '<span class="sr-only">Search posts</span><input type="search" id="post-search" placeholder="Search posts" autocomplete="off" enterkeyhint="search" maxlength="60">' });
   const box = search.querySelector('input');
@@ -56,7 +64,8 @@
   };
   const render = (state, { scroll = false } = {}) => {
     const words = state.q.toLowerCase().split(/\s+/).filter(Boolean);
-    const shown = items.filter(item => (!state.topic || item.dataset.cat === state.topic) && words.every(word => item.textContent.toLowerCase().includes(word))).sort(SORTS[state.sort]);
+    const history = state.topic === HISTORY;
+    const shown = items.filter(item => inTopic(item, state.topic) && words.every(word => item.textContent.toLowerCase().includes(word))).sort(history && state.sort === 'new' ? (a, b) => b.dataset.read.localeCompare(a.dataset.read) : SORTS[state.sort]);
     const pages = Math.max(1, Math.ceil(shown.length / PER_PAGE));
     state.page = Math.min(state.page, pages);
     const start = (state.page - 1) * PER_PAGE, onPage = shown.slice(start, start + PER_PAGE);
@@ -68,8 +77,9 @@
     filter.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cat === state.topic)));
     if (sortBox) sortBox.value = state.sort;
     if (box && box !== document.activeElement) box.value = state.q;
-    const what = state.q ? `${shown.length} post${shown.length === 1 ? '' : 's'} for “${state.q}”${state.topic ? ` about ${state.topic.toLowerCase()}` : ''}` : state.topic ? `${shown.length} post${shown.length === 1 ? '' : 's'} about ${state.topic.toLowerCase()}` : `${shown.length} posts`;
-    count.textContent = `${what}, ${LABELS[state.sort]}${pages > 1 ? ` · page ${state.page} of ${pages}` : ''}`;
+    const about = history ? ' you’ve read' : state.topic ? ` about ${state.topic.toLowerCase()}` : '';
+    const what = state.q ? `${shown.length} post${shown.length === 1 ? '' : 's'} for “${state.q}”${about}` : state.topic ? `${shown.length} post${shown.length === 1 ? '' : 's'}${about}` : `${shown.length} posts`;
+    count.textContent = `${what}, ${history && state.sort === 'new' ? 'latest read first' : LABELS[state.sort]}${pages > 1 ? ` · page ${state.page} of ${pages}` : ''}`;
     // Pages: Previous, numbers (with gaps on long runs), Next.
     if (pager) {
       pager.hidden = pages < 2;

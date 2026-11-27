@@ -1,10 +1,10 @@
 /* While you play: only the board, its controls and the Ziggle logo. Everything else fades away (it keeps its space, so nothing moves). */
-body>.collection-header :is(.collection-nav,.collection-header-actions,.brand small),.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route{transition:opacity .3s ease}
-html[data-fading] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route),html[data-revealing] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0}
+body>.collection-header :is(.collection-nav,.collection-header-actions),.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route{transition:opacity .3s ease}
+html[data-fading] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route),html[data-revealing] :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0}
 /* Hidden, not removed: the page never reflows, so the board keeps its size and place from the first move to the last. */
 html[data-playing]:not([data-peek]):not([data-focused]) body>.collection-header{background:transparent!important;border-color:transparent!important;box-shadow:none!important;pointer-events:none}
 html[data-playing]:not([data-peek]):not([data-focused]) .collection-header .brand{pointer-events:auto}
-html[data-playing]:not([data-peek]):not([data-focused]) :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.brand small,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0;visibility:hidden}
+html[data-playing]:not([data-peek]):not([data-focused]) :is(.collection-header .collection-nav,.collection-header .collection-header-actions,.game-bar,.collection-welcome,body>footer,main>footer,.ad-slot,#daily-route){opacity:0;visibility:hidden}
 html[data-motion=calm] :is(.collection-nav,.collection-header-actions,.game-bar,.collection-welcome){transition:none}
 /* Phones held sideways (2.41.2): focus mode hides the header here too (focus-mode.js), and the board takes the full height on the left with pickers and controls on the right. */
 @media (height<=520px) and (orientation:landscape) and (width>=651px){

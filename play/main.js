@@ -1,7 +1,7 @@
 import { attachArrowHelp } from './arrow-flow.js';
 import { showLevelEnd } from './level-end.js';
 import { ringFx, clickFx, contactFx, escapeDuration } from './arrow-fx.js';
-import { levelSnapshot, isPractice, menuResume } from './arrow-resume.js';
+import { levelSnapshot, isPractice, menuResume, practiceStart } from './arrow-resume.js';
 import { LEVELS, WORLD_TOUR, generateLevel, generateDaily, inferDailyTier, generateTourBoard, canLeave, generateClimb, buildAhead } from './engine.js';
 import { COLOUR_NAMES as colourNames, piecesHelp as helpFor, whyBlocked as whyFor, pieceWords as wordsFor, pieceBadges as badgesFor, piecesSvg, gatesOpenedBy as openedFor, refuse as refuseFor, boardFrame, helpBody, SHAPE_LABELS as shapeLabels } from './arrow-pieces.js';
 import { letters as columnName, createIdentifiers, normalizeIdentifier, findDirectionalNeighbor } from './keyboard.js';
@@ -456,8 +456,8 @@ function win(){
   const previousBest=bestKey?saved.best?.[bestKey]:undefined,newBest=bestKey&&state.elapsed>0&&(!previousBest||state.elapsed<previousBest);
   if(newBest){saved.best={...saved.best,[bestKey]:state.elapsed};save();}
   const posts=state.mode==='daily'||(state.mode==='climb'&&state.climb.daily);
-  const nextLabel=(state.mode==='daily'||state.mode==='climb')&&ladder()?`Next: ${ladder().label} →`:state.mode==='daily'?'Back to your journey':final||state.mode==='tour'?'Explore your puzzles':state.mode==='endless'?'Next endless board →':'Next puzzle →';
-  const nextRun=()=>{if(state.mode==='archive')location.href='/play/index.html';else if((state.mode==='daily'||state.mode==='climb')&&ladder())startLevel(0,'climb');else if(state.mode==='daily')startLevel(saved.current,'levels');else if(final||state.mode==='tour')showLevels();else startLevel(state.level+1,state.mode);};
+  const nextLabel=state.mode==='climb'&&ladder()?`Next: ${ladder().label} →`:state.mode==='daily'?'Next puzzle →':final||state.mode==='tour'?'Explore your puzzles':state.mode==='endless'?'Next endless board →':'Next puzzle →';
+  const nextRun=()=>{if(state.mode==='archive')location.href='/play/index.html';else if(state.mode==='climb'&&ladder())startLevel(0,'climb');else if(state.mode==='daily')startPractice();else if(final||state.mode==='tour')showLevels();else startLevel(state.level+1,state.mode);};
   $('piece-guide').hidden=true;document.querySelector('.game-panel').hidden=true;$('arrow-result-detail').textContent=`${state.board.paths.length} arrows freed · ${formatTime(state.elapsed)} · ${state.lives} of 3 hearts kept`;$('repeat-arrow').onclick=()=>startLevel();
   $('arrow-completion').hidden=false;$('continue-arrow').textContent=nextLabel;$('continue-arrow').onclick=nextRun;
     state.paused=true;state.modal='win';updateKeyboardControls();
@@ -467,7 +467,7 @@ function win(){
     praise:`${credits?`+${credits} ✦ · `:''}${final?'All 12 puzzles cleared. That’s a beautiful kind of focus.':state.mode==='daily'?`Daily complete. ${earnedPoints?`+${earnedPoints} points earned.`:'Your score for this day is already saved.'} A fresh escape awaits tomorrow.`:'A clear board. A clear mind. Ready for another little escape?'}`,
     stats:[['time',formatTime(state.elapsed)+(newBest&&previousBest?' · new best!':'')],...(bestKey&&previousBest&&!newBest?[['your best',formatTime(previousBest)]]:[]),['arrows freed',state.board.paths.length],['hearts kept',`${state.lives} / 3`]],
     note:posts&&state.lifeUsed?'Rescued with a life · not posted to the leaderboard.':undefined,
-    actions:[{id:'next',label:nextLabel,primary:true,run:nextRun},{id:'again',label:'Play again',run:()=>startLevel()},
+    actions:[{id:'next',label:nextLabel,primary:true,run:nextRun},...(state.mode==='daily'&&ladder()?[{id:'ladder',label:`More of today: ${ladder().label}`,run:()=>startLevel(0,'climb')}]:[]),{id:'again',label:'Play again',run:()=>startLevel()},
       ...(posts?[{id:'share',label:'Share result',keepOpen:true,run:async()=>(await ziggle()?.share?.('arrows',dailyResult,activeDailyDate))||''}]:[]),
       ...(posts&&!state.lifeUsed&&!ziggle()?.kids?.()?[{id:'post',label:'Post to leaderboard',keepOpen:true,run:()=>{postScore(dailyResult,document.querySelector('dialog.level-end .le-status'));}}]:[])],
     onDismiss:()=>{},focus:()=>$('continue-arrow')}).then(endResult);
@@ -498,9 +498,10 @@ function trophies(){return [
 ];}
 $('trophies-button').onclick=()=>showModal(`<span class="eyebrow">LITTLE WINS, WELL EARNED</span><h2 id="modal-title">Your trophy shelf.</h2><p>${trophies().filter(t=>t.earned).length} of 5 milestones collected. Keep finding your way.</p>${trophies().map(t=>`<div class="trophy-item${t.earned?' earned':''}"><span>${icon('trophy')}</span><div><strong>${t.title}${t.earned?' ✓':''}</strong><small>${t.description}</small></div></div>`).join('')}`,'trophies');
 const isToday=()=>state.mode==='daily'||(state.mode==='climb'&&Boolean(state.climb?.daily));
+function startPractice(){const p=practiceStart(saved,LEVELS.length);startLevel(p.level,p.mode,p.resume);}
 function syncModeSwitch(){$('mode-daily')?.setAttribute('aria-pressed',String(isToday()));$('mode-practice')?.setAttribute('aria-pressed',String(!isToday()));}
 $('mode-daily')&&($('mode-daily').onclick=()=>{if(isToday()||state.busy)return;startLevel(8,'daily',!saved.daily.includes(dateKey()));});
-$('mode-practice')&&($('mode-practice').onclick=()=>{if(!isToday()||state.busy)return;startLevel(saved.current??0,'levels',true);});
+$('mode-practice')&&($('mode-practice').onclick=()=>{if(!isToday()||state.busy)return;startPractice();});
 function showDaily(){
   const complete=saved.daily.includes(dateKey()),stats=dailyStats(saved);
   showModal(`<div class="modal-symbol">${icon('calendar')}</div><span class="eyebrow">ONE DAY. ONE FRESH PUZZLE.</span><h2 id="modal-title">Your daily escape.</h2><div class="daily-date">${new Date().toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</div><p>${complete?'Today is complete. Play again for fun, or return tomorrow to grow your streak.':'The same puzzle for everyone today. A fresh challenge at your local midnight, no account needed.'}</p><div class="stats-row"><div><strong>${stats.currentStreak}</strong><small>current streak</small></div><div><strong>${stats.bestStreak}</strong><small>best streak</small></div><div><strong>${stats.points}</strong><small>total points</small></div></div><button class="primary-button" id="start-daily">${complete?'Replay today’s puzzle':'Continue daily challenge'}</button><p class="modal-note">Earn 100 points + 25 per remaining heart on your first daily win. Replays never add points.</p><button data-grownups class="secondary-button" id="daily-email">Email me the daily challenge · optional</button>`,'daily',true);
@@ -561,8 +562,8 @@ document.addEventListener('keydown',event=>{
 setInterval(()=>{updateDayNotice();if(!state.paused&&!state.ended&&!document.hidden){state.elapsed++;$('timer').textContent=formatTime(state.elapsed);if(state.elapsed%5===0)saveSession();}},1000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!state.ended&&!state.busy&&!state.modal)showPause();saveSession();updateDayNotice();});
 window.addEventListener('pagehide',()=>{if(!state.ended&&!state.busy&&!state.modal)showPause();saveSession();});
-{ const half=menuResume(saved,dateKey(),archiveDate);
-  if(half)startLevel(half.level,half.mode,true);
+{ const menu=menuResume();
+  if(menu&&!archiveDate)startPractice();
   else if(!archiveDate&&ladder()&&ziggle()?.profile?.().days?.[dateKey()]?.arrows&&saved.activeDaily?.date!==dateKey())startLevel(0,'climb');else startLevel(8,archiveDate?'archive':'daily',true);
 }
 

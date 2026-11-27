@@ -7,7 +7,6 @@ body{background:var(--paper);color:var(--ink)}
 .brand>span{line-height:1;display:block}
 .brand .brand-symbol{width:48px;height:48px;box-shadow:0 4px 0 var(--stroke);border-radius:15px;transform:rotate(-7deg)}
 .brand .brand-wordmark{object-fit:contain;object-position:left center;width:124px;height:42px;box-shadow:none;border-radius:0;display:block;transform:none}
-.brand small{color:var(--muted);letter-spacing:1px;margin-top:3px;font-size:6px;font-weight:800}
 [data-appearance="dark"] .brand-wordmark{filter:brightness(0)invert()}
 .header-actions{align-items:center;gap:17px;display:flex}
 .appearance-toggle{background:var(--surface);min-height:40px;color:var(--ink);border:1px solid var(--stroke);white-space:nowrap;border-radius:30px;flex-shrink:0;justify-content:center;align-items:center;gap:7px;padding:8px 10px;font-size:12px;font-weight:750;display:inline-flex}
@@ -21,7 +20,6 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline-color:var(--ac
 }
 @media (width<=920px){.brand .brand-wordmark{width:106px;height:36px}
 .brand .brand-symbol{width:42px;height:42px}
-.brand small{letter-spacing:.7px;font-size:5px}
 .appearance-toggle [data-appearance-label]{display:none}
 }
 @media (width<=650px){.header-actions{grid-area:1/2;gap:8px}
@@ -72,7 +70,6 @@ body{background:var(--paper)}
 .collection-header .brand>span{letter-spacing:normal;font-size:16px;font-weight:800;line-height:1;display:block}
 .collection-header .brand .brand-symbol{width:38px;height:38px}
 .collection-header .brand .brand-wordmark{width:94px;height:32px}
-.collection-header .brand small{letter-spacing:.6px;margin-top:3px;font-size:4px;font-weight:800;display:block}
 .collection-header-actions{align-items:center;gap:8px;display:flex}
 .collection-header .header-button,.collection-header .collection-menu>summary{border:1px solid var(--stroke);background:var(--surface);height:40px;color:var(--ink);cursor:pointer;border-radius:12px;justify-content:center;align-items:center;gap:7px;padding:0 13px;font-family:inherit;font-size:13px;font-weight:700;line-height:1;display:inline-flex}
 .header-icon{flex:none;width:18px;height:18px}
