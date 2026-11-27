@@ -360,7 +360,7 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .look-text{grid-column:1/-1}
 }
 .today-edit{flex-wrap:wrap;gap:6px 22px;display:flex}
-.today-edit a{align-items:center;gap:6px;display:inline-flex}
+.today-edit a{align-items:center;gap:6px;min-height:24px;display:inline-flex}
 .today-ring{display:contents}
 .today-dot,.today-key{display:none}
 .streak-row{justify-content:space-between;align-items:start;gap:6px;display:flex}
@@ -409,3 +409,4 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .look-back .look-kicker{letter-spacing:.8px;font-size:11px}
 .streak-row{position:relative}
 }
+@media(width<=340px){.look-back{grid-template-columns:minmax(0,1fr)}.look-back .activity{max-width:100%}.today-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}}

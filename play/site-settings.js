@@ -140,6 +140,8 @@ function build() {
     report.select();
   });
   const close = () => dialog.close();
+  // 2.66: once a backup has been downloaded here, the home page stops reminding the player to make one.
+  dialog.addEventListener('click', event => { if (event.target.closest?.('#export-backup')) { try { localStorage.setItem('ziggle-backup-cue-v1', new Date().toISOString().slice(0, 10)); } catch { /* the reminder simply stays */ } } });
   dialog.querySelector('.settings-close').addEventListener('click', close);
   dialog.querySelector('.settings-done').addEventListener('click', close);
   dialog.addEventListener('click', event => { if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close(); });

@@ -109,3 +109,4 @@ html body #lock-level-note{font-size:18px;line-height:1.4}
 .howto-lock [data-mark=correct]{background:var(--mint-ink);color:var(--paper)}
 .howto-lock [data-mark=present]{background:var(--citrus);color:var(--citrus-ink)}
 .howto-lock [data-mark=absent]{background:var(--stroke);color:var(--ink)}
+@media(width<320px){html body .key{min-width:0!important;padding-inline:0!important}}
