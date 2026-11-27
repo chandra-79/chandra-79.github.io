@@ -410,3 +410,12 @@ img.game-art,.game-card img.game-art{object-fit:contain}
 .streak-row{position:relative}
 }
 @media(width<=340px){.look-back{grid-template-columns:minmax(0,1fr)}.look-back .activity{max-width:100%}.today-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}}
+.train-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;display:grid}
+.train-tile{border:1px solid var(--stroke);background:var(--surface);height:100%;box-shadow:0 4px 0 var(--stroke);text-align:center;border-radius:22px;flex-direction:column;align-items:center;gap:8px;padding:18px 8px 16px;transition:transform .14s,box-shadow .14s,border-color .14s;display:flex}
+.train-tile:hover{box-shadow:0 7px 0 var(--stroke);border-color:var(--accent);transform:translateY(-3px)}
+.train-tile .game-card-title{letter-spacing:0;font-size:16px;line-height:1.2}
+#ziggle-home:has(#training:not([hidden])) .band-train{display:none}
+@media (width<=900px){.train-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (width<=650px){.train-row{gap:8px}.train-tile{border-radius:14px;padding:12px 4px}.train-tile img{width:54px;height:54px}.train-tile .game-card-title{font-size:13px}}
+@media (prefers-reduced-motion:reduce){.train-tile{transition:none}}
+:root[data-motion=calm] .train-tile{transition:none}
