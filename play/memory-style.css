@@ -86,7 +86,7 @@ h1,h2,h3,p{margin:0}
 .secondary-action small{margin-left:7px;font-size:12px;font-weight:500}
 .secondary-action:disabled{opacity:.45}
 .game-bottom{background:var(--surface-soft);color:var(--muted);justify-content:space-between;align-items:center;gap:8px;padding:12px 17px;font-size:12px;display:flex}
-.quiet-button{border-radius:4px;padding:5px;font-size:12px}
+.quiet-button{border-radius:12px;padding:5px 9px;font-size:12px}
 .quiet-button:hover{color:var(--accent)}
 .memory-message{text-align:center;min-height:35px;color:var(--muted);padding:16px 8px 0;font-size:12px;line-height:1.6}
 .memory-message.error{color:var(--danger)}

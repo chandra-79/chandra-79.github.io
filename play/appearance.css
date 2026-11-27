@@ -71,7 +71,7 @@ body{background:var(--paper)}
 .collection-header .brand .brand-symbol{width:38px;height:38px}
 .collection-header .brand .brand-wordmark{width:94px;height:32px}
 .collection-header-actions{align-items:center;gap:8px;display:flex}
-.collection-header .header-button,.collection-header .collection-menu>summary{border:1px solid var(--stroke);background:var(--surface);height:40px;color:var(--ink);cursor:pointer;border-radius:12px;justify-content:center;align-items:center;gap:7px;padding:0 13px;font-family:inherit;font-size:13px;font-weight:700;line-height:1;display:inline-flex}
+.collection-header .header-button,.collection-header .collection-menu>summary{border:1px solid var(--stroke);background:var(--surface);height:40px;color:var(--ink);cursor:pointer;border-radius:12px;justify-content:center;align-items:center;gap:7px;padding:0 13px;font-family:inherit;font-size:14px;font-weight:700;line-height:1;display:inline-flex}
 .header-icon{flex:none;width:18px;height:18px}
 .header-button:hover,.collection-menu>summary:hover,.collection-menu[open]>summary{background:var(--surface-soft)}
 .header-button:focus-visible,.collection-menu>summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}

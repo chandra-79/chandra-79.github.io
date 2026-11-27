@@ -28,7 +28,7 @@ a{color:inherit;text-decoration:none}
 .difficulty-tabs button{min-height:36px;color:var(--muted);border-radius:9px;padding:6px 12px;font-size:14px;font-weight:700}
 .difficulty-tabs button.active{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--stroke)}
 .puzzle-picker{align-items:center;gap:6px;font-size:14px;display:flex}
-.puzzle-picker button{border-radius:9px;width:34px;height:34px;font-size:20px}
+.puzzle-picker button{border-radius:12px;width:34px;height:34px;font-size:20px}
 .puzzle-picker button:hover:not(:disabled){background:var(--surface-soft)}
 .puzzle-picker select{border:1px solid var(--stroke);background:var(--surface);border-radius:9px;min-height:36px;padding:4px 8px}
 .daily-note{color:var(--accent);font-weight:700}

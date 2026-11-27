@@ -58,11 +58,11 @@ h1 em{color:var(--accent);font-style:normal}
 .game-type-badge{color:#327767;letter-spacing:1px;background:#e5f3ed;border-radius:20px;flex-shrink:0;padding:7px 9px;font-size:11px;font-weight:800}
 .puzzle-settings{justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;display:flex}
 .difficulty-control{background:#f0eaf6;border-radius:10px;gap:2px;padding:4px;display:flex}
-.difficulty-control button{color:#7d6c8b;border-radius:7px;padding:8px 12px;font-size:12px;font-weight:650}
+.difficulty-control button{color:#7d6c8b;border-radius:9px;padding:8px 12px;font-size:12px;font-weight:650}
 .difficulty-control button.active{color:var(--accent);background:#fff;box-shadow:0 1px 4px #3220390d}
 .difficulty-control button:hover{color:var(--accent)}
 .puzzle-stepper{color:#776784;align-items:center;gap:6px;font-size:12px;display:flex}
-.puzzle-stepper button{color:#8e79a2;border-radius:9px;width:34px;height:34px;font-size:20px}
+.puzzle-stepper button{color:#8e79a2;border-radius:12px;width:34px;height:34px;font-size:20px}
 .puzzle-stepper button:not(:disabled):hover{background:#eee6fa}
 .puzzle-stepper select{color:#644c7c;cursor:pointer;background:#fff;border:1px solid #e0d5e9;border-radius:7px;min-width:43px;padding:6px 3px 6px 6px;font-size:12px}
 .puzzle-card{background:#fff;border:1px solid #e5ddec;border-radius:22px;overflow:hidden;box-shadow:0 8px 25px #4d37610a,0 3px #eae2f160}
