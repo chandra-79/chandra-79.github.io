@@ -3,10 +3,8 @@
 body{background:var(--paper);color:var(--ink)}
 ::selection{background:var(--accent-soft);color:var(--ink)}
 .word-header{border-color:var(--stroke)}
-.brand{gap:11px}
-.brand>span{line-height:1;display:block}
-.brand .brand-symbol{width:48px;height:48px;box-shadow:0 4px 0 var(--stroke);border-radius:15px;transform:rotate(-7deg)}
-.brand .brand-wordmark{object-fit:contain;object-position:left center;width:124px;height:42px;box-shadow:none;border-radius:0;display:block;transform:none}
+.brand .brand-symbol{transform:rotate(-7deg)}
+.brand .brand-wordmark{display:block}
 [data-appearance="dark"] .brand-wordmark{filter:brightness(0)invert()}
 .header-actions{align-items:center;gap:17px;display:flex}
 .appearance-toggle{background:var(--surface);min-height:40px;color:var(--ink);border:1px solid var(--stroke);white-space:nowrap;border-radius:30px;flex-shrink:0;justify-content:center;align-items:center;gap:7px;padding:8px 10px;font-size:12px;font-weight:750;display:inline-flex}
@@ -18,19 +16,12 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline-color:var(--ac
 @media (width<=1120px){.header-actions{gap:10px}
 .appearance-toggle{gap:6px}
 }
-@media (width<=920px){.brand .brand-wordmark{width:106px;height:36px}
-.brand .brand-symbol{width:42px;height:42px}
-.appearance-toggle [data-appearance-label]{display:none}
+@media (width<=920px){.appearance-toggle [data-appearance-label]{display:none}
 }
 @media (width<=650px){.header-actions{grid-area:1/2;gap:8px}
 .word-header .help-label{display:none}
 .word-header .help-button{padding:5px}
-.brand .brand-wordmark{width:105px;height:35px}
-.brand .brand-symbol{width:42px;height:42px}
 .appearance-toggle{min-height:36px;padding:7px 9px}
-}
-@media (width<=360px){
-.brand{gap:8px}
 }
 html[data-kids=true] [data-grownups],html[data-serverless=true] [data-grownups],html[data-serverless=true] [data-online]{display:none!important}
 .share-row{flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;display:flex}
@@ -68,8 +59,8 @@ body{background:var(--paper)}
 .collection-header{border-bottom:1px solid var(--stroke);justify-content:space-between;align-items:center;gap:12px;height:76px;display:flex}
 .collection-header .brand{color:var(--ink);flex-shrink:0;align-items:center;gap:9px;text-decoration:none;display:flex}
 .collection-header .brand>span{letter-spacing:normal;font-size:16px;font-weight:800;line-height:1;display:block}
-.collection-header .brand .brand-symbol{width:38px;height:38px}
-.collection-header .brand .brand-wordmark{width:94px;height:32px}
+.collection-header .brand .brand-symbol{width:60px;height:60px}
+.collection-header .brand .brand-wordmark{width:137px;height:42px}
 .collection-header-actions{align-items:center;gap:8px;display:flex}
 .collection-header .header-button,.collection-header .collection-menu>summary{border:1px solid var(--stroke);background:var(--surface);height:40px;color:var(--ink);cursor:pointer;border-radius:12px;justify-content:center;align-items:center;gap:7px;padding:0 13px;font-family:inherit;font-size:14px;font-weight:700;line-height:1;display:inline-flex}
 .header-icon{flex:none;width:18px;height:18px}
@@ -215,6 +206,10 @@ html[data-welcome-hidden=true] .collection-welcome{display:none}
 .brand:is(:hover,:focus-visible,:active) .brand-love{opacity:1}
 .brand:is(:hover,:focus-visible) .brand-symbol{transform:rotate(3deg) scale(1.12)}
 .brand:active .brand-symbol{transform:scale(1.14,.86)}
+@media(prefers-reduced-motion:no-preference){.brand .brand-symbol{animation:1.2s .35s zhi}
+.brand .brand-love{animation:1.5s .25s zhe}}
+@keyframes zhi{18%{transform:rotate(9deg)scale(1.16)}36%{transform:rotate(-13deg)scale(1.16)}54%{transform:rotate(7deg)scale(1.12)}72%{transform:rotate(-10deg)scale(1.06)}}
+@keyframes zhe{16%,84%{opacity:1}}
 /* Non-text contrast (WCAG 1.4.11): form controls, off switches and completion rings keep a 3:1 edge in every look. */
 .settings-dialog :is(select,textarea,input:is([type=text],[type=email],[type=search],:not([type]))),.blog-tools select,.search-box input,#post-search,#puzzle-number{border-color:color-mix(in srgb,var(--ink) 55%,var(--surface))!important}
 .settings-dialog :is(.switches,.settings-more)>.setting input[type=checkbox]:not(:checked){box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink) 55%,var(--surface))}
