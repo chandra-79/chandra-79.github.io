@@ -254,3 +254,4 @@ html[data-play-focus] .memory-shell .game-bar .bar-chip{display:none!important}
 
 /* 2.59: a touch phone has no number keys, so the "or use keys 1–6" tip only shows where a keyboard is likely. */
 @media(hover:none) and (pointer:coarse){.keys-note{display:none}}
+@media (width<=650px){html[data-play-focus] .memory-shell .game-bar:has(.mode-switch) h1{clip:rect(0 0 0 0)!important;white-space:nowrap!important;width:1px!important;height:1px!important;position:absolute!important;overflow:hidden!important}}
