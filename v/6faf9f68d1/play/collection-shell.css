@@ -33,3 +33,4 @@ html[data-play-focus] body .frame-drawer [data-stowed][data-stowed]{margin:0 0 1
 .frame-drawer .daily-route>div{position:static;box-shadow:none;border:0;padding:0;max-height:none;background:none}
 @media(min-width:361px){html[data-play-focus] body .game-bar-items .focus-mode-picker{display:none!important}}
 @media(width<320px){html body>.collection-header .nav-link{display:none}}
+@media(width>650px){.menu-phone{display:none!important}}@media(width<=650px){.collection-nav>.nav-link,.collection-header-actions>[data-settings-open]{display:none!important}}

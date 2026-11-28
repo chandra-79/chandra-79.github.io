@@ -4,7 +4,7 @@
 .week-card .week-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
 .week-card h2{margin:0;font-size:clamp(20px,2.4vw,26px);font-weight:700;line-height:1.15}
 .week-card .week-count{background:var(--surface-soft);color:var(--muted);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:800;white-space:nowrap}
-.week-card .week-lede{margin:0 0 14px;color:var(--ink);font-size:15px;line-height:1.45;max-width:70ch;overflow-wrap:anywhere}
+.week-card .week-lede{margin:0 0 14px;color:var(--ink);font-size:15px;line-height:1.45;overflow-wrap:anywhere}
 .week-card .week-slots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0 0 12px;padding:0;list-style:none;max-width:560px}
 .week-card .week-slot{display:grid;justify-items:center;gap:3px;min-width:0}
 .week-card .week-tile{display:grid;place-items:center;width:100%;aspect-ratio:1;max-width:64px;border:2px dashed var(--stroke);background:var(--surface-soft);color:var(--ink);border-radius:min(14px,var(--r-card,14px));font-size:clamp(20px,5vw,30px);font-weight:800;line-height:1}
