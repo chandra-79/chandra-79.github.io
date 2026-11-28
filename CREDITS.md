@@ -1,6 +1,6 @@
 # Ziggle credits
 
-Ziggle 2.90.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
+Ziggle 2.91.0. See [LICENSE](LICENSE): all rights reserved, except the third-party data below.
 
 ## Third-party data and notices
 
