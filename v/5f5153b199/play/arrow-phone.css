@@ -1,0 +1,25 @@
+/* 2.77 Arrow Escape on a phone: the board is the screen. One slim row (hearts, the board's name, Paths, Hint) with a thin progress line; everything else waits under More. */
+@media (width<=650px){html[data-focused] body .game-shell .game-panel :is(#pause-button,.timer,#view-more,#focus-button,.board-label,.board-view-help,.board-progress>span),html[data-focused] body .game-shell #piece-guide{display:none!important}
+html[data-focused] body .game-shell #hearts .heart{display:block!important}
+html[data-focused] body .game-shell #hearts:after{content:none!important}
+html[data-focused] body .game-shell .game-panel>.board-progress{background:0 0!important;border:0!important;height:auto!important;min-height:0!important;margin:0!important;padding:0 10px 4px!important;display:block!important}
+html[data-focused] body .game-shell .game-panel>.board-progress{grid-area:2/1/auto/-1!important;order:1!important}
+html[data-focused] body .game-shell .game-panel>.board-view{grid-area:3/1/auto/-1!important;order:2!important}
+html[data-focused] body .game-shell .board-hud{justify-content:flex-start!important;gap:12px!important}
+html[data-focused] body .game-shell .board-hud .heart svg{width:20px!important;height:20px!important}
+html[data-focused] body .game-shell .board-progress .progress-track{width:100%!important;height:3px!important;margin:0!important}
+html[data-focused] body .game-shell .game-panel~#game-message{clip-path:inset(50%)!important;white-space:nowrap!important;width:1px!important;height:1px!important;min-height:0!important;margin:0!important;padding:0!important;position:absolute!important;overflow:hidden!important}
+html[data-focused][data-learn] body .game-shell .game-panel~#game-message{clip-path:none!important;white-space:normal!important;width:auto!important;height:auto!important;margin:6px 12px!important;font-size:14px!important;position:static!important;overflow:visible!important}
+html[data-focused] body .game-shell .board-view-controls #lanes-button{display:inline-flex!important}
+html[data-focused] body .frame-drawer>[data-stowed]{margin:0 0 12px!important}
+html[data-focused] body .frame-drawer>.game-heading[data-stowed]{flex-wrap:wrap!important;align-items:center!important;gap:6px!important;height:auto!important;min-height:44px!important;max-height:none!important;margin:0!important;display:flex!important;overflow:visible!important}
+html[data-focused] body .frame-drawer>.game-heading[data-stowed] .level-title{flex-wrap:wrap;font-size:17px!important;line-height:1.25!important}
+html[data-focused] body .frame-drawer>.tools[data-stowed]{margin:0!important;background:0 0!important;border:0!important;justify-content:flex-start!important;gap:8px!important;padding:0!important;display:flex!important}
+html[data-focused] body .frame-drawer>.tools[data-stowed] .tool-divider{display:none!important}
+html[data-focused] body .frame-drawer>:is(.board-zoom-controls,#grid-button)[data-stowed]{justify-self:start;background:0 0!important;border:0!important;box-shadow:none!important;width:auto!important;margin:0!important;padding:0!important;display:inline-flex!important}
+html[data-focused] body .frame-drawer :is(#board-zoom-fit,#grid-button[data-stowed],.tools[data-stowed] .tool-button:not(#hint-button)){border:1px solid var(--stroke)!important;background:var(--surface)!important;color:var(--ink)!important;border-radius:12px!important;align-items:center!important;gap:6px!important;width:auto!important;min-width:0!important;height:44px!important;min-height:44px!important;padding:0 14px!important;font-size:14px!important;font-weight:700!important;display:inline-flex!important}
+html[data-focused] body .frame-drawer #grid-button[data-stowed]>span{display:inline!important}
+html[data-focused] body .game-shell #hearts{gap:5px!important}
+html[data-focused][data-play-focus] body .game-shell .play-layout[data-big] :is(.board-hud,.board-view-controls){width:auto!important;position:static!important}
+html[data-focused][data-play-focus] body .game-shell .play-layout[data-big] .board-hud{padding:0 0 0 16px!important}
+html[data-focused][data-play-focus] body .game-shell .play-layout[data-big] .board-view-controls{padding:6px 6px 0 0!important}}
