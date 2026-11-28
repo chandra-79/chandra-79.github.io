@@ -376,9 +376,9 @@ body .collection-header .collection-nav{flex:0 auto;align-items:center;gap:4px;m
 .collection-nav .nav-current{background:var(--surface-soft);color:var(--accent);border-radius:999px;padding:3px 8px;font-size:12px;font-weight:800}
 .collection-nav .nav-group>summary::after{content:"";display:block;opacity:.6;border-bottom:2px solid;border-right:2px solid;width:8px;height:8px;margin-left:2px;transition:transform .15s;transform:translateY(-2px) rotate(45deg)}
 .collection-nav .nav-group[open]>summary::after{transform:translateY(1px) rotate(225deg)}
-.collection-nav .nav-panel{z-index:70;border:1px solid var(--stroke);background:var(--surface);min-width:400px;box-shadow:0 14px 40px var(--shadow);border-radius:16px;grid-template-columns:repeat(2,minmax(190px,1fr));gap:4px;padding:8px;display:grid;position:absolute;top:calc(100% + 8px);left:0}
+.collection-nav .nav-panel{z-index:70;border:1px solid var(--stroke);background:var(--surface);min-width:400px;box-shadow:0 14px 40px var(--shadow);border-radius:16px;grid-template-columns:repeat(2,minmax(190px,1fr));gap:6px;padding:8px;display:grid;position:absolute;top:calc(100% + 8px);left:0}
 .collection-nav .nav-group[data-group=train] .nav-panel{grid-template-columns:minmax(200px,1fr);min-width:220px}
-.collection-nav .nav-panel>:is(a,button){text-align:left;cursor:pointer;white-space:nowrap;align-items:center;gap:10px;min-height:44px;text-decoration:none;height:auto!important;color:var(--ink)!important;background:0 0!important;border:0!important;border-radius:10px!important;margin:0!important;padding:8px 10px!important;display:flex!important}
+.collection-nav .nav-panel>:is(a,button){box-shadow:var(--key);text-align:left;cursor:pointer;white-space:nowrap;align-items:center;gap:10px;min-height:44px;text-decoration:none;height:auto!important;color:var(--ink)!important;background:0 0!important;border:0!important;border-radius:10px!important;margin:0!important;padding:8px 10px!important;display:flex!important}
 .collection-nav .nav-panel>:is(a,button):hover{background:var(--surface-soft)!important}
 .collection-nav .nav-panel>[aria-current=page]{background:var(--surface-soft)!important;color:var(--accent)!important}
 .collection-nav .nav-icon{background:var(--surface-soft);border-radius:9px;flex:0 0 30px;place-items:center;width:30px;height:30px;font-size:16px;display:grid}

@@ -1,7 +1,7 @@
 // In a browser tab Ziggle is played online: nothing is kept, and a lost connection never revives an old puzzle.
 // Once Ziggle is installed (Home Screen or app window) the page asks this worker to keep the games on the device,
 // so they open without a connection (2.87). Saved progress is never touched here.
-const CACHE = 'ziggle-2.91.2';
+const CACHE = 'ziggle-2.91.3';
 const OFFLINE = CACHE.replace('ziggle-', 'ziggle-offline-'), READY = '/offline-ready', LIST = '/play/offline-files.json';
 // The kept release's asset token (/v/<token>/...), or '' while nothing is kept. Set once the whole release is on the device.
 let kept = '';
