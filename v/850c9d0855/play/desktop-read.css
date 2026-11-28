@@ -1,0 +1,53 @@
+@media (min-width:1100px) and (hover:hover) and (pointer:fine){
+html body .collection-layout:has(>.words-sidebar){grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+html body .words-sidebar{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;align-self:start}
+html body .words-sidebar :is(.clue-item,.clue-button){font-size:17px;line-height:1.45;padding:11px 10px;gap:10px}
+html body .words-sidebar .clue-number{font-size:16px;min-width:22px}
+html body .words-sidebar .clue-group h3{font-size:14px;margin-bottom:8px}
+html body .words-sidebar .word-item{font-size:17px;padding:10px 12px}
+html body .words-sidebar :is(#word-list-subtitle,#direction-note){font-size:15px;line-height:1.5}
+html body .words-sidebar .word-list-heading h2{font-size:20px}
+html body .words-sidebar .word-list-heading>span{font-size:14px}
+html body .active-clue{font-size:19px;line-height:1.45;font-weight:700;margin:0 0 14px;padding:14px 16px}
+html body :is(.play-instructions,#play-instructions,#type-hint,#mm-message,#keyboard-note){font-size:15px;line-height:1.5}
+}
+html[data-game-active] body>main.has-ad-rail{grid-template-columns:minmax(0,1fr)!important;column-gap:0!important}
+@media (width>=900px){html:not([data-play-focus]) body>.collection-header{width:calc(100% - 2*var(--shell-pad))!important;max-width:calc(var(--shell) - 2*var(--shell-pad))!important;padding-inline:16px!important}}
+@media (width>=651px) and (height>=521px){html:not([data-play-focus]) .collection-page-heading.game-bar{gap:8px 18px}
+html:not([data-play-focus]) body .game-bar :is(.mode-switch,.daily-levels){border:1px solid var(--stroke);background:var(--surface-soft);border-radius:12px;gap:3px;padding:3px;box-shadow:inset 0 1px 2px var(--relief-edge)}
+html:not([data-play-focus]) body .game-bar :is(.mode-switch,.daily-levels) button{border-radius:9px;min-height:32px;padding:4px 18px;font-size:14px;font-weight:800}
+html:not([data-play-focus]) body .game-bar :is(.assist-open,.drawer-button,.bar-link,.bar-help){box-sizing:border-box;height:40px;padding:0 16px;font-size:14px;align-items:center;justify-content:center;gap:6px;display:inline-flex}
+html:not([data-play-focus]) body .game-bar .bar-help{width:40px;padding:0}}
+html:root body .game-bar.game-bar :is(.assist-open,.drawer-button,.bar-link,.bar-help){border:1px solid var(--stroke);background:var(--surface);color:var(--ink);border-radius:12px;font-weight:800}
+html[data-play-focus] body .game-bar .assist-open{height:var(--tap,32px);font-size:14px}
+html:not([data-look=contrast]){--relief-edge:color-mix(in srgb,var(--ink) 24%,transparent);--relief-shadow:color-mix(in srgb,var(--ink) 18%,transparent);--relief-low:color-mix(in srgb,var(--ink) 9%,var(--stroke));--relief-raised:inset 0 1px 0 var(--relief-light),0 3px 0 var(--relief-low),0 14px 26px -12px var(--relief-shadow);--key:inset 0 1px 0 var(--relief-light),0 2px 0 var(--relief-edge),0 5px 9px -3px var(--relief-shadow)}
+html:not([data-look=contrast])[data-appearance=dark]{--relief-light:#ffffff24;--relief-edge:#000b;--relief-shadow:#000c;--relief-low:#0009}
+html :is(button,.header-button,.nav-link,.home-cta,.primary-action,.tool-button,.bar-link,:where(.nav-group,.collection-menu)>summary):where(:not(.buddy,.cloud-face,.cell,.letter-cell,.crossword-cell,[role=switch],.level-picker,.activity *)){box-shadow:var(--key)}
+html:not([data-look=contrast]) body :is(.game-bar,.settings-group){box-shadow:var(--relief-raised)}
+html body .game-bar :is(.mode-switch,.daily-levels) button:not([aria-pressed=true]){box-shadow:none}
+.game-bar .mode-switch[data-three]{grid-template-columns:auto auto auto}
+@media (orientation:portrait){html[data-play-focus] body .game-bar .mode-switch[data-three] button{flex:1;max-width:none!important}}
+@media (width<=650px){html body .game-bar:has(.mode-switch[data-three]){flex-wrap:wrap}html:not([data-focused]) body .game-bar .mode-switch[data-three]{order:9;flex:1 0 100%;display:flex;min-width:0}html:not([data-focused]) body .game-bar .mode-switch[data-three] button{flex:1;min-width:0;padding:4px 6px}}
+
+@media (width<=379px){html:root body>.collection-header{gap:4px!important}html:root body>.collection-header .collection-nav{gap:3px!important}}
+@media (width>=340px) and (width<=379px){html:root body>.collection-header .collection-nav{gap:7px!important}}
+@media (width>=380px) and (width<=399px){html:root body>.collection-header .collection-nav :is(summary,.nav-link){padding-inline:0!important}}
+html:root[data-play-focus] .type-shell .mode-tabs{grid-template-columns:repeat(4,auto)!important}
+@media (width<=650px){html:root[data-play-focus]:not([data-focused]) body .game-bar:has(.mode-switch[data-three]){height:auto!important;padding-block:4px!important;row-gap:4px!important}}
+.ad-banner:not(.ad-grows){height:auto;min-height:90px}
+.ad-banner:not(.ad-grows) .promo{gap:16px;padding:14px 20px}
+.ad-banner:not(.ad-grows) .promo-text{gap:3px}
+.ad-banner:not(.ad-grows) .promo-text strong{-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;display:-webkit-box;overflow:hidden}
+.ad-banner:not(.ad-grows) .promo-text span{white-space:normal;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.4;display:-webkit-box}
+.ad-banner:not(.ad-grows) .promo-go{white-space:nowrap;padding:9px 14px}
+@media (width<=650px){.ad-slot.ad-banner{width:100%;margin:20px 0}
+html body .post+.ad-banner{margin:24px 0 32px}
+.ad-slot.ad-banner .promo{gap:12px;padding:14px 16px}
+.ad-slot.ad-banner .promo-art{border-radius:12px;width:44px;height:44px;font-size:22px}
+.ad-slot.ad-banner .promo-text strong{font-size:15px}
+.ad-slot.ad-banner .promo-text span{font-size:13px}
+.ad-slot.ad-banner .promo-go{padding:8px 12px;font-size:12px}}
+@media (width<=480px){.ad-slot.ad-banner{min-height:130px}
+.ad-slot.ad-banner .promo{grid-template-columns:44px minmax(0,1fr);align-content:center;gap:10px 12px;display:grid}
+.ad-slot.ad-banner .promo-art{grid-row:1/3;align-self:start}
+.ad-slot.ad-banner .promo-go{grid-column:2;justify-self:start}}
