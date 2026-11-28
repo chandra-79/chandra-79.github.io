@@ -14,16 +14,16 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/c74eeb5add/play/hub.js"></script>
-  <script src="/v/c74eeb5add/play/appearance.js"></script>
-  <script type="module" src="/v/c74eeb5add/play/settings-boot.js"></script>
-  <script src="/v/c74eeb5add/play/collection-shell.js"></script>
-  <link rel="stylesheet" href="/v/c74eeb5add/play/appearance.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/blog.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/level-end.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/compact.css">
+  <script type="module" src="/v/58a9761961/play/hub.js"></script>
+  <script src="/v/58a9761961/play/appearance.js"></script>
+  <script type="module" src="/v/58a9761961/play/settings-boot.js"></script>
+  <script src="/v/58a9761961/play/collection-shell.js"></script>
+  <link rel="stylesheet" href="/v/58a9761961/play/appearance.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/blog.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/level-end.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Why “the” is everywhere: Zipf’s law in a million words — Ziggle blog">
   <meta property="og:description" content="In one famous million-word collection the most common word is nearly 7% of everything, and the second is almost exactly half as common.">
@@ -48,7 +48,7 @@
       <div class="post-tools"><details class="toc"><summary>In this article <span>7 sections</span></summary><ol><li><a href="#the-pattern">The pattern</a></li><li><a href="#a-few-words-do-most-of-the-work">A few words do most of the work</a></li><li><a href="#what-this-means-for-a-word-game">What this means for a word game</a></li><li><a href="#the-deeper-read">The deeper read</a></li><li><a href="#discovered-before-zipf-and-a-bad-fit-for-most-texts">Discovered before Zipf, and a bad fit for most texts</a></li><li><a href="#what-an-exact-1-n-curve-would-look-like">What an exact 1/n curve would look like</a></li><li><a href="#a-curve-that-must-stop-or-it-would-add-up-to-infinity">A curve that must stop, or it would add up to infinity</a></li></ol></details><button type="button" class="share-btn" hidden>Share this post</button><span class="share-note" role="status" aria-live="polite"></span></div>
       <div class="post-body">
 <p>In the 1960s a team at Brown University gathered a million-word sample of American English, from news stories to fiction to science writing, and counted every word. That collection, the Brown Corpus (<strong>1,014,312 words</strong><sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>), became one of the most studied in linguistics. The linguist George Zipf had said decades earlier that such counts follow a pattern, and here it is.</p>
-<figure class="fig"><svg viewBox="0 0 640 114" role="img" aria-labelledby="fig47t fig47d"><title id="fig47t">Most frequent words in the Brown Corpus, and what Zipf’s law predicts</title><desc id="fig47d">The: 69,971 occurrences. Of: 36,411, against a prediction of about 34,986. And: 28,852, against a prediction of about 23,324.</desc><text class="lbl" x="158" y="25" text-anchor="end">the</text><rect class="bar hi" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">69,971</text><text class="lbl" x="158" y="59" text-anchor="end">of</text><rect class="bar" x="168" y="44" width="200.9" height="22" rx="6"/><text class="val" x="376.9" y="59">36,411</text><text class="lbl" x="158" y="93" text-anchor="end">and</text><rect class="bar" x="168" y="78" width="159.2" height="22" rx="6"/><text class="val" x="335.2" y="93">28,852</text></svg><figcaption>Zipf’s law predicts the second word at about half the first (34,986) and the third at about a third (23,324). Counts as reported for the Brown Corpus; predictions are our arithmetic.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 640 114" role="img" aria-labelledby="fig48t fig48d"><title id="fig48t">Most frequent words in the Brown Corpus, and what Zipf’s law predicts</title><desc id="fig48d">The: 69,971 occurrences. Of: 36,411, against a prediction of about 34,986. And: 28,852, against a prediction of about 23,324.</desc><text class="lbl" x="158" y="25" text-anchor="end">the</text><rect class="bar hi" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">69,971</text><text class="lbl" x="158" y="59" text-anchor="end">of</text><rect class="bar" x="168" y="44" width="200.9" height="22" rx="6"/><text class="val" x="376.9" y="59">36,411</text><text class="lbl" x="158" y="93" text-anchor="end">and</text><rect class="bar" x="168" y="78" width="159.2" height="22" rx="6"/><text class="val" x="335.2" y="93">28,852</text></svg><figcaption>Zipf’s law predicts the second word at about half the first (34,986) and the third at about a third (23,324). Counts as reported for the Brown Corpus; predictions are our arithmetic.</figcaption></figure>
 <h2 id="the-pattern">The pattern</h2>
 <p>“The” accounts for <strong>nearly 7%</strong><sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup> of all words (69,971 of a little over a million). The second word, “of”, comes in at <strong>36,411</strong><sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>, just over half of that, and the third, “and”, at 28,852. Zipf’s law says the n-th word occurs about 1/n as often as the first, and these three are close. It is a rough fit, not a law of nature: “and” beats its prediction by about a quarter.</p>
 <h2 id="a-few-words-do-most-of-the-work">A few words do most of the work</h2>
@@ -80,6 +80,6 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
   <footer class="blog-footer"><a class="footer-motto" href="/"><img src="/play/art/still/ziggle.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v1.0</small></footer>
-  <script src="/v/c74eeb5add/play/blog-post.js" defer></script>
+  <script src="/v/58a9761961/play/blog-post.js" defer></script>
 </body>
 </html>

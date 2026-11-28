@@ -14,16 +14,16 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/c74eeb5add/play/hub.js"></script>
-  <script src="/v/c74eeb5add/play/appearance.js"></script>
-  <script type="module" src="/v/c74eeb5add/play/settings-boot.js"></script>
-  <script src="/v/c74eeb5add/play/collection-shell.js"></script>
-  <link rel="stylesheet" href="/v/c74eeb5add/play/appearance.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/blog.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/level-end.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/compact.css">
+  <script type="module" src="/v/58a9761961/play/hub.js"></script>
+  <script src="/v/58a9761961/play/appearance.js"></script>
+  <script type="module" src="/v/58a9761961/play/settings-boot.js"></script>
+  <script src="/v/58a9761961/play/collection-shell.js"></script>
+  <link rel="stylesheet" href="/v/58a9761961/play/appearance.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/blog.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/level-end.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Kaprekar’s routine from two to seven digits: what happens to each length — Ziggle blog">
   <meta property="og:description" content="Four digits give one constant. We ran the routine on every number from two to seven digits long, 10 million starts in all, and the endings are far stranger.">
@@ -51,7 +51,7 @@
 <figure class="fig"><table class="data"><caption>Where Kaprekar’s routine ends, by number of digits (computed)</caption><thead><tr><th scope="col">Digits</th><th scope="col">Starts counted</th><th scope="col">Where they end</th><th scope="col">How many starts end there</th></tr></thead><tbody><tr><th scope="row">2</th><td>90</td><td>loop of 5</td><td>90</td></tr><tr><th scope="row">3</th><td>990</td><td>fixed point 495</td><td>990</td></tr><tr><th scope="row">4</th><td>9,990</td><td>fixed point 6174</td><td>9,990</td></tr><tr><th scope="row">5</th><td>99,990</td><td>loop of 4<br>loop of 2<br>loop of 4</td><td>48,320<br>3,190<br>48,480</td></tr><tr><th scope="row">6</th><td>999,990</td><td>loop of 7<br>fixed point 631764<br>fixed point 549945</td><td>935,520<br>62,520<br>1,950</td></tr><tr><th scope="row">7</th><td>9,999,990</td><td>loop of 8</td><td>9,999,990</td></tr></tbody></table><figcaption>Every start whose digits are not all the same, with leading zeros allowed. Computed for this article by running the routine on each one.</figcaption></figure>
 <h2 id="reading-the-table">Reading the table</h2>
 <p><strong>Two digits</strong> end in a loop of five numbers (9 → 81 → 63 → 27 → 45 → 9 and round again), never at a single number. <strong>Three digits</strong> all reach 495. <strong>Four digits</strong> all reach 6174. After that the pattern breaks: <strong>five digits</strong> split into three loops of different sizes, <strong>six digits</strong> have two fixed points (<strong>549945</strong>, reached from only 1,950 starts, and <strong>631764</strong>) plus a loop of seven numbers that most starts fall into, and <strong>seven digits</strong> all end in a single loop of eight.</p>
-<figure class="fig"><svg viewBox="0 0 640 114" role="img" aria-labelledby="fig34t fig34d"><title id="fig34t">Where the 6-digit starts end up</title><desc id="fig34d">seven-number loop: 935520, 631764: 62520, 549945: 1950</desc><text class="lbl" x="158" y="25" text-anchor="end">a loop of 7</text><rect class="bar hi" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">935,520</text><text class="lbl" x="158" y="59" text-anchor="end">631764</text><rect class="bar" x="168" y="44" width="25.8" height="22" rx="6"/><text class="val" x="201.8" y="59">62,520</text><text class="lbl" x="158" y="93" text-anchor="end">549945</text><rect class="bar" x="168" y="78" width="2.0" height="22" rx="6"/><text class="val" x="178.0" y="93">1,950</text></svg><figcaption>Counted by running the routine on 999,990 six-digit starts.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 640 114" role="img" aria-labelledby="fig35t fig35d"><title id="fig35t">Where the 6-digit starts end up</title><desc id="fig35d">seven-number loop: 935520, 631764: 62520, 549945: 1950</desc><text class="lbl" x="158" y="25" text-anchor="end">a loop of 7</text><rect class="bar hi" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">935,520</text><text class="lbl" x="158" y="59" text-anchor="end">631764</text><rect class="bar" x="168" y="44" width="25.8" height="22" rx="6"/><text class="val" x="201.8" y="59">62,520</text><text class="lbl" x="158" y="93" text-anchor="end">549945</text><rect class="bar" x="168" y="78" width="2.0" height="22" rx="6"/><text class="val" x="178.0" y="93">1,950</text></svg><figcaption>Counted by running the routine on 999,990 six-digit starts.</figcaption></figure>
 <aside class="twist"><strong>The twist</strong><p>The two famous numbers are special in a precise way. In 1981 G. D. Prichett and colleagues showed that in base 10 the Kaprekar constants are limited to two numbers, <strong>495</strong> (three digits) and <strong>6174</strong> (four)<sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>. In our table those are the two lengths where every start reaches the same single number; six digits have fixed points too, but only a small share of starts find them. The charm of 6174 is that it is one of exactly two.</p></aside>
 <h2 id="try-it-yourself">Try it yourself</h2>
 <p>Pick any five-digit number, say 12345. The routine goes 54321 − 12345 = 41976, then 97641 − 14679 = 82962, which belongs to the loop 61974 → 63954 → 75933 → 82962. You will meet one of three loops and then circle forever.</p>
@@ -84,6 +84,6 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
   <footer class="blog-footer"><a class="footer-motto" href="/"><img src="/play/art/still/ziggle.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v1.0</small></footer>
-  <script src="/v/c74eeb5add/play/blog-post.js" defer></script>
+  <script src="/v/58a9761961/play/blog-post.js" defer></script>
 </body>
 </html>

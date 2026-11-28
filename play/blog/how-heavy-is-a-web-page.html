@@ -14,16 +14,16 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/c74eeb5add/play/hub.js"></script>
-  <script src="/v/c74eeb5add/play/appearance.js"></script>
-  <script type="module" src="/v/c74eeb5add/play/settings-boot.js"></script>
-  <script src="/v/c74eeb5add/play/collection-shell.js"></script>
-  <link rel="stylesheet" href="/v/c74eeb5add/play/appearance.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/blog.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/level-end.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/compact.css">
+  <script type="module" src="/v/58a9761961/play/hub.js"></script>
+  <script src="/v/58a9761961/play/appearance.js"></script>
+  <script type="module" src="/v/58a9761961/play/settings-boot.js"></script>
+  <script src="/v/58a9761961/play/collection-shell.js"></script>
+  <link rel="stylesheet" href="/v/58a9761961/play/appearance.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/blog.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/level-end.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="How heavy is a web page? A median phone page is 18 Ziggle pages — Ziggle blog">
   <meta property="og:description" content="Every page here has a weight limit. Here is what it is, and what the rest of the web weighs.">
@@ -49,7 +49,7 @@
       <div class="post-body">
 <p>Websites have got heavier every year. The HTTP Archive, which measures millions of pages every month, reported in its 2024 Web Almanac that the median page weighs <strong>2,652 KB on a desktop</strong><sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup> and <strong>2,311 KB on a phone</strong><sup class="cite"><a href="#ref-1" aria-label="Reference 1">[1]</a></sup> (October 2024 data). That is more than the entire text of several novels, to load a page you may read for ten seconds.</p>
 <h2 id="where-the-weight-goes">Where the weight goes</h2>
-<figure class="fig"><svg viewBox="0 0 640 148" role="img" aria-labelledby="fig45t fig45d"><title id="fig45t">What a median mobile page carries, in kilobytes (HTTP Archive, October 2024)</title><desc id="fig45d">The whole page 2,311 KB; images 900 KB; JavaScript 570 KB; Ziggle’s page limit 130 KB.</desc><text class="lbl" x="158" y="25" text-anchor="end">Median mobile page</text><rect class="bar lo" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">2,311 KB</text><text class="lbl" x="158" y="59" text-anchor="end">…its images</text><rect class="bar lo" x="168" y="44" width="150.3" height="22" rx="6"/><text class="val" x="326.3" y="59">900 KB</text><text class="lbl" x="158" y="93" text-anchor="end">…its JavaScript</text><rect class="bar lo" x="168" y="78" width="95.2" height="22" rx="6"/><text class="val" x="271.2" y="93">570 KB</text><text class="lbl" x="158" y="127" text-anchor="end">Ziggle page limit</text><rect class="bar hi" x="168" y="112" width="21.7" height="22" rx="6"/><text class="val" x="197.7" y="127">130 KB</text></svg><figcaption>Web Almanac figures are medians of what each page requests; Ziggle’s is the cap we test, described below. The two are measured differently, so read the comparison as a sense of scale.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 640 148" role="img" aria-labelledby="fig46t fig46d"><title id="fig46t">What a median mobile page carries, in kilobytes (HTTP Archive, October 2024)</title><desc id="fig46d">The whole page 2,311 KB; images 900 KB; JavaScript 570 KB; Ziggle’s page limit 130 KB.</desc><text class="lbl" x="158" y="25" text-anchor="end">Median mobile page</text><rect class="bar lo" x="168" y="10" width="386.0" height="22" rx="6"/><text class="val" x="562.0" y="25">2,311 KB</text><text class="lbl" x="158" y="59" text-anchor="end">…its images</text><rect class="bar lo" x="168" y="44" width="150.3" height="22" rx="6"/><text class="val" x="326.3" y="59">900 KB</text><text class="lbl" x="158" y="93" text-anchor="end">…its JavaScript</text><rect class="bar lo" x="168" y="78" width="95.2" height="22" rx="6"/><text class="val" x="271.2" y="93">570 KB</text><text class="lbl" x="158" y="127" text-anchor="end">Ziggle page limit</text><rect class="bar hi" x="168" y="112" width="21.7" height="22" rx="6"/><text class="val" x="197.7" y="127">130 KB</text></svg><figcaption>Web Almanac figures are medians of what each page requests; Ziggle’s is the cap we test, described below. The two are measured differently, so read the comparison as a sense of scale.</figcaption></figure>
 <p>The JavaScript on a typical phone page (570 KB) is about <strong>4.4 times</strong> our whole page limit.</p>
 <h2 id="our-rule">Our rule</h2>
 <p>Every Ziggle page has a budget: the files it needs up front, compressed, must come to no more than <strong>130 KB</strong>, and a test fails the build if one goes over. The median mobile page is about <strong>18 times</strong> heavier than that limit. A page that small loads quickly on a poor connection, uses little data, and, because we load nothing from other sites, has nothing else hiding in it.</p>
@@ -77,6 +77,6 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
   <footer class="blog-footer"><a class="footer-motto" href="/"><img src="/play/art/still/ziggle.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v1.0</small></footer>
-  <script src="/v/c74eeb5add/play/blog-post.js" defer></script>
+  <script src="/v/58a9761961/play/blog-post.js" defer></script>
 </body>
 </html>

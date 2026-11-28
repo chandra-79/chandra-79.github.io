@@ -14,16 +14,16 @@
   <link rel="icon" type="image/svg+xml" href="/play/logo.svg">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/play/icons/apple-touch-icon.png">
-  <script type="module" src="/v/c74eeb5add/play/hub.js"></script>
-  <script src="/v/c74eeb5add/play/appearance.js"></script>
-  <script type="module" src="/v/c74eeb5add/play/settings-boot.js"></script>
-  <script src="/v/c74eeb5add/play/collection-shell.js"></script>
-  <link rel="stylesheet" href="/v/c74eeb5add/play/appearance.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/collection-shell.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/blog.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/level-end.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/desktop-read.css">
-  <link rel="stylesheet" href="/v/c74eeb5add/play/compact.css">
+  <script type="module" src="/v/58a9761961/play/hub.js"></script>
+  <script src="/v/58a9761961/play/appearance.js"></script>
+  <script type="module" src="/v/58a9761961/play/settings-boot.js"></script>
+  <script src="/v/58a9761961/play/collection-shell.js"></script>
+  <link rel="stylesheet" href="/v/58a9761961/play/appearance.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/collection-shell.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/blog.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/level-end.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/desktop-read.css">
+  <link rel="stylesheet" href="/v/58a9761961/play/compact.css">
   <!-- Ziggle sharing -->
   <meta property="og:title" content="Counting queens up to 14: the sequence, its ratios and a formula that is far off — Ziggle blog">
   <meta property="og:description" content="We counted every n-queens solution up to a 14 × 14 board. The numbers climb about fivefold per step, and the formula for large boards says something else for small ones.">
@@ -49,7 +49,7 @@
       <div class="post-body">
 <p>The <a href="/play/blog/eight-queens-and-4-billion-guesses.html">eight queens article</a> counted the solutions up to 12 squares. We carried on, with a plain backtracking search, to 14. It took about twenty seconds on a laptop.</p>
 <figure class="fig"><table class="data"><caption>Ways to place n non-attacking queens on an n × n board</caption><thead><tr><th scope="col">n</th><th scope="col">Solutions</th><th scope="col">Ratio to the previous n</th></tr></thead><tbody><tr><th scope="row">8</th><td>92</td><td>2.30</td></tr><tr><th scope="row">9</th><td>352</td><td>3.83</td></tr><tr><th scope="row">10</th><td>724</td><td>2.06</td></tr><tr><th scope="row">11</th><td>2,680</td><td>3.70</td></tr><tr><th scope="row">12</th><td>14,200</td><td>5.30</td></tr><tr><th scope="row">13</th><td>73,712</td><td>5.19</td></tr><tr><th scope="row">14</th><td>365,596</td><td>4.96</td></tr></tbody></table><figcaption>Counted by exhaustive search for this article; they match OEIS A000170, which lists the sequence far beyond n = 14 (the n = 27 board has been counted).</figcaption></figure>
-<figure class="fig"><svg viewBox="0 0 640 280" role="img" aria-labelledby="fig35t fig35d"><title id="fig35t">Solutions to the n-queens puzzle, n = 8 to 14 (logarithmic height)</title><desc id="fig35d">The count rises from 92 at n = 8 to 365,596 at n = 14, roughly fivefold per step.</desc><line class="grid" x1="58" x2="622" y1="234.0" y2="234.0"/><text class="tick" x="50" y="238.0" text-anchor="end">0</text><line class="grid" x1="58" x2="622" y1="190.4" y2="190.4"/><text class="tick" x="50" y="194.4" text-anchor="end">1.1</text><line class="grid" x1="58" x2="622" y1="146.8" y2="146.8"/><text class="tick" x="50" y="150.8" text-anchor="end">2.2</text><line class="grid" x1="58" x2="622" y1="103.2" y2="103.2"/><text class="tick" x="50" y="107.2" text-anchor="end">3.3</text><line class="grid" x1="58" x2="622" y1="59.6" y2="59.6"/><text class="tick" x="50" y="63.6" text-anchor="end">4.5</text><line class="grid" x1="58" x2="622" y1="16.0" y2="16.0"/><text class="tick" x="50" y="20.0" text-anchor="end">5.6</text><text class="tick" x="58.0" y="252" text-anchor="middle">8</text><text class="tick" x="152.0" y="252" text-anchor="middle">9</text><text class="tick" x="246.0" y="252" text-anchor="middle">10</text><text class="tick" x="340.0" y="252" text-anchor="middle">11</text><text class="tick" x="434.0" y="252" text-anchor="middle">12</text><text class="tick" x="528.0" y="252" text-anchor="middle">13</text><text class="tick" x="622.0" y="252" text-anchor="middle">14</text><path class="line" d="M58.0 157.0 L152.0 134.2 L246.0 121.9 L340.0 99.7 L434.0 71.3 L528.0 43.3 L622.0 16.0"/><text class="axis" x="340" y="274" text-anchor="middle">Board size n</text><text class="axis" x="14" y="125" text-anchor="middle" transform="rotate(-90 14 125)">log₁₀(solutions)</text></svg><figcaption>On a log scale a straight line means constant multiplication; this curve keeps steepening, which is what a super-exponential count does.</figcaption></figure>
+<figure class="fig"><svg viewBox="0 0 640 280" role="img" aria-labelledby="fig36t fig36d"><title id="fig36t">Solutions to the n-queens puzzle, n = 8 to 14 (logarithmic height)</title><desc id="fig36d">The count rises from 92 at n = 8 to 365,596 at n = 14, roughly fivefold per step.</desc><line class="grid" x1="58" x2="622" y1="234.0" y2="234.0"/><text class="tick" x="50" y="238.0" text-anchor="end">0</text><line class="grid" x1="58" x2="622" y1="190.4" y2="190.4"/><text class="tick" x="50" y="194.4" text-anchor="end">1.1</text><line class="grid" x1="58" x2="622" y1="146.8" y2="146.8"/><text class="tick" x="50" y="150.8" text-anchor="end">2.2</text><line class="grid" x1="58" x2="622" y1="103.2" y2="103.2"/><text class="tick" x="50" y="107.2" text-anchor="end">3.3</text><line class="grid" x1="58" x2="622" y1="59.6" y2="59.6"/><text class="tick" x="50" y="63.6" text-anchor="end">4.5</text><line class="grid" x1="58" x2="622" y1="16.0" y2="16.0"/><text class="tick" x="50" y="20.0" text-anchor="end">5.6</text><text class="tick" x="58.0" y="252" text-anchor="middle">8</text><text class="tick" x="152.0" y="252" text-anchor="middle">9</text><text class="tick" x="246.0" y="252" text-anchor="middle">10</text><text class="tick" x="340.0" y="252" text-anchor="middle">11</text><text class="tick" x="434.0" y="252" text-anchor="middle">12</text><text class="tick" x="528.0" y="252" text-anchor="middle">13</text><text class="tick" x="622.0" y="252" text-anchor="middle">14</text><path class="line" d="M58.0 157.0 L152.0 134.2 L246.0 121.9 L340.0 99.7 L434.0 71.3 L528.0 43.3 L622.0 16.0"/><text class="axis" x="340" y="274" text-anchor="middle">Board size n</text><text class="axis" x="14" y="125" text-anchor="middle" transform="rotate(-90 14 125)">log₁₀(solutions)</text></svg><figcaption>On a log scale a straight line means constant multiplication; this curve keeps steepening, which is what a super-exponential count does.</figcaption></figure>
 <h2 id="the-ratios-tell-the-story">The ratios tell the story</h2>
 <p>From one size to the next the count is multiplied by 3.8, 2.1, 3.7, 5.3, 5.2 and 5.0. The swings at the start are real: even and odd boards behave differently. But for n of 12 and up the multiplier is steady near five. That is also why the problem is hard: each extra square brings roughly five times as many solutions to find, but also many more dead ends.</p>
 <h2 id="a-formula-that-is-far-off-for-small-boards">A formula that is far off for small boards</h2>
@@ -95,6 +95,6 @@
     <aside class="ad-slot ad-banner" data-ad-slot="banner" aria-label="From Ziggle"></aside>
   </main>
   <footer class="blog-footer"><a class="footer-motto" href="/"><img src="/play/art/still/ziggle.svg" alt="" width="28" height="28"><img class="brand-wordmark" src="/play/wordmark.svg" alt="Ziggle" width="83" height="28"></a><span class="legal-links"><a href="/play/blog.html">Blog</a><a href="/about.html">About</a><a href="/about.html#credits">Credits</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/accessibility.html">Accessibility</a></span><span class="footer-note" hidden><span>Progress saves in this browser</span></span><small>© 2026 AjnaCS · v1.0</small></footer>
-  <script src="/v/c74eeb5add/play/blog-post.js" defer></script>
+  <script src="/v/58a9761961/play/blog-post.js" defer></script>
 </body>
 </html>
