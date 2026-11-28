@@ -125,7 +125,7 @@ function build() {
       <label class="sr-only" for="local-error-report" hidden>Notes about the problem: select and copy</label>
       <textarea id="local-error-report" rows="6" readonly hidden></textarea></div></details>
     </fieldset>
-    <div class="settings-group settings-about" data-tab="more"><p class="settings-note" id="ios-install-hint" hidden>Install Ziggle on iPhone or iPad: tap Share, then “Add to Home Screen”.</p><p class="settings-note"><span id="settings-version">Ziggle</span> · <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/accessibility.html">Accessibility</a></p></div>
+    <div class="settings-group settings-about" data-tab="more"><p class="settings-note" id="offline-ready" hidden>Offline play is ready: the games open without a connection.</p><p class="settings-note" id="ios-install-hint" hidden>Install Ziggle on iPhone or iPad: tap Share, then “Add to Home Screen”.</p><p class="settings-note"><span id="settings-version">Ziggle</span> · <a href="/about.html">About</a> · <a href="/terms.html">Terms</a> · <a href="/accessibility.html">Accessibility</a></p></div>
     </div>
     <p class="settings-status" id="settings-status" role="status" aria-live="polite"></p>
     <div class="settings-foot"><small>Changes save as you go</small><button type="button" class="settings-done">Done</button></div>`;
@@ -259,6 +259,8 @@ function render() {
   if (Z?.version) dialog.querySelector('#settings-version').textContent = `Ziggle ${Z.version}`;
   // iPhone and iPad have no install prompt: say where the system keeps it, unless Ziggle is already on the Home Screen.
   dialog.querySelector('#ios-install-hint').hidden = !('standalone' in navigator) || navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  // Shown once the installed copy is complete on this device (sw.js writes the marker last).
+  try { globalThis.caches?.match('/offline-ready').then(mark => { dialog.querySelector('#offline-ready').hidden = !mark; }).catch(() => {}); } catch { /* cache storage blocked */ }
   dialog.querySelectorAll('[data-needs-hub]').forEach(group => { group.hidden = !Z; });
   if (!Z) return;
   const profile = Z.profile();
