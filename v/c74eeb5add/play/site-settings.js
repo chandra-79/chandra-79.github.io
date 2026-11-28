@@ -5,6 +5,8 @@ import './fit.js';
 import './game-frame.js';
 import './ad-slots.js';
 import { readKeys, saveKeys, keyboardHere } from './shortcuts.js';
+// The version number players see (package.json publicVersion; npm run bump -- X.Y.Z --public N.N keeps it in step).
+const SHOWN_VERSION = '1.0';
 
 const hub = () => globalThis.Ziggle;
 const LOOKS = Object.freeze([
@@ -259,7 +261,7 @@ function render() {
     return label;
   }));
   const Z = hub();
-  if (Z?.version) dialog.querySelector('#settings-version').textContent = `Ziggle ${Z.version}`;
+  dialog.querySelector('#settings-version').textContent = `Ziggle ${SHOWN_VERSION}`;
   // iPhone and iPad have no install prompt: say where the system keeps it, unless Ziggle is already on the Home Screen.
   dialog.querySelector('#ios-install-hint').hidden = !('standalone' in navigator) || navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
   // Shown once the installed copy is complete on this device (sw.js writes the marker last).
