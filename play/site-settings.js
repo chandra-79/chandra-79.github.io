@@ -83,7 +83,7 @@ function build() {
         <li><strong>Calmer motion</strong> above, and Ziggle follows your device’s reduced-motion setting too.</li>
         <li><strong>Share in words</strong> above writes results as sentences a screen reader can read.</li>
         <li><strong>Every colour look</strong>, light and dark, is checked so it stays easy to read, and text is never tiny.</li>
-        <li><strong>No timers that pressure.</strong> Pause any game; the streak forgives a missed day with freezes.</li>
+        <li><strong>No timers that pressure.</strong> Pause any game; the streak forgives a missed day with rest days.</li>
       </ul><p class="settings-note"><a href="/accessibility.html">Accessibility in full</a></p></details>
     </fieldset>
     <fieldset class="settings-group" data-tab="daily" data-needs-hub id="daily-games"><legend>Games in my daily set</legend>
@@ -96,6 +96,9 @@ function build() {
       <p class="level-today" id="level-today"></p>
       <div class="level-rows">${DAILY_GAMES.map(([id, name]) => `<label class="level-row"><span>${name}</span><select id="plan-${id}" data-plan-game="${id}">${PLANS.map(([plan, label]) => `<option value="${plan}">${label}</option>`).join('')}</select><small class="level-now" id="plan-now-${id}"></small></label>`).join('')}</div></details>
       <details class="settings-more"><summary>How levels and points work</summary><p class="settings-note">Every day each game is a ladder of puzzles with no end. Start at Easy: 6 Easy, then 10 Medium, then Expert. Start at Medium: 20 Medium, then Expert. Start at Expert: Expert all the way. The first puzzle of each level is that level’s daily, the same for everyone, and counts for leaderboards and points (medium ×1.2, expert ×1.5); the rest are bonus levels that earn ✦ credits.</p></details>
+    </fieldset>
+    <fieldset class="settings-group" data-tab="daily" data-remind-row id="web-reminder"><legend>Daily reminder <small>A repeating entry in your own calendar, at a time you pick. Nothing is sent to Ziggle.</small></legend>
+      <button type="button" class="secondary-button" data-remind>Set a reminder</button>
     </fieldset>
     <div class="settings-group save-facts" data-tab="progress" data-needs-hub><span aria-hidden="true">✓</span><p><strong>Your progress is saved in this browser</strong>No sign-up, no cookies. Nothing leaves this device unless you choose it below.</p></div>
     <fieldset class="settings-group" data-tab="progress" data-needs-hub><legend class="sr-only">Backup and other devices</legend><div id="progress-slot"><p class="muted">Loading…</p></div></fieldset>

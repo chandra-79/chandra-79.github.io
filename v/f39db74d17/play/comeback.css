@@ -1,0 +1,14 @@
+/* Reasons to come back (2.86): the tomorrow card and the reminder card. Loaded on demand by comeback.js. */
+.tomorrow-card{background:var(--secondary-soft);color:var(--ink);text-align:left;border-radius:14px;margin:12px 0 0;padding:10px 14px;font-size:14px;line-height:1.45}
+.tomorrow-card strong{color:var(--secondary);letter-spacing:.06em;text-transform:uppercase;font-size:12px;display:block}
+.tomorrow-card ul{margin:4px 0 0;padding:0;list-style:none}
+.tomorrow-card li{padding:1px 0}
+dialog.level-end .tomorrow-card{margin:0 0 12px;padding:8px 14px}
+.ziggle-remind .remind-lede{margin:0 0 10px;font-size:15px;line-height:1.4}
+.ziggle-remind .remind-times{margin:0 0 10px}
+.ziggle-remind .remind-times button{font-weight:600}
+.ziggle-remind .remind-times button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent)}
+.ziggle-remind .remind-other{margin:10px 0 0;font-size:14px}
+.ziggle-remind .remind-other a{color:inherit}
+.ziggle-remind .hello-told:empty{display:none}
+.ziggle-remind .hello-told{color:var(--muted);margin:8px 0 0;font-size:14px}
